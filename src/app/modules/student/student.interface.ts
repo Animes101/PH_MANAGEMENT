@@ -1,4 +1,4 @@
-
+import { Types } from 'mongoose';
 // Guardian type
 export type Guardian = {
   fatherName: string;
@@ -10,6 +10,7 @@ export type Guardian = {
 export interface IStudent extends Document {
   name: string;
   id:string;
+  user:Types.ObjectId; 
   age: number;
   gender: 'MALE' | 'FEMALE' | 'OTHER';
   dateOfBirth: string;
@@ -21,6 +22,7 @@ export interface IStudent extends Document {
   guardian: Guardian;
   department: string;
   isActive: 'active' | 'inactive';
+
   
 }
 

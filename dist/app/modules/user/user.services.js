@@ -5,20 +5,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersServices = void 0;
 const config_1 = __importDefault(require("../../config"));
+const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
 const createStudentIntoDB = async (studentData) => {
     const newUser = {
-        id: '2330450',
+        id: new Date().toISOString(), // eita string hobe
         password: config_1.default.DEFAULT_PASSWORD,
         role: 'student',
     };
     //create a User
-    const result = await user_model_1.UserModel.create(newUser);
-    return result;
+    const userNew = await user_model_1.UserModel.create(newUser);
     // create a student
-    if (result) {
+    if (userNew) {
         //setUserId
-        studentData.id = result.id;
+        studentData.id = userNew.id;
+        studentData.user = userNew._id;
+        const result = await student_model_1.StudentModel.create(studentData);
+        return result;
     }
 };
 exports.UsersServices = {

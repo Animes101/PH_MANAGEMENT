@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UsersServices } from './user.services';
 
 
 
@@ -7,10 +8,17 @@ const createStudent = async (req: Request, res: Response) => {
 
     const {studentData}=req.body;
 
-    console.log(studentData);
+    const result=await UsersServices.createStudentIntoDB(studentData)
 
 
-    
+     // Client e response pathano
+    res.status(201).json({
+      success: true,
+      message: 'Student created successfully',
+      data: result,
+    });
+
+
  
   } catch (error) {
     res.status(500).json({

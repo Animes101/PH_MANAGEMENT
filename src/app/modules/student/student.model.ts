@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Guardian, IStudent } from './student.interface';
+import { Types } from 'mongoose';
 
 
 // Mongoose Schema
@@ -13,6 +14,7 @@ const StudentSchema = new Schema<IStudent>(
   {
     name: { type: String, required: true },
     id:{type:String, required:true},
+     user: {type:Schema.Types.ObjectId, required:true, unique:true, ref:'UserModel'},
     age: { type: Number, required: true },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'], required: true },
     dateOfBirth: { type: String, required: true },

@@ -11,6 +11,7 @@ const GuardianSchema = new mongoose_1.Schema({
 const StudentSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     id: { type: String, required: true },
+    user: { type: mongoose_1.Schema.Types.ObjectId, required: true, unique: true, ref: 'UserModel' },
     age: { type: Number, required: true },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'], required: true },
     dateOfBirth: { type: String, required: true },
