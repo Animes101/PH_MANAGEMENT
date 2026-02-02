@@ -11,11 +11,9 @@ const UserSchema = new Schema<TUser>(
     },
     password: {
       type: String,
-      required: true,
     },
     needPassword: {
-      type: String,
-      required: true,
+      type: Boolean,
     },
     role: {
       type: String,

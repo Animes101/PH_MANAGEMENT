@@ -9,6 +9,7 @@ export type Guardian = {
 // TypeScript interface
 export interface IStudent extends Document {
   name: string;
+  id:string;
   age: number;
   gender: 'MALE' | 'FEMALE' | 'OTHER';
   dateOfBirth: string;

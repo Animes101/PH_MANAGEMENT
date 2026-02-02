@@ -10,3 +10,11 @@ export type TUser={
 
 
 }
+
+export type newUser={
+    id:string;
+  password:string;
+  role:string;
+
+  
+}

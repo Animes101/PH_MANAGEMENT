@@ -1,13 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UsersContrller = void 0;
+exports.UsersController = void 0;
 const createStudent = async (req, res) => {
     try {
-        const { studentDAta } = req.body;
+        const { studentData } = req.body;
+        console.log(studentData);
     }
-    finally {
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
     }
 };
-exports.UsersContrller = {
-    createStudent
+exports.UsersController = {
+    createStudent,
 };

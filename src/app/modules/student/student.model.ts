@@ -12,6 +12,7 @@ const GuardianSchema = new Schema<Guardian>({
 const StudentSchema = new Schema<IStudent>(
   {
     name: { type: String, required: true },
+    id:{type:String, required:true},
     age: { type: Number, required: true },
     gender: { type: String, enum: ['MALE', 'FEMALE', 'OTHER'], required: true },
     dateOfBirth: { type: String, required: true },

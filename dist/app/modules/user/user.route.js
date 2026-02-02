@@ -7,5 +7,5 @@ exports.UserRoutes = void 0;
 const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("./user.controller");
 const router = express_1.default.Router();
-router.post('/create-Student', user_controller_1.UsersContrller.createStudent);
+router.post('/user/create-Student', user_controller_1.UsersController.createStudent);
 exports.UserRoutes = router;
