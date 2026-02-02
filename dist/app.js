@@ -11,7 +11,6 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // test route
 app.get('/', (req, res) => {
-    let a;
     console.log('hello world');
     res.send('🚀 Express + TypeScript Server Running ok server is running');
 });

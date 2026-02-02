@@ -9,8 +9,7 @@ app.use(express.json());
 
 // test route
 app.get('/', (req: Request, res: Response) => {
-
-  let a;
+  
 
   console.log('hello world');
   res.send('🚀 Express + TypeScript Server Running ok server is running');
