@@ -1,0 +1,49 @@
+import Joi from 'joi';
+
+const guardianSchema = Joi.object({
+  fatherName: Joi.string().required(),
+  motherName: Joi.string().required(),
+  phone: Joi.string()
+    .pattern(/^[0-9]{11}$/)
+    .required(),
+});
+
+export const createStudentSchema = Joi.object({
+  studentData: Joi.object({
+    name: Joi.string().min(3).max(50).required(),
+
+    age: Joi.number().integer().min(1).max(100).required(),
+
+    gender: Joi.string()
+      .valid('MALE', 'FEMALE', 'OTHER')
+      .required(),
+
+    dateOfBirth: Joi.string()
+      .isoDate()
+      .required(),
+
+    bloodGroup: Joi.string()
+      .valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
+      .required(),
+
+    address: Joi.string().required(),
+
+    grade: Joi.string()
+      .valid('A', 'B', 'C', 'D', 'F')
+      .required(),
+
+    email: Joi.string().email().required(),
+
+    phoneNumber: Joi.string()
+      .pattern(/^[0-9]{11}$/)
+      .required(),
+
+    guardian: guardianSchema.required(),
+
+    department: Joi.string().required(),
+
+    isActive: Joi.string()
+      .valid('active', 'inactive')
+      .required(),
+  }).required(),
+});
