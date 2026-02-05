@@ -1,40 +1,34 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { UsersServices } from './user.services';
-import { createUserValidation } from './user.validation';
 import { createStudentSchema } from '../student/student.validation';
+import sendResponse from '../../utility/respons';
 
 
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (req: Request, res: Response, next:NextFunction) => {
   try {
     const { error, value } = createStudentSchema.validate(req.body, {
       abortEarly: false,
     });
 
     if (error) {
-      return res.status(400).json({
-        success: false,
-        message: error.details[0].message,
-        error,
-      });
+      return next(error)
     }
 
     // schema অনুযায়ী value.studentData আসবেই
     const result = await UsersServices.createStudentIntoDB(
       value.studentData
     );
-
-    res.status(201).json({
+    
+    sendResponse(res, {
+      statusCode: 201,
       success: true,
       message: 'Student created successfully',
       data: result,
     });
+
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Something went wrong',
-      error,
-    });
+    next(error)
   }
 };
 

@@ -34,5 +34,7 @@ const StudentSchema = new Schema<IStudent>(
   { timestamps: true } // auto adds createdAt & updatedAt
 );
 
+
+
 // Mongoose Model
 export const StudentModel = model<IStudent>('Student', StudentSchema);
