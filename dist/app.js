@@ -8,11 +8,13 @@ const cors_1 = __importDefault(require("cors"));
 const user_route_1 = require("./app/modules/user/user.route");
 const globallErrorHandler_1 = require("./middlwares/globallErrorHandler");
 const notFound_1 = __importDefault(require("./middlwares/notFound"));
+const student_router_1 = require("./app/modules/student/student.router");
 const app = (0, express_1.default)();
 // middlewares
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use('/api/v1', user_route_1.UserRoutes);
+app.use('/api/v1', student_router_1.StudentRoutes);
 //Global Error Handler
 app.use(globallErrorHandler_1.errorHandler);
 //Not Fount Route
