@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { UsersServices } from './user.services';
 import { createStudentSchema } from '../student/student.validation';
 import sendResponse from '../../utility/respons';
+import catchAsync from '../../utility/catchAsync';
 
 
 
-const createStudent = async (req: Request, res: Response, next:NextFunction) => {
-  try {
+const createStudent =catchAsync( async (req: Request, res: Response, next:NextFunction) => {
     const { error, value } = createStudentSchema.validate(req.body, {
       abortEarly: false,
     });
@@ -25,12 +25,9 @@ const createStudent = async (req: Request, res: Response, next:NextFunction) => 
       success: true,
       message: 'Student created successfully',
       data: result,
-    });
-
-  } catch (error) {
-    next(error)
-  }
-};
+    }); 
+ 
+});
 
 
 export const UsersController = {

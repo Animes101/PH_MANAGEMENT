@@ -14,7 +14,7 @@ const getSingleStudent= async (_id: string)=>{
 
 export const studentService = {
 
-    
+
   getAllStudents,
   getSingleStudent,
 

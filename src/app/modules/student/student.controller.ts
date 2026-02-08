@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
 import { studentService } from './student.service';
+import catchAsync from '../../utility/catchAsync';
 
-const getAllStudents =async (req: Request, res: Response) => {
 
+
+
+// ✅ Clean logic
+const getAllStudents = catchAsync(async (req, res) => {
   const result = await studentService.getAllStudents();
 
   res.status(200).json({
@@ -10,23 +13,22 @@ const getAllStudents =async (req: Request, res: Response) => {
     message: 'All students retrieved successfully',
     data: result,
   });
-};
+});
 
+// ✅ Route parameter handling
+const getSingleStudent = catchAsync(async (req, res) => {
+  const { id } = req.params as { id: string }; 
 
-const getSingleStudent= async (req:Request, res:Response)=>{
+  const result = await studentService.getSingleStudent(id);
 
-    const {_id}=req.params;
-
-    const result= await studentService.getSingleStudent(_id as string)
-    res.status(200).json({
-        success:true,
-        message:"Single student retrieved successfully",
-        data:result
-    })
-}
+  res.status(200).json({
+    success: true,
+    message: 'Single student retrieved successfully',
+    data: result,
+  });
+});
 
 export const studentController = {
   getAllStudents,
   getSingleStudent,
-
 };
