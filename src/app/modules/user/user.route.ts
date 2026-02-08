@@ -6,7 +6,6 @@ import { createStudentSchema } from '../student/student.validation';
 
 const router= express.Router();
 
-
 router.post('/user/create-Student', validationRequest(createStudentSchema),  UsersController.createStudent)
 
 

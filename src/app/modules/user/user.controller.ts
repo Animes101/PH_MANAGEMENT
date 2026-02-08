@@ -7,6 +7,7 @@ import catchAsync from '../../utility/catchAsync';
 
 
 const createStudent =catchAsync( async (req: Request, res: Response, next:NextFunction) => {
+  
     const { error, value } = createStudentSchema.validate(req.body, {
       abortEarly: false,
     });

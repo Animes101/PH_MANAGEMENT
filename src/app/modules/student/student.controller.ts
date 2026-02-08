@@ -3,7 +3,6 @@ import catchAsync from '../../utility/catchAsync';
 
 
 
-
 // ✅ Clean logic
 const getAllStudents = catchAsync(async (req, res) => {
   const result = await studentService.getAllStudents();
