@@ -15,6 +15,25 @@ const createAcademicSemester = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const getAllAcademicSemesters = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await semister_services_1.createAcademicSemesterSercices.getAllAcademicSemesters();
+    res.status(200).json({
+        success: true,
+        message: "academic semester retrived successfully",
+        data: result
+    });
+});
+const getSingleAcademicSemester = (0, catchAsync_1.default)(async (req, res) => {
+    const id = req.params.id;
+    const result = await semister_services_1.createAcademicSemesterSercices.getSingleAcademicSemester(id);
+    res.status(201).json({
+        success: true,
+        message: "academic semester retrived successfully",
+        data: result
+    });
+});
 exports.academinSemesterController = {
-    createAcademicSemester
+    createAcademicSemester,
+    getAllAcademicSemesters,
+    getSingleAcademicSemester,
 };

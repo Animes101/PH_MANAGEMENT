@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Guardian, IStudent } from './student.interface';
+import { string } from 'joi';
 
 
 // Mongoose Schema
@@ -29,6 +30,8 @@ const StudentSchema = new Schema<IStudent>(
     guardian: { type: GuardianSchema, required: true },
     department: { type: String, required: true },
     isActive: { type: String, enum: ['active', 'inactive'], default: 'active' },
+    admisonSemester:{type:Schema.Types.ObjectId, ref:'AcademicSemester'},
+    
   },
   { timestamps: true } // auto adds createdAt & updatedAt
 );

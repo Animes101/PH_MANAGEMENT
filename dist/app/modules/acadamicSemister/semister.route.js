@@ -10,4 +10,6 @@ const validatonJoi_1 = __importDefault(require("../../utility/validatonJoi"));
 const semister_validaton_1 = require("./semister.validaton");
 const router = express_1.default.Router();
 router.post('/create-sementer', (0, validatonJoi_1.default)(semister_validaton_1.academicSemesterValidationSchem), seminter_controlar_1.academinSemesterController.createAcademicSemester);
+router.get('/get-all-semesters', seminter_controlar_1.academinSemesterController.getAllAcademicSemesters);
+router.get('/get-single-semester/:id', seminter_controlar_1.academinSemesterController.getSingleAcademicSemester);
 exports.academicSemesterRoute = router;

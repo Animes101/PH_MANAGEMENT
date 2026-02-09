@@ -22,6 +22,8 @@ export interface IStudent extends Document {
   guardian: Guardian;
   department: string;
   isActive: 'active' | 'inactive';
+  admisonSemester:Types.ObjectId;
+
 
   
 }

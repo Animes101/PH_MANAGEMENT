@@ -46,4 +46,5 @@ export const createStudentSchema = Joi.object({
       .valid('active', 'inactive')
       .required(),
   }).required(),
+  admisonSemester: Joi.string(),
 });

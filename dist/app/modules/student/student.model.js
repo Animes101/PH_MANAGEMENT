@@ -27,6 +27,7 @@ const StudentSchema = new mongoose_1.Schema({
     guardian: { type: GuardianSchema, required: true },
     department: { type: String, required: true },
     isActive: { type: String, enum: ['active', 'inactive'], default: 'active' },
+    admisonSemester: { type: mongoose_1.Schema.Types.ObjectId, ref: 'AcademicSemester' },
 }, { timestamps: true } // auto adds createdAt & updatedAt
 );
 // Mongoose Model

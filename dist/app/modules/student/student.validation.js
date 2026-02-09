@@ -39,4 +39,5 @@ exports.createStudentSchema = joi_1.default.object({
             .valid('active', 'inactive')
             .required(),
     }).required(),
+    admisonSemester: joi_1.default.string(),
 });

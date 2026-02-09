@@ -1,5 +1,5 @@
 import { AcademicSemesterModel } from "./acadamin.model";
-import { IAcademicSemister } from "./seminter.interface";
+import { IAcademicSemesterNameCodeMap, IAcademicSemister } from "./seminter.interface";
 
 
 
@@ -7,11 +7,6 @@ import { IAcademicSemister } from "./seminter.interface";
 const createAcademicSemester= async (payload:IAcademicSemister)=>{
 
     //semester name and code validation
-
-type IAcademicSemesterNameCodeMap={
-    [key:string]:string;
-
-    }
 
     const academicSemesterNameCodeMap:IAcademicSemesterNameCodeMap={
     'Autumn':'01',
@@ -30,6 +25,20 @@ type IAcademicSemesterNameCodeMap={
 }
 
 
+//find all academin semesters
+
+const getAllAcademicSemesters= async()=>{
+
+    const result= await AcademicSemesterModel.find();
+    return result;
+}
+
+const getSingleAcademicSemester= async (_id:string)=>{
+
+    const result= await AcademicSemesterModel.findById(_id);
+    return result;
+}
+
 
 
 
@@ -37,5 +46,7 @@ type IAcademicSemesterNameCodeMap={
 
 export const createAcademicSemesterSercices={
 
-    createAcademicSemester
+    createAcademicSemester,
+    getAllAcademicSemesters,
+    getSingleAcademicSemester
 }

@@ -16,7 +16,18 @@ const createAcademicSemester = async (payload) => {
     const result = await acadamin_model_1.AcademicSemesterModel.create(payload);
     return result;
 };
+//find all academin semesters
+const getAllAcademicSemesters = async () => {
+    const result = await acadamin_model_1.AcademicSemesterModel.find();
+    return result;
+};
+const getSingleAcademicSemester = async (_id) => {
+    const result = await acadamin_model_1.AcademicSemesterModel.findById(_id);
+    return result;
+};
 //export academic semester services
 exports.createAcademicSemesterSercices = {
-    createAcademicSemester
+    createAcademicSemester,
+    getAllAcademicSemesters,
+    getSingleAcademicSemester
 };

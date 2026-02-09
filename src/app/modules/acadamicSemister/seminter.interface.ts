@@ -19,3 +19,9 @@ export interface IAcademicSemister {
   startMonth: TMonth;   // ✅ spelling fixed
   endMonth: TMonth;
 }
+
+
+export type IAcademicSemesterNameCodeMap={
+    [key:string]:string;
+
+    }

@@ -1,10 +1,17 @@
 import config from "../../config";
+import { IAcademicSemister } from "../acadamicSemister/seminter.interface";
 import { IStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 
 const createStudentIntoDB = async (studentData: IStudent) => {
+
+  const generateStudentID= async(payload:IAcademicSemister)=>{
+
+    
+
+  }
 
 const newUser: Partial<TUser> = {
   id: new Date().toISOString(), // eita string hobe
@@ -14,14 +21,11 @@ const newUser: Partial<TUser> = {
   //create a User
 
   const userNew = await UserModel.create(newUser);
-
-
   // create a student
 
   if(userNew){
 
     //setUserId
-
     studentData.id=userNew.id;
     studentData.user=userNew._id;
 

@@ -8,6 +8,8 @@ const config_1 = __importDefault(require("../../config"));
 const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
 const createStudentIntoDB = async (studentData) => {
+    const generateStudentID = async (payload) => {
+    };
     const newUser = {
         id: new Date().toISOString(), // eita string hobe
         password: config_1.default.DEFAULT_PASSWORD,
