@@ -14,4 +14,5 @@ const sendResponse = <T>(res: Response,data: {
   });
 };
 
+
 export default sendResponse;

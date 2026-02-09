@@ -46,4 +46,13 @@ const academicSemesterSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+academicSemesterSchema.pre('save', async function () {
+    const existingSemester = await exports.AcademicSemesterModel.findOne({
+        name: this.name,
+        year: this.year,
+    });
+    if (existingSemester) {
+        throw new Error('Academic semester already exists');
+    }
+});
 exports.AcademicSemesterModel = (0, mongoose_1.model)('AcademicSemester', academicSemesterSchema);

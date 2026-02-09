@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IAcademicSemister, TMonth } from './seminter.interface';
+import { NextFunction } from 'express';
 
 // month enum array (type-safe)
 const months: TMonth[] = [
@@ -53,6 +54,19 @@ const academicSemesterSchema = new Schema<IAcademicSemister>(
     timestamps: true,
   }
 );
+
+
+academicSemesterSchema.pre('save', async function () {
+  const existingSemester = await AcademicSemesterModel.findOne({
+    name: this.name,
+    year: this.year,
+  });
+
+  if (existingSemester) {
+    throw new Error('Academic semester already exists');
+  }
+  
+});
 
 
 
