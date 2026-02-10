@@ -15,7 +15,7 @@ const createStudentIntoDB = async (studentData) => {
         throw new Error('Academic semester not found');
     }
     const newUser = {
-        id: (0, user_utils_1.generatedId)(academinSemester),
+        id: await (0, user_utils_1.generatedId)(academinSemester),
         password: config_1.default.DEFAULT_PASSWORD,
         role: 'student',
     };

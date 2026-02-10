@@ -19,7 +19,7 @@ if (!academinSemester) {
 
 
 const newUser: Partial<TUser> = {
-  id: generatedId(academinSemester),
+  id: await generatedId(academinSemester),
   password: config.DEFAULT_PASSWORD as string,
   role: 'student',
 };
