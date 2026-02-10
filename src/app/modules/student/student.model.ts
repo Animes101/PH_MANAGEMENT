@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { Guardian, IStudent } from './student.interface';
-import { string } from 'joi';
 
 
 // Mongoose Schema

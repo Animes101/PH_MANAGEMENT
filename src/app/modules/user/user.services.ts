@@ -1,20 +1,25 @@
+
 import config from "../../config";
-import { IAcademicSemister } from "../acadamicSemister/seminter.interface";
+import { AcademicSemesterModel } from "../acadamicSemister/acadamin.model";
 import { IStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
+import { generatedId } from "./user.utils";
 
 const createStudentIntoDB = async (studentData: IStudent) => {
 
-  const generateStudentID= async(payload:IAcademicSemister)=>{
 
-    
+    const academinSemester =
+  await AcademicSemesterModel.findById(studentData.admisonSemester);
 
-  }
+if (!academinSemester) {
+  throw new Error('Academic semester not found');
+}
+
 
 const newUser: Partial<TUser> = {
-  id: new Date().toISOString(), // eita string hobe
+  id: generatedId(academinSemester),
   password: config.DEFAULT_PASSWORD as string,
   role: 'student',
 };
@@ -35,10 +40,6 @@ const newUser: Partial<TUser> = {
 
 
   }
-
-
-
-
 };
 
 export const UsersServices = {

@@ -5,13 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersServices = void 0;
 const config_1 = __importDefault(require("../../config"));
+const acadamin_model_1 = require("../acadamicSemister/acadamin.model");
 const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
+const user_utils_1 = require("./user.utils");
 const createStudentIntoDB = async (studentData) => {
-    const generateStudentID = async (payload) => {
-    };
+    const academinSemester = await acadamin_model_1.AcademicSemesterModel.findById(studentData.admisonSemester);
+    if (!academinSemester) {
+        throw new Error('Academic semester not found');
+    }
     const newUser = {
-        id: new Date().toISOString(), // eita string hobe
+        id: (0, user_utils_1.generatedId)(academinSemester),
         password: config_1.default.DEFAULT_PASSWORD,
         role: 'student',
     };
