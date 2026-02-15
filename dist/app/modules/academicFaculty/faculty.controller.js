@@ -1,1 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.academicFacultyController = void 0;
+const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
+const respons_1 = __importDefault(require("../../utility/respons"));
+const faculty_services_1 = require("./faculty.services");
+const createAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await faculty_services_1.academicFacultyServices.createAcademicFacultyDb(req.body);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty created successfully",
+        data: result,
+    });
+});
+exports.academicFacultyController = {
+    createAcademicFaculty,
+};
