@@ -14,6 +14,10 @@ const createStudentIntoDB = async (studentData) => {
     if (!academinSemester) {
         throw new Error('Academic semester not found');
     }
+    const existingUser = await student_model_1.StudentModel.findOne({ email: studentData.email });
+    if (existingUser) {
+        throw new Error("Email already exists");
+    }
     const newUser = {
         id: await (0, user_utils_1.generatedId)(academinSemester),
         password: config_1.default.DEFAULT_PASSWORD,

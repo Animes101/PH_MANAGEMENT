@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 // Express global error middleware
  export const errorHandler = (
-  error: any, // TypeScript এর জন্য any, বা better হলে custom Error type use করতে পারো
+  error: any,
   req: Request,
   res: Response,
   next: NextFunction

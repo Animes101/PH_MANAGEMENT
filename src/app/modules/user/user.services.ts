@@ -10,12 +10,18 @@ import { generatedId } from "./user.utils";
 const createStudentIntoDB = async (studentData: IStudent) => {
 
 
-    const academinSemester =
-  await AcademicSemesterModel.findById(studentData.admisonSemester);
+    const academinSemester = await AcademicSemesterModel.findById(studentData.admisonSemester);
 
-if (!academinSemester) {
-  throw new Error('Academic semester not found');
-}
+   if (!academinSemester) {
+     throw new Error('Academic semester not found');
+    }
+
+
+        const existingUser = await StudentModel.findOne({ email: studentData.email });
+
+          if (existingUser) {
+            throw new Error("Email already exists");
+          }
 
 
 const newUser: Partial<TUser> = {

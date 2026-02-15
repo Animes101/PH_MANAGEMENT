@@ -2,6 +2,8 @@ import { IAcademicSemister } from "../acadamicSemister/seminter.interface";
 import { UserModel } from "./user.model";
 
 
+
+
 const findLastStudentId = async () => {
   const lastStudent = await UserModel
     .findOne({ role: 'student' }, { id: 1 })
@@ -14,6 +16,7 @@ const findLastStudentId = async () => {
 
 
 export const generatedId = async (payload: IAcademicSemister) => {
+
   const { year, code } = payload;
 
   const lastStudentId = await findLastStudentId();
@@ -36,7 +39,6 @@ export const generatedId = async (payload: IAcademicSemister) => {
     .padStart(4, '0');
 
   const generatedId = `${year}${code}${incrementedId}`;
-
   return generatedId;
 
 };
