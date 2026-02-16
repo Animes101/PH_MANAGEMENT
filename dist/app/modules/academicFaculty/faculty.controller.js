@@ -16,6 +16,26 @@ const createAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const getAllAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await faculty_services_1.academicFacultyServices.getAllAcademicFacultyDb();
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty retrieved successfully",
+        data: result,
+    });
+});
+const getSingleAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await faculty_services_1.academicFacultyServices.getSingleAcademicFacultyDb(req.params.id);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty retrieved successfully",
+        data: result,
+    });
+});
 exports.academicFacultyController = {
     createAcademicFaculty,
+    getAllAcademicFaculty,
+    getSingleAcademicFaculty
 };

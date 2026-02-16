@@ -6,9 +6,6 @@ import { academicFacultyServices } from "./faculty.services";
 const createAcademicFaculty= catchAsync(async(req , res)=>{
 
     const result= await academicFacultyServices.createAcademicFacultyDb(req.body);
-
-
-   
      sendResponse(res, {
             statusCode: 200,
             success: true,
@@ -17,7 +14,33 @@ const createAcademicFaculty= catchAsync(async(req , res)=>{
         });
 })
 
+const getAllAcademicFaculty= catchAsync(async(req , res)=>{
 
+    const result= await academicFacultyServices.getAllAcademicFacultyDb();
+
+    
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Academic Faculty retrieved successfully",
+            data: result,
+        });
+})
+
+
+const getSingleAcademicFaculty= catchAsync(async(req , res)=>{
+
+    const result= await academicFacultyServices.getSingleAcademicFacultyDb(req.params.id as string);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty retrieved successfully",
+        data: result,
+    });
+})
 export const academicFacultyController={
     createAcademicFaculty,
+    getAllAcademicFaculty,
+    getSingleAcademicFaculty
+
 }

@@ -10,4 +10,6 @@ const validatonJoi_1 = __importDefault(require("../../utility/validatonJoi"));
 const faculty_validation_1 = require("./faculty.validation");
 const router = express_1.default.Router();
 router.post('/create-faculty', (0, validatonJoi_1.default)(faculty_validation_1.createAcademicFacultySchemaValidation), faculty_controller_1.academicFacultyController.createAcademicFaculty);
+router.get('/get-all-faculty', faculty_controller_1.academicFacultyController.getAllAcademicFaculty);
+router.get('/get-single-faculty/:id', faculty_controller_1.academicFacultyController.getSingleAcademicFaculty);
 exports.AcademicFacultyRoutes = router;
