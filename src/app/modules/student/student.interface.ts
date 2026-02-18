@@ -23,8 +23,6 @@ export interface IStudent extends Document {
   department: string;
   isActive: 'active' | 'inactive';
   admisonSemester:Types.ObjectId;
-
-
   
 }
 
