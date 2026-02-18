@@ -1,7 +1,8 @@
+import { Types } from "mongoose";
 
 export type AcademinDepartmentInterface = {
     name:string;
-    academinFacality:string;
+    academinFacality:Types.ObjectId;
     
 
 

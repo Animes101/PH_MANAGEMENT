@@ -8,6 +8,7 @@ const guardianSchema = Joi.object({
     .required(),
 });
 
+
 export const createStudentSchema = Joi.object({
   studentData: Joi.object({
     name: Joi.string().min(3).max(50).required(),
