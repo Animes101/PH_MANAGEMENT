@@ -10,5 +10,15 @@ export const academinSchema=new Schema<AcademinDepartmentInterface>({
 },{timestamps:true})
 
 
+academinSchema.pre('save', async function() {
+    // Example pre-save hook logic
+
+    const existingDepartment= await academinDepertModel.findOne({name:this.name});
+    if(existingDepartment){
+        throw new Error("A department with this name already exists");
+    }
+  
+});
+
 
 export const academinDepertModel = model<AcademinDepartmentInterface>('AcademinDepartment', academinSchema);
