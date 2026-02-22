@@ -13,7 +13,7 @@ const createAcademinDepartmentDb=(payload:AcademinDepartmentInterface)=>{
 
 const  getAllAcademinDepartmentDb=()=>{
 
-    const retult= academinDepertModel.find();
+    const retult= academinDepertModel.find().populate('academinFacality');
     return retult;
 }
 
@@ -25,6 +25,7 @@ const getSingleAcademinDepartmentDb=(id:string)=>{
 
 
 const updateAcademinDepartmentDb=(id:string, payload:AcademinDepartmentInterface)=>{
+
 
     const result=academinDepertModel.findByIdAndUpdate(id,payload,{new:true});
     return result;

@@ -7,7 +7,7 @@ const createAcademinDepartmentDb = (payload) => {
     return result;
 };
 const getAllAcademinDepartmentDb = () => {
-    const retult = academinDepertMent_model_1.academinDepertModel.find();
+    const retult = academinDepertMent_model_1.academinDepertModel.find().populate('academinFacality');
     return retult;
 };
 const getSingleAcademinDepartmentDb = (id) => {

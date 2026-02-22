@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentService = void 0;
 const student_model_1 = require("./student.model");
 const getAllStudents = async () => {
-    const result = await student_model_1.StudentModel.find();
+    const result = await student_model_1.StudentModel.find().populate('admisonSemester').populate('user');
     return result;
 };
 const getSingleStudent = async (_id) => {
