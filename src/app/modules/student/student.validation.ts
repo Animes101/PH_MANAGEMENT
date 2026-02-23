@@ -42,6 +42,9 @@ export const createStudentSchema = Joi.object({
     guardian: guardianSchema.required(),
 
     department: Joi.string().required(),
+    isDelete: Joi.boolean().required().messages({
+        'boolean.base': 'isDelete must be boolean',
+      }),
 
     isActive: Joi.string()
       .valid('active', 'inactive')

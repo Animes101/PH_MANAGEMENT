@@ -29,6 +29,10 @@ const StudentSchema = new Schema<IStudent>(
     guardian: { type: GuardianSchema, required: true },
     department: { type: String, required: true },
     isActive: { type: String, enum: ['active', 'inactive'], default: 'active' },
+     isDelete: {
+      type: Boolean,
+      default: false,
+    },
     admisonSemester:{type:Schema.Types.ObjectId, ref:'AcademicSemester'},
     
   },

@@ -4,7 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersServices = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = __importDefault(require("../../config"));
+const AppError_1 = __importDefault(require("../../errors/AppError"));
 const acadamin_model_1 = require("../acadamicSemister/acadamin.model");
 const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
@@ -12,26 +14,37 @@ const user_utils_1 = require("./user.utils");
 const createStudentIntoDB = async (studentData) => {
     const academinSemester = await acadamin_model_1.AcademicSemesterModel.findById(studentData.admisonSemester);
     if (!academinSemester) {
-        throw new Error('Academic semester not found');
+        throw new AppError_1.default('Academic semester not found', 404);
     }
     const existingUser = await student_model_1.StudentModel.findOne({ email: studentData.email });
     if (existingUser) {
-        throw new Error("Email already exists");
+        throw new AppError_1.default("Email already exists", 400);
     }
     const newUser = {
         id: await (0, user_utils_1.generatedId)(academinSemester),
         password: config_1.default.DEFAULT_PASSWORD,
         role: 'student',
     };
-    //create a User
-    const userNew = await user_model_1.UserModel.create(newUser);
-    // create a student
-    if (userNew) {
-        //setUserId
-        studentData.id = userNew.id;
-        studentData.user = userNew._id;
-        const result = await student_model_1.StudentModel.create(studentData);
-        return result;
+    const session = await mongoose_1.default.startSession();
+    try {
+        session.startTransaction();
+        //create a User
+        const userNew = await user_model_1.UserModel.create([newUser], { session });
+        // create a student
+        if (userNew) {
+            //setUserId
+            studentData.id = userNew[0].id;
+            studentData.user = userNew[0]._id;
+            const result = await student_model_1.StudentModel.create([studentData], { session });
+            await session.commitTransaction();
+            await session.endSession();
+            return result;
+        }
+    }
+    catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError_1.default("Failed to create student", 500, error.stack);
     }
 };
 exports.UsersServices = {
