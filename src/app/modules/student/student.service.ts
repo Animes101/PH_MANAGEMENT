@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
 import { UserModel } from '../user/user.model';
 import { StudentModel } from './student.model';
+import { IStudent } from './student.interface';
+import strict from 'node:assert/strict';
 
 const getAllStudents = async () => {
   const result = await StudentModel.find().populate('admisonSemester').populate('user');
@@ -67,11 +69,18 @@ const deleteStudent = async (id: string) => {
         throw new AppError("Failed to delete student", 500);
      }
 
- 
 };
+
+const updateStudentintoDb = async (id: string, payload: IStudent) => {
+
+  console.log(id, payload)
+  const result = await StudentModel.findOneAndUpdate({id}, payload);
+  return result;
+}
 
 export const studentService = {
   getAllStudents,
   getSingleStudent,
-  deleteStudent
+  deleteStudent,
+  updateStudentintoDb
 };

@@ -7,7 +7,7 @@ export type Guardian = {
 };
 
 // TypeScript interface
-export interface IStudent extends Document {
+export interface IStudent{
   name: string;
   id:string;
   user:Types.ObjectId; 

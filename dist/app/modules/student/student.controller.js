@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.studentController = void 0;
 const student_service_1 = require("./student.service");
 const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
+const respons_1 = __importDefault(require("../../utility/respons"));
 // ✅ Clean logic
 const getAllStudents = (0, catchAsync_1.default)(async (req, res) => {
     const result = await student_service_1.studentService.getAllStudents();
@@ -35,8 +36,19 @@ const deleteStudent = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const updateStudent = (0, catchAsync_1.default)(async (req, res) => {
+    const id = req.params.id;
+    const result = await student_service_1.studentService.updateStudentintoDb(id, req.body.studentData);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Student updated successfully',
+        data: result,
+    });
+});
 exports.studentController = {
     getAllStudents,
     getSingleStudent,
     deleteStudent,
+    updateStudent
 };

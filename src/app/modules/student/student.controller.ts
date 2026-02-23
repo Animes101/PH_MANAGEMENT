@@ -1,5 +1,6 @@
 import { studentService } from './student.service';
 import catchAsync from '../../utility/catchAsync';
+import sendResponse from '../../utility/respons';
 
 
 
@@ -38,8 +39,29 @@ const deleteStudent= catchAsync(async(req, res)=>{
   });
 })
 
+
+
+const updateStudent = catchAsync(async (req, res) => {
+
+  const id = req.params.id as string;
+
+  const result = await studentService.updateStudentintoDb(
+    id,
+    req.body.studentData
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Student updated successfully',
+    data: result,
+  });
+
+});
+
 export const studentController = {
   getAllStudents,
   getSingleStudent,
   deleteStudent,
+  updateStudent
 };

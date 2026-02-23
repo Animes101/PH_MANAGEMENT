@@ -46,8 +46,14 @@ const deleteStudent = async (id) => {
         throw new AppError_1.default("Failed to delete student", 500);
     }
 };
+const updateStudentintoDb = async (id, payload) => {
+    console.log(id, payload);
+    const result = await student_model_1.StudentModel.findOneAndUpdate({ id }, payload);
+    return result;
+};
 exports.studentService = {
     getAllStudents,
     getSingleStudent,
-    deleteStudent
+    deleteStudent,
+    updateStudentintoDb
 };
