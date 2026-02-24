@@ -44,6 +44,13 @@ exports.createStudentSchema = joi_1.default.object({
         admisonSemester: joi_1.default.string().required()
     }).required(),
 });
+const gurdianUpdaate = joi_1.default.object({
+    fatherName: joi_1.default.string().required().optional(),
+    motherName: joi_1.default.string().required().optional(),
+    phone: joi_1.default.string()
+        .pattern(/^[0-9]{11}$/)
+        .required().optional(),
+});
 exports.updateStudentSchema = joi_1.default.object({
     studentData: joi_1.default.object({
         name: joi_1.default.string().min(3).max(50).optional(),
@@ -65,7 +72,7 @@ exports.updateStudentSchema = joi_1.default.object({
         phoneNumber: joi_1.default.string()
             .pattern(/^[0-9]{11}$/)
             .optional(),
-        guardian: guardianSchema.optional(),
+        guardian: gurdianUpdaate.optional(),
         department: joi_1.default.string().optional(),
         isDelete: joi_1.default.boolean().optional().messages({
             'boolean.base': 'isDelete must be boolean',

@@ -54,6 +54,69 @@ export const createStudentSchema = Joi.object({
 });
 
 
+// const gurdianUpdaate = Joi.object({
+//   fatherName: Joi.string().required().optional(),
+//   motherName: Joi.string().required().optional(),
+//   phone: Joi.string()
+//     .pattern(/^[0-9]{11}$/)
+//     .required().optional(),
+// });
+
+// export const updateStudentSchema = Joi.object({
+//   studentData: Joi.object({
+//     name: Joi.string().min(3).max(50).optional(),
+
+//     age: Joi.number().integer().min(1).max(100).optional(),
+
+//     gender: Joi.string()
+//       .valid('MALE', 'FEMALE', 'OTHER')
+//       .optional(),
+
+//     dateOfBirth: Joi.string()
+//       .isoDate()
+//       .optional(),
+
+//     bloodGroup: Joi.string()
+//       .valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
+//       .optional(),
+
+//     address: Joi.string().optional(),
+
+//     grade: Joi.string()
+//       .valid('A', 'B', 'C', 'D', 'F')
+//       .optional(),
+
+//     email: Joi.string().email().optional(),
+
+//     phoneNumber: Joi.string()
+//       .pattern(/^[0-9]{11}$/)
+//       .optional(),
+
+//     guardian: gurdianUpdaate.optional(),
+
+//     department: Joi.string().optional(),
+
+//     isDelete: Joi.boolean().optional().messages({
+//       'boolean.base': 'isDelete must be boolean',
+//     }),
+
+//     isActive: Joi.string()
+//       .valid('active', 'inactive')
+//       .optional(),
+
+//     admisonSemester: Joi.string().optional(),
+
+//   }).optional(),
+// });
+
+const gurdianUpdaate = Joi.object({
+  fatherName: Joi.string().required().optional(),
+  motherName: Joi.string().required().optional(),
+  phone: Joi.string()
+    .pattern(/^[0-9]{11}$/)
+    .required().optional(),
+});
+
 export const updateStudentSchema = Joi.object({
   studentData: Joi.object({
     name: Joi.string().min(3).max(50).optional(),
@@ -84,7 +147,7 @@ export const updateStudentSchema = Joi.object({
       .pattern(/^[0-9]{11}$/)
       .optional(),
 
-    guardian: guardianSchema.optional(),
+    guardian: gurdianUpdaate.optional(),
 
     department: Joi.string().optional(),
 
