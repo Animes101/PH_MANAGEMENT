@@ -47,8 +47,16 @@ const deleteStudent = async (id) => {
     }
 };
 const updateStudentintoDb = async (id, payload) => {
-    console.log(id, payload);
-    const result = await student_model_1.StudentModel.findOneAndUpdate({ id }, payload);
+    const { guardian, ...remaining } = payload;
+    const modifiedUpdateData = { ...remaining };
+    // Nested guardian update
+    if (guardian && Object.keys(guardian).length > 0) {
+        for (const [key, value] of Object.entries(guardian)) {
+            modifiedUpdateData[`guardian.${key}`] = value;
+        }
+    }
+    console.log(modifiedUpdateData);
+    const result = await student_model_1.StudentModel.findOneAndUpdate({ id }, modifiedUpdateData, { new: true, runValidators: true });
     return result;
 };
 exports.studentService = {

@@ -1,9 +1,19 @@
 "use strict";
+// import express from 'express';
+// import { studentController } from './student.controller';
+// import validationRequest from '../../utility/validatonJoi';
+// import { updateStudentSchema } from './student.validation';
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentRoutes = void 0;
+// const router= express.Router();
+// router.get('/getStudent', studentController.getAllStudents);
+// router.get('/singleStudent/:_id', studentController.getSingleStudent);
+// router.delete('/deleteStudent/:id', studentController.deleteStudent);
+// router.patch('/update/:id', validationRequest(updateStudentSchema), studentController.updateStudent);
+// export const StudentRoutes=router;
 const express_1 = __importDefault(require("express"));
 const student_controller_1 = require("./student.controller");
 const validatonJoi_1 = __importDefault(require("../../utility/validatonJoi"));

@@ -4,6 +4,7 @@ import { UserModel } from '../user/user.model';
 import { StudentModel } from './student.model';
 import { IStudent } from './student.interface';
 import strict from 'node:assert/strict';
+import { object } from 'joi';
 
 const getAllStudents = async () => {
   const result = await StudentModel.find().populate('admisonSemester').populate('user');
@@ -73,10 +74,29 @@ const deleteStudent = async (id: string) => {
 
 const updateStudentintoDb = async (id: string, payload: IStudent) => {
 
-  console.log(id, payload)
-  const result = await StudentModel.findOneAndUpdate({id}, payload);
+  const { guardian, ...remaining } = payload;
+
+  const modifiedUpdateData: Record<string, unknown> = { ...remaining };
+
+  // Nested guardian update
+  if (guardian && Object.keys(guardian).length > 0) {
+
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedUpdateData[`guardian.${key}`] = value;
+    }
+
+  }
+
+  console.log(modifiedUpdateData)
+
+  const result = await StudentModel.findOneAndUpdate(
+    { id },
+    modifiedUpdateData,
+    { new: true, runValidators: true }
+  );
+
   return result;
-}
+};
 
 export const studentService = {
   getAllStudents,
