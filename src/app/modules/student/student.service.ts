@@ -87,8 +87,6 @@ const updateStudentintoDb = async (id: string, payload: IStudent) => {
 
   }
 
-  console.log(modifiedUpdateData)
-
   const result = await StudentModel.findOneAndUpdate(
     { id },
     modifiedUpdateData,
@@ -97,6 +95,7 @@ const updateStudentintoDb = async (id: string, payload: IStudent) => {
 
   return result;
 };
+
 
 export const studentService = {
   getAllStudents,

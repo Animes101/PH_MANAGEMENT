@@ -55,7 +55,6 @@ const updateStudentintoDb = async (id, payload) => {
             modifiedUpdateData[`guardian.${key}`] = value;
         }
     }
-    console.log(modifiedUpdateData);
     const result = await student_model_1.StudentModel.findOneAndUpdate({ id }, modifiedUpdateData, { new: true, runValidators: true });
     return result;
 };
