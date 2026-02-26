@@ -1,19 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
-//seting default value
+const Joi_Error_1 = require("../app/errors/Joi.Error");
 const errorHandler = (error, req, res, next) => {
-    const status = error.statusCode || 500;
-    const message = error.message || "Something went wrong";
-    const errorSourese = [{
-            path: '',
-            message: 'somthing Went Wrong'
-        }];
-    res.status(status).json({
+    let statusCode = error.statusCode || 500;
+    let message = error.message || "Something went wrong";
+    let errorSources = [
+        {
+            path: "",
+            message: "Something went wrong",
+        },
+    ];
+    // 👉 Joi Error Handle
+    if (error.isJoi) {
+        const simplifiedError = (0, Joi_Error_1.handleJoiError)(error);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSources = simplifiedError.errorSources;
+    }
+    res.status(statusCode).json({
         success: false,
         message,
-        error,
-        errorSourese
+        errorSources,
     });
 };
 exports.errorHandler = errorHandler;

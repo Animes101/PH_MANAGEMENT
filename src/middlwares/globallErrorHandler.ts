@@ -1,36 +1,34 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import { nextTick } from "node:process";
+import { ErrorRequestHandler } from "express";
+import { handleJoiError } from "../app/errors/Joi.Error";
 
-
-//seting default value
-export const errorHandler:ErrorRequestHandler = (
+export const errorHandler: ErrorRequestHandler = (
   error,
   req,
   res,
-next 
+  next
 ) => {
-  const status = error.statusCode || 500;
-  const message = error.message || "Something went wrong";
+  let statusCode = error.statusCode || 500;
+  let message = error.message || "Something went wrong";
 
-  type TErrorSoures={
+  let errorSources = [
+    {
+      path: "",
+      message: "Something went wrong",
+    },
+  ];
 
-    path:string | number,
-    message:string;
-  }[]
-  const errorSourese:TErrorSoures=[{
+  // 👉 Joi Error Handle
+  if (error.isJoi) {
+    const simplifiedError = handleJoiError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
 
-    path:'',
-    message:'somthing Went Wrong'
+  }
 
-  }]
-
-  res.status(status).json({
+  res.status(statusCode).json({
     success: false,
     message,
-    error,
-    errorSourese
+    errorSources,
   });
 };
-
-
-

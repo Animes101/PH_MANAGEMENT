@@ -13,7 +13,7 @@ const createStudent = (0, catchAsync_1.default)(async (req, res, next) => {
         abortEarly: false,
     });
     if (error) {
-        return next(error);
+        next(error);
     }
     // schema অনুযায়ী value.studentData আসবেই
     const result = await user_services_1.UsersServices.createStudentIntoDB(value.studentData);
