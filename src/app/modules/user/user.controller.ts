@@ -8,13 +8,13 @@ import catchAsync from '../../utility/catchAsync';
 
 const createStudent =catchAsync( async (req: Request, res: Response, next:NextFunction) => {
   
-    // const { error, value } = createStudentSchema.validate(req.body, {
-    //   abortEarly: false,
-    // });
+    const { error, value } = createStudentSchema.validate(req.body, {
+      abortEarly: false,
+    });
 
-    // if (error) {
-    //   next(error)
-    // }
+    if (error) {
+      next(error)
+    }
 
 
     // schema অনুযায়ী value.studentData আসবেই

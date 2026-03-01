@@ -1,6 +1,7 @@
 import { ErrorRequestHandler } from "express";
 import { handleJoiError } from "../app/errors/Joi.Error";
 import { TErrorSources } from "../app/interface/IError";
+import AppError from "../app/errors/AppError";
 
 export const errorHandler: ErrorRequestHandler = (
   error,
@@ -8,8 +9,14 @@ export const errorHandler: ErrorRequestHandler = (
   res,
   next
 ) => {
+
+
+  console.log(error)
+  
   let statusCode = error.statusCode || 500;
   let message = error.message || "Something went wrong";
+
+
 
   let errorSources:TErrorSources[] = [
     {
@@ -49,5 +56,42 @@ export const errorHandler: ErrorRequestHandler = (
     message,
     errorSources,
   });
+}else if (error instanceof AppError) {
+  statusCode = error?.statusCode;
+  message = error?.message;
+
+  errorSources = [{
+    path:'',
+    message:error?.message,
+  }]
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+  });
+}else if (error instanceof Error) {
+  statusCode =  500;
+  message = "Somthin Went Wrong";
+
+  errorSources = [{
+    path:'',
+    message:error?.message,
+  }]
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+  });
 }
+
+
+// ✅ ONLY ONE RESPONSE SEND HERE
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+    error
+  });
+
+
 };

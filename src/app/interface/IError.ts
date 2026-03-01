@@ -1,9 +1,12 @@
-
-
-
 export interface TErrorSources {
-  path: string;
+  path: string | number;
   message: string;
 }
 
-export type TErrorSourcesArray = TErrorSources[];
+export interface IErrorResponse {
+    statusCode:number,
+  message: string;
+  errorSources: TErrorSources[];
+
+
+}
