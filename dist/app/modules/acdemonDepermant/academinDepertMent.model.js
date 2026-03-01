@@ -7,7 +7,7 @@ exports.academinDepertModel = exports.academinSchema = void 0;
 const mongoose_1 = require("mongoose");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 exports.academinSchema = new mongoose_1.Schema({
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     academinFacality: { type: mongoose_1.Schema.Types.ObjectId, ref: "AcademicFaculty", required: true },
 }, { timestamps: true });
 exports.academinSchema.pre('save', async function () {

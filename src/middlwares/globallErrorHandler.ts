@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from "express";
 import { handleJoiError } from "../app/errors/Joi.Error";
 import { TErrorSources } from "../app/interface/IError";
 import AppError from "../app/errors/AppError";
+import { handleCastError } from "../app/errors/handleCastError";
 
 export const errorHandler: ErrorRequestHandler = (
   error,
@@ -10,9 +11,6 @@ export const errorHandler: ErrorRequestHandler = (
   next
 ) => {
 
-
-  console.log(error)
-  
   let statusCode = error.statusCode || 500;
   let message = error.message || "Something went wrong";
 
@@ -37,7 +35,6 @@ export const errorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorSources,
-    error
   });
 
   }else if (error.name === "ValidationError") {
@@ -56,6 +53,11 @@ export const errorHandler: ErrorRequestHandler = (
     message,
     errorSources,
   });
+}else if (error.name === "CastError") {
+  const simplifiedError = handleCastError(error);
+  statusCode = simplifiedError.statusCode;
+  message = simplifiedError.message;
+  errorSources = simplifiedError.errorSources;
 }else if (error instanceof AppError) {
   statusCode = error?.statusCode;
   message = error?.message;
@@ -90,7 +92,6 @@ export const errorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorSources,
-    error
   });
 
 

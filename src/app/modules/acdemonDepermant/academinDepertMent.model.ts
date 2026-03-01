@@ -4,7 +4,7 @@ import AppError from "../../errors/AppError";
 
 
 export const academinSchema=new Schema<AcademinDepartmentInterface>({
-    name:{type:String, required:true},
+    name:{type:String, required:true , unique:true},
     academinFacality:{type:Schema.Types.ObjectId, ref:"AcademicFaculty", required:true},
 
     

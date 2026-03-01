@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
 const Joi_Error_1 = require("../app/errors/Joi.Error");
 const AppError_1 = __importDefault(require("../app/errors/AppError"));
+const handleCastError_1 = require("../app/errors/handleCastError");
 const errorHandler = (error, req, res, next) => {
-    console.log(error);
     let statusCode = error.statusCode || 500;
     let message = error.message || "Something went wrong";
     let errorSources = [
@@ -26,7 +26,6 @@ const errorHandler = (error, req, res, next) => {
             success: false,
             message,
             errorSources,
-            error
         });
     }
     else if (error.name === "ValidationError") {
@@ -41,6 +40,12 @@ const errorHandler = (error, req, res, next) => {
             message,
             errorSources,
         });
+    }
+    else if (error.name === "CastError") {
+        const simplifiedError = (0, handleCastError_1.handleCastError)(error);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSources = simplifiedError.errorSources;
     }
     else if (error instanceof AppError_1.default) {
         statusCode = error?.statusCode;
@@ -73,7 +78,6 @@ const errorHandler = (error, req, res, next) => {
         success: false,
         message,
         errorSources,
-        error
     });
 };
 exports.errorHandler = errorHandler;
