@@ -22,6 +22,7 @@ const errorHandler = (error, req, res, next) => {
         success: false,
         message,
         errorSources,
+        error
     });
 };
 exports.errorHandler = errorHandler;

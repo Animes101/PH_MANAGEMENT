@@ -8,6 +8,7 @@ import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 import { generatedId } from "./user.utils";
+import { nextTick } from "node:process";
 
 const createStudentIntoDB = async (studentData: IStudent) => {
 
@@ -32,10 +33,7 @@ const newUser: Partial<TUser> = {
 
 const session= await mongoose.startSession();
 
-  try{
-
-
-    session.startTransaction();
+ 
     
     //create a User
 
@@ -56,12 +54,8 @@ const session= await mongoose.startSession();
     return result
 
 
-  }  }catch(error){
-    await session.abortTransaction();
-    await session.endSession();
-    throw new AppError("Failed to create student", 500, (error as Error).stack);
   }
-};
+}
 
 export const UsersServices = {
   createStudentIntoDB,

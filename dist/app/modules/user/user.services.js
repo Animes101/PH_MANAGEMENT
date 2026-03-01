@@ -26,25 +26,17 @@ const createStudentIntoDB = async (studentData) => {
         role: 'student',
     };
     const session = await mongoose_1.default.startSession();
-    try {
-        session.startTransaction();
-        //create a User
-        const userNew = await user_model_1.UserModel.create([newUser], { session });
-        // create a student
-        if (userNew) {
-            //setUserId
-            studentData.id = userNew[0].id;
-            studentData.user = userNew[0]._id;
-            const result = await student_model_1.StudentModel.create([studentData], { session });
-            await session.commitTransaction();
-            await session.endSession();
-            return result;
-        }
-    }
-    catch (error) {
-        await session.abortTransaction();
+    //create a User
+    const userNew = await user_model_1.UserModel.create([newUser], { session });
+    // create a student
+    if (userNew) {
+        //setUserId
+        studentData.id = userNew[0].id;
+        studentData.user = userNew[0]._id;
+        const result = await student_model_1.StudentModel.create([studentData], { session });
+        await session.commitTransaction();
         await session.endSession();
-        throw new AppError_1.default("Failed to create student", 500, error.stack);
+        return result;
     }
 };
 exports.UsersServices = {

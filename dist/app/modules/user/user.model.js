@@ -36,8 +36,7 @@ const UserSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
-}, { timestamps: true } // automatically adds createdAt & updatedAt
-);
+}, { timestamps: true });
 // ✅ Pre-save middleware to hash password
 UserSchema.pre('save', async function () {
     const saltRound = 12;

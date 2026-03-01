@@ -30,5 +30,6 @@ export const errorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorSources,
+    error
   });
 };
