@@ -1,5 +1,6 @@
 import { ErrorRequestHandler } from "express";
 import { handleJoiError } from "../app/errors/Joi.Error";
+import { TErrorSources } from "../app/interface/IError";
 
 export const errorHandler: ErrorRequestHandler = (
   error,
@@ -10,7 +11,7 @@ export const errorHandler: ErrorRequestHandler = (
   let statusCode = error.statusCode || 500;
   let message = error.message || "Something went wrong";
 
-  let errorSources = [
+  let errorSources:TErrorSources[] = [
     {
       path: "",
       message: "Something went wrong",
@@ -24,12 +25,29 @@ export const errorHandler: ErrorRequestHandler = (
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources;
 
-  }
 
-  res.status(statusCode).json({
+    res.status(statusCode).json({
     success: false,
     message,
     errorSources,
     error
   });
+
+  }else if (error.name === "ValidationError") {
+  statusCode = 400;
+  message = "Validation Error";
+
+  errorSources = Object.values(error.errors).map(
+    (err: any): TErrorSources => ({
+      path: err.path,
+      message: err.message,
+    })
+  );
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+  });
+}
 };

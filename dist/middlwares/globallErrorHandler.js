@@ -17,12 +17,25 @@ const errorHandler = (error, req, res, next) => {
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorSources = simplifiedError.errorSources;
+        res.status(statusCode).json({
+            success: false,
+            message,
+            errorSources,
+            error
+        });
     }
-    res.status(statusCode).json({
-        success: false,
-        message,
-        errorSources,
-        error
-    });
+    else if (error.name === "ValidationError") {
+        statusCode = 400;
+        message = "Validation Error";
+        errorSources = Object.values(error.errors).map((err) => ({
+            path: err.path,
+            message: err.message,
+        }));
+        res.status(statusCode).json({
+            success: false,
+            message,
+            errorSources,
+        });
+    }
 };
 exports.errorHandler = errorHandler;
