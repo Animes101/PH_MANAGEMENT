@@ -25,9 +25,5 @@ academinSchema.pre('save', async function() {
 });
 
 
-
-
-
-
 export const academinDepertModel = model<AcademinDepartmentInterface>('AcademinDepartment', academinSchema);
 

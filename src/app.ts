@@ -21,7 +21,10 @@ app.use('/api/v1', academicSemesterRoute);
 app.use('/api/v1', AcademicFacultyRoutes);
 app.use('/api/v1', academinRouterDepartment)
 
+app.get('/test', (req,res)=>{
 
+    res.send('testin router')
+})
 
 
 //Global Error Handler

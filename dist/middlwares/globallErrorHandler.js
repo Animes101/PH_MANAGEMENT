@@ -71,6 +71,7 @@ const errorHandler = (error, req, res, next) => {
             success: false,
             message,
             errorSources,
+            error
         });
     }
     // ✅ ONLY ONE RESPONSE SEND HERE

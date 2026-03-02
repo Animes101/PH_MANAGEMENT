@@ -21,6 +21,9 @@ app.use('/api/v1', student_router_1.StudentRoutes);
 app.use('/api/v1', semister_route_1.academicSemesterRoute);
 app.use('/api/v1', faculty_router_1.AcademicFacultyRoutes);
 app.use('/api/v1', academinRouter_1.academinRouterDepartment);
+app.get('/test', (req, res) => {
+    res.send('testin router');
+});
 //Global Error Handler
 app.use(globallErrorHandler_1.errorHandler);
 //Not Fount Route
