@@ -3,12 +3,48 @@ import AppError from '../../errors/AppError';
 import { UserModel } from '../user/user.model';
 import { StudentModel } from './student.model';
 import { IStudent } from './student.interface';
-import strict from 'node:assert/strict';
-import { object } from 'joi';
 
-const getAllStudents = async () => {
-  const result = await StudentModel.find().populate('admisonSemester').populate('user');
-  return result;
+
+
+const getAllStudents = async (query: Record<string, unknown>) => {
+
+  console.log('base query', query)
+
+  const queryObject={...query}
+
+  let searchTerm = '';
+
+  if (query?.searchTerm) {
+    searchTerm = query.searchTerm as string;
+  }
+
+  const searchQuery=StudentModel.find({
+    $or: ['name', 'email'].map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  })
+
+  //filtering
+
+  const excludeFields=['searchTerm', 'sort'];
+
+
+  excludeFields.forEach(el=> delete queryObject[el])
+
+    
+  const filter =searchQuery.find(queryObject).populate('admisonSemester').populate('user')
+
+  let sort='-createdAt';
+
+  if(query.sort){
+    sort=query.sort as string;
+  }
+
+
+  const sortQuery=await filter.sort(sort)
+ 
+
+  return sortQuery;
 };
 
 const getSingleStudent= async (_id: string)=>{

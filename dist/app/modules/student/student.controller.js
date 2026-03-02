@@ -9,10 +9,10 @@ const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 const respons_1 = __importDefault(require("../../utility/respons"));
 // ✅ Clean logic
 const getAllStudents = (0, catchAsync_1.default)(async (req, res) => {
-    const result = await student_service_1.studentService.getAllStudents();
+    const result = await student_service_1.studentService.getAllStudents(req.query);
     res.status(200).json({
         success: true,
-        message: 'All students retrieved successfully',
+        message: 'All students Get  successfully',
         data: result,
     });
 });

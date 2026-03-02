@@ -6,11 +6,13 @@ import sendResponse from '../../utility/respons';
 
 // ✅ Clean logic
 const getAllStudents = catchAsync(async (req, res) => {
-  const result = await studentService.getAllStudents();
+
+
+  const result = await studentService.getAllStudents(req.query);
 
   res.status(200).json({
     success: true,
-    message: 'All students retrieved successfully',
+    message: 'All students Get  successfully',
     data: result,
   });
 });

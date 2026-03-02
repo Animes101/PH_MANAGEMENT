@@ -8,9 +8,28 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const student_model_1 = require("./student.model");
-const getAllStudents = async () => {
-    const result = await student_model_1.StudentModel.find().populate('admisonSemester').populate('user');
-    return result;
+const getAllStudents = async (query) => {
+    console.log('base query', query);
+    const queryObject = { ...query };
+    let searchTerm = '';
+    if (query?.searchTerm) {
+        searchTerm = query.searchTerm;
+    }
+    const searchQuery = student_model_1.StudentModel.find({
+        $or: ['name', 'email'].map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' },
+        })),
+    });
+    //filtering
+    const excludeFields = ['searchTerm', 'sort'];
+    excludeFields.forEach(el => delete queryObject[el]);
+    const filter = searchQuery.find(queryObject).populate('admisonSemester').populate('user');
+    let sort = '-createdAt';
+    if (query.sort) {
+        sort = query.sort;
+    }
+    const sortQuery = await filter.sort(sort);
+    return sortQuery;
 };
 const getSingleStudent = async (_id) => {
     const result = await student_model_1.StudentModel.findOne({ _id });
