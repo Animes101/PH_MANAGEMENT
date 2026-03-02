@@ -9,27 +9,49 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const student_model_1 = require("./student.model");
 const getAllStudents = async (query) => {
-    console.log('base query', query);
     const queryObject = { ...query };
     let searchTerm = '';
     if (query?.searchTerm) {
         searchTerm = query.searchTerm;
     }
-    const searchQuery = student_model_1.StudentModel.find({
+    // 🔍 Search
+    let dbQuery = student_model_1.StudentModel.find({
         $or: ['name', 'email'].map((field) => ({
             [field]: { $regex: searchTerm, $options: 'i' },
         })),
     });
-    //filtering
-    const excludeFields = ['searchTerm', 'sort'];
-    excludeFields.forEach(el => delete queryObject[el]);
-    const filter = searchQuery.find(queryObject).populate('admisonSemester').populate('user');
+    // 🧹 Filtering
+    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+    excludeFields.forEach((el) => delete queryObject[el]);
+    dbQuery = dbQuery.find(queryObject);
+    // 🔽 Sorting
     let sort = '-createdAt';
-    if (query.sort) {
+    if (query?.sort) {
         sort = query.sort;
     }
-    const sortQuery = await filter.sort(sort);
-    return sortQuery;
+    dbQuery = dbQuery.sort(sort);
+    // 📄 Pagination
+    let limit = 10;
+    let page = 1;
+    if (query?.limit) {
+        limit = Number(query.limit);
+    }
+    if (query?.page) {
+        page = Number(query.page);
+    }
+    const skip = (page - 1) * limit;
+    dbQuery = dbQuery.skip(skip).limit(limit);
+    // 🎯 Field Selection
+    let fields = '-__v';
+    if (query?.fields) {
+        fields = query.fields.split(',').join(' ');
+    }
+    dbQuery = dbQuery.select(fields);
+    // 🔗 Populate
+    const result = await dbQuery
+        .populate('admisonSemester')
+        .populate('user');
+    return result;
 };
 const getSingleStudent = async (_id) => {
     const result = await student_model_1.StudentModel.findOne({ _id });

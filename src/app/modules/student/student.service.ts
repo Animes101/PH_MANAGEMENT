@@ -7,10 +7,7 @@ import { IStudent } from './student.interface';
 
 
 const getAllStudents = async (query: Record<string, unknown>) => {
-
-  console.log('base query', query)
-
-  const queryObject={...query}
+  const queryObject = { ...query };
 
   let searchTerm = '';
 
@@ -18,33 +15,60 @@ const getAllStudents = async (query: Record<string, unknown>) => {
     searchTerm = query.searchTerm as string;
   }
 
-  const searchQuery=StudentModel.find({
+  // 🔍 Search
+  let dbQuery = StudentModel.find({
     $or: ['name', 'email'].map((field) => ({
       [field]: { $regex: searchTerm, $options: 'i' },
     })),
-  })
+  });
 
-  //filtering
+  // 🧹 Filtering
+  const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+  excludeFields.forEach((el) => delete queryObject[el]);
 
-  const excludeFields=['searchTerm', 'sort'];
+  dbQuery = dbQuery.find(queryObject);
 
-
-  excludeFields.forEach(el=> delete queryObject[el])
-
-    
-  const filter =searchQuery.find(queryObject).populate('admisonSemester').populate('user')
-
-  let sort='-createdAt';
-
-  if(query.sort){
-    sort=query.sort as string;
+  // 🔽 Sorting
+  let sort = '-createdAt';
+  if (query?.sort) {
+    sort = query.sort as string;
   }
 
+  dbQuery = dbQuery.sort(sort);
 
-  const sortQuery=await filter.sort(sort)
- 
+  // 📄 Pagination
+  let limit = 10;
+  let page = 1;
 
-  return sortQuery;
+  if (query?.limit) {
+    limit = Number(query.limit);
+  }
+
+  if (query?.page) {
+    page = Number(query.page);
+  }
+
+  const skip = (page - 1) * limit;
+
+  dbQuery = dbQuery.skip(skip).limit(limit);
+
+  // 🎯 Field Selection
+  let fields = '-__v';
+
+  if (query?.fields) {
+
+    fields = (query.fields as string).split(',').join(' ');
+  }
+
+  
+  dbQuery = dbQuery.select(fields);
+
+  // 🔗 Populate
+  const result = await dbQuery
+    .populate('admisonSemester')
+    .populate('user');
+
+  return result;
 };
 
 const getSingleStudent= async (_id: string)=>{
