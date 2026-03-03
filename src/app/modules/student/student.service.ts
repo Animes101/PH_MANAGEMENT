@@ -59,7 +59,7 @@ const getAllStudents = async (query: Record<string, unknown>) => {
 
     fields = (query.fields as string).split(',').join(' ');
   }
-
+  
   
   dbQuery = dbQuery.select(fields);
 
