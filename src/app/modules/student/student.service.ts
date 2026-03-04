@@ -3,72 +3,28 @@ import AppError from '../../errors/AppError';
 import { UserModel } from '../user/user.model';
 import { StudentModel } from './student.model';
 import { IStudent } from './student.interface';
+import QueryBuilder from '../../queryBuilder/queryBuilder';
 
 
 
 const getAllStudents = async (query: Record<string, unknown>) => {
-  const queryObject = { ...query };
 
-  let searchTerm = '';
+  const queryBuilder = new QueryBuilder(
+    StudentModel.find()
+      .populate('admisonSemester')
+      .populate('user'),
+    query
+  );
 
-  if (query?.searchTerm) {
-    searchTerm = query.searchTerm as string;
-  }
+  const students = await queryBuilder
+    .search(['name', 'email'])
+    .filter()
+    .sort()
+    .pagination()
+    .fields()
+    .modelQuery;
 
-  // 🔍 Search
-  let dbQuery = StudentModel.find({
-    $or: ['name', 'email'].map((field) => ({
-      [field]: { $regex: searchTerm, $options: 'i' },
-    })),
-  });
-
-  // 🧹 Filtering
-  const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-  excludeFields.forEach((el) => delete queryObject[el]);
-
-  dbQuery = dbQuery.find(queryObject);
-
-  // 🔽 Sorting
-  let sort = '-createdAt';
-  if (query?.sort) {
-    sort = query.sort as string;
-  }
-
-  dbQuery = dbQuery.sort(sort);
-
-  // 📄 Pagination
-  let limit = 10;
-  let page = 1;
-
-  if (query?.limit) {
-    limit = Number(query.limit);
-  }
-
-  if (query?.page) {
-    page = Number(query.page);
-  }
-
-  const skip = (page - 1) * limit;
-
-  dbQuery = dbQuery.skip(skip).limit(limit);
-
-  // 🎯 Field Selection
-  let fields = '-__v';
-
-  if (query?.fields) {
-
-    fields = (query.fields as string).split(',').join(' ');
-  }
-  
-  
-  dbQuery = dbQuery.select(fields);
-
-  // 🔗 Populate
-  const result = await dbQuery
-    .populate('admisonSemester')
-    .populate('user');
-
-  return result;
+  return students;
 };
 
 const getSingleStudent= async (_id: string)=>{
