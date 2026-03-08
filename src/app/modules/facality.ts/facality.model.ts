@@ -1,23 +1,23 @@
 import { Schema, model } from "mongoose";
 import { ITeacher } from "./facality.interface";
 
-
 const teacherSchema = new Schema<ITeacher>(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-
     id: {
       type: String,
+      ref:'user',
       required: true,
-      unique: true,
+      unique:true,
     },
-
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      required: true,
+      unique:true
+
+    },
+
+    name: {
+      type: String,
       required: true,
     },
 
@@ -32,15 +32,11 @@ const teacherSchema = new Schema<ITeacher>(
       required: true,
     },
 
-    dateOfBirth: {
-      type: String,
-      required: true,
-    },
+    dateOfBirth: String,
 
     bloodGroup: {
       type: String,
       enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-      required: true,
     },
 
     email: {
@@ -49,25 +45,15 @@ const teacherSchema = new Schema<ITeacher>(
       unique: true,
     },
 
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
+    phoneNumber: String,
 
-    address: {
-      type: String,
-      required: true,
-    },
+    address: String,
 
-    designation: {
-      type: String,
-      required: true,
-    },
+    designation: String,
 
     department: {
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",
-      required: true,
     },
 
     isActive: {

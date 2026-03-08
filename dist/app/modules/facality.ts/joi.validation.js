@@ -7,8 +7,6 @@ exports.createTeacherValidation = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.createTeacherValidation = joi_1.default.object({
     name: joi_1.default.string().required(),
-    id: joi_1.default.string().required(),
-    user: joi_1.default.string().required(),
     age: joi_1.default.number().required(),
     gender: joi_1.default.string()
         .valid("MALE", "FEMALE", "OTHER")
@@ -21,9 +19,9 @@ exports.createTeacherValidation = joi_1.default.object({
     phoneNumber: joi_1.default.string().required(),
     address: joi_1.default.string().required(),
     designation: joi_1.default.string().required(),
-    department: joi_1.default.string().required(),
+    department: joi_1.default.string().required(), // ObjectId string
     isActive: joi_1.default.string()
         .valid("active", "inactive")
         .optional(),
-    isDelete: joi_1.default.boolean().optional()
+    isDelete: joi_1.default.boolean().optional(),
 });

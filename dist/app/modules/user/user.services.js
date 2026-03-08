@@ -11,6 +11,8 @@ const acadamin_model_1 = require("../acadamicSemister/acadamin.model");
 const student_model_1 = require("../student/student.model");
 const user_model_1 = require("./user.model");
 const user_utils_1 = require("./user.utils");
+const facality_model_1 = require("../facality.ts/facality.model");
+const academinDepertMent_model_1 = require("../acdemonDepermant/academinDepertMent.model");
 const createStudentIntoDB = async (studentData) => {
     const academinSemester = await acadamin_model_1.AcademicSemesterModel.findById(studentData.admisonSemester);
     if (!academinSemester) {
@@ -39,8 +41,43 @@ const createStudentIntoDB = async (studentData) => {
         return result;
     }
 };
-const createFacalityintoDb = (payload) => {
-    console.log(payload);
+const createFacalityintoDb = async (payload) => {
+    const session = await mongoose_1.default.startSession();
+    session.startTransaction();
+    try {
+        // 1. Check if academic semester exists
+        const academicSemester = await academinDepertMent_model_1.academinDepertModel.findById(payload.department);
+        if (!academicSemester) {
+            throw new AppError_1.default('Academic semester not found', 404);
+        }
+        // 2. Check if email already exists
+        const existingUser = await student_model_1.StudentModel.findOne({ email: payload.email });
+        if (existingUser) {
+            throw new AppError_1.default("Email already exists", 400);
+        }
+        // 3️⃣ Generate Faculty ID
+        const facultyId = await (0, user_utils_1.generateFacultyId)();
+        // 3. Create User
+        const newUser = {
+            id: facultyId,
+            password: config_1.default.DEFAULT_PASSWORD, // ideally hash this
+            role: 'faculity',
+        };
+        const userNew = await user_model_1.UserModel.create([newUser], { session });
+        // 4. Create Student linked to the user
+        payload.id = userNew[0].id;
+        payload.user = userNew[0]._id;
+        const studentNew = await facality_model_1.TeacherModel.create([payload], { session });
+        // 5. Commit Transaction
+        await session.commitTransaction();
+        session.endSession();
+        return studentNew[0]; // return the created student
+    }
+    catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        throw error; // re-throw for controller to handle
+    }
 };
 exports.UsersServices = {
     createStudentIntoDB,

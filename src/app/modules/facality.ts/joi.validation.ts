@@ -1,12 +1,7 @@
 import Joi from "joi";
 
 export const createTeacherValidation = Joi.object({
-
   name: Joi.string().required(),
-
-  id: Joi.string().required(),
-
-  user: Joi.string().required(),
 
   age: Joi.number().required(),
 
@@ -28,12 +23,12 @@ export const createTeacherValidation = Joi.object({
 
   designation: Joi.string().required(),
 
-  department: Joi.string().required(),
+  department: Joi.string().required(), // ObjectId string
 
   isActive: Joi.string()
     .valid("active", "inactive")
     .optional(),
 
-  isDelete: Joi.boolean().optional()
+  isDelete: Joi.boolean().optional(),
 
 });
