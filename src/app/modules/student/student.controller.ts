@@ -17,6 +17,8 @@ const getAllStudents = catchAsync(async (req, res) => {
   });
 });
 
+
+
 // ✅ Route parameter handling
 const getSingleStudent = catchAsync(async (req, res) => {
   const { id } = req.params as { id: string }; 
@@ -61,9 +63,12 @@ const updateStudent = catchAsync(async (req, res) => {
 
 });
 
+
+
 export const studentController = {
   getAllStudents,
   getSingleStudent,
   deleteStudent,
-  updateStudent
+  updateStudent,
+ 
 };

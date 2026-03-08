@@ -8,6 +8,6 @@ import { createTeacherValidation } from '../facality.ts/joi.validation';
 const router= express.Router();
 
 router.post('/user/create-Student',validationRequest(createStudentSchema),  UsersController.createStudent)
-router.post('/user/create-facality',validationRequest(createTeacherValidation),  UsersController.createStudent)
+router.post('/user/create-facality',validationRequest(createTeacherValidation),  UsersController.createFacality)
 
 export const UserRoutes=router;

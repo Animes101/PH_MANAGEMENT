@@ -62,11 +62,14 @@ const session= await mongoose.startSession();
 
 const createFacalityintoDb=(payload:ITeacher)=>{
 
+  console.log(payload)
+
 
 
 }
 
 export const UsersServices = {
   createStudentIntoDB,
-  createFacalityintoDb
+  createFacalityintoDb,
+  
 };

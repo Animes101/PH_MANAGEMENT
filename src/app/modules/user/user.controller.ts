@@ -3,6 +3,7 @@ import { UsersServices } from './user.services';
 import { createStudentSchema } from '../student/student.validation';
 import sendResponse from '../../utility/respons';
 import catchAsync from '../../utility/catchAsync';
+import { createTeacherValidation } from '../facality.ts/joi.validation';
 
 
 
@@ -32,7 +33,28 @@ const createStudent =catchAsync( async (req: Request, res: Response, next:NextFu
  
 });
 
+const createFacality = catchAsync(async (req, res, next: NextFunction) => {
+
+  const { error, value } = createTeacherValidation.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    return next(error);
+  }
+
+  const result = await UsersServices.createFacalityintoDb(value);
+
+  res.status(200).json({
+    success: true,
+    message: "Faculty created successfully",
+    data: result,
+  });
+
+});
+
 
 export const UsersController = {
   createStudent,
+  createFacality
 };

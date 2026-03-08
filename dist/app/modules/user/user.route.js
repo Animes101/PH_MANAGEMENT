@@ -11,5 +11,5 @@ const student_validation_1 = require("../student/student.validation");
 const joi_validation_1 = require("../facality.ts/joi.validation");
 const router = express_1.default.Router();
 router.post('/user/create-Student', (0, validatonJoi_1.default)(student_validation_1.createStudentSchema), user_controller_1.UsersController.createStudent);
-router.post('/user/create-facality', (0, validatonJoi_1.default)(joi_validation_1.createTeacherValidation), user_controller_1.UsersController.createStudent);
+router.post('/user/create-facality', (0, validatonJoi_1.default)(joi_validation_1.createTeacherValidation), user_controller_1.UsersController.createFacality);
 exports.UserRoutes = router;

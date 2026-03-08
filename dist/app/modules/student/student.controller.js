@@ -50,5 +50,5 @@ exports.studentController = {
     getAllStudents,
     getSingleStudent,
     deleteStudent,
-    updateStudent
+    updateStudent,
 };

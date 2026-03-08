@@ -40,8 +40,9 @@ const createStudentIntoDB = async (studentData) => {
     }
 };
 const createFacalityintoDb = (payload) => {
+    console.log(payload);
 };
 exports.UsersServices = {
     createStudentIntoDB,
-    createFacalityintoDb
+    createFacalityintoDb,
 };
