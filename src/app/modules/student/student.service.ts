@@ -10,9 +10,7 @@ import QueryBuilder from '../../queryBuilder/queryBuilder';
 const getAllStudents = async (query: Record<string, unknown>) => {
 
   const queryBuilder = new QueryBuilder(
-    StudentModel.find()
-      .populate('admisonSemester')
-      .populate('user'),
+    StudentModel.find(),
     query
   );
 
@@ -22,8 +20,7 @@ const getAllStudents = async (query: Record<string, unknown>) => {
     .sort()
     .pagination()
     .fields()
-    .modelQuery;
-
+    .modelQuery
   return students;
 };
 

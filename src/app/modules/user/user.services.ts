@@ -8,7 +8,9 @@ import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
 import { generatedId } from "./user.utils";
-import { nextTick } from "node:process";
+import { ITeacher } from "../facality.ts/facality.interface";
+
+
 
 const createStudentIntoDB = async (studentData: IStudent) => {
 
@@ -57,6 +59,14 @@ const session= await mongoose.startSession();
   }
 }
 
+
+const createFacalityintoDb=(payload:ITeacher)=>{
+
+
+
+}
+
 export const UsersServices = {
   createStudentIntoDB,
+  createFacalityintoDb
 };

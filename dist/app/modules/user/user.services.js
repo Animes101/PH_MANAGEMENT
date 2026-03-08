@@ -39,6 +39,9 @@ const createStudentIntoDB = async (studentData) => {
         return result;
     }
 };
+const createFacalityintoDb = (payload) => {
+};
 exports.UsersServices = {
     createStudentIntoDB,
+    createFacalityintoDb
 };

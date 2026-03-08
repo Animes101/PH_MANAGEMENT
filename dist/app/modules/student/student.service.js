@@ -8,50 +8,17 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const student_model_1 = require("./student.model");
+const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const getAllStudents = async (query) => {
-    const queryObject = { ...query };
-    let searchTerm = '';
-    if (query?.searchTerm) {
-        searchTerm = query.searchTerm;
-    }
-    // 🔍 Search
-    let dbQuery = student_model_1.StudentModel.find({
-        $or: ['name', 'email'].map((field) => ({
-            [field]: { $regex: searchTerm, $options: 'i' },
-        })),
-    });
-    // 🧹 Filtering
-    const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-    excludeFields.forEach((el) => delete queryObject[el]);
-    dbQuery = dbQuery.find(queryObject);
-    // 🔽 Sorting
-    let sort = '-createdAt';
-    if (query?.sort) {
-        sort = query.sort;
-    }
-    dbQuery = dbQuery.sort(sort);
-    // 📄 Pagination
-    let limit = 10;
-    let page = 1;
-    if (query?.limit) {
-        limit = Number(query.limit);
-    }
-    if (query?.page) {
-        page = Number(query.page);
-    }
-    const skip = (page - 1) * limit;
-    dbQuery = dbQuery.skip(skip).limit(limit);
-    // 🎯 Field Selection
-    let fields = '-__v';
-    if (query?.fields) {
-        fields = query.fields.split(',').join(' ');
-    }
-    dbQuery = dbQuery.select(fields);
-    // 🔗 Populate
-    const result = await dbQuery
-        .populate('admisonSemester')
-        .populate('user');
-    return result;
+    const queryBuilder = new queryBuilder_1.default(student_model_1.StudentModel.find(), query);
+    const students = await queryBuilder
+        .search(['name', 'email'])
+        .filter()
+        .sort()
+        .pagination()
+        .fields()
+        .modelQuery;
+    return students;
 };
 const getSingleStudent = async (_id) => {
     const result = await student_model_1.StudentModel.findOne({ _id });
