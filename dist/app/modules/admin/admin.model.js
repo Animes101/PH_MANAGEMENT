@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TeacherModel = void 0;
+exports.adminModel = void 0;
 const mongoose_1 = require("mongoose");
-const teacherSchema = new mongoose_1.Schema({
+const AdminSchema = new mongoose_1.Schema({
     id: {
         type: String,
         required: true,
@@ -61,4 +61,4 @@ const teacherSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.TeacherModel = (0, mongoose_1.model)("Teacher", teacherSchema);
+exports.adminModel = (0, mongoose_1.model)("Admin", AdminSchema);

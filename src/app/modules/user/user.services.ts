@@ -6,11 +6,14 @@ import { IStudent } from "../student/student.interface";
 import { StudentModel } from "../student/student.model";
 import { TUser } from "./user.interface";
 import { UserModel } from "./user.model";
-import { generatedId, generateFacultyId } from "./user.utils";
-import { ITeacher } from "../facality.ts/facality.interface";
-import { TeacherModel } from "../facality.ts/facality.model";
+import { generateAdminId, generatedId, generateFacultyId } from "./user.utils";
+import { ITeacher } from "../facality/facality.interface";
+import { TeacherModel } from "../facality/facality.model";
 import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.model";
-import { IAdmin } from "../admin.ts/admin.interface";
+import { IAdmin } from "../admin/admin.interface";
+import { adminModel } from "../admin/admin.model";
+
+
 
 
 //create Student into DB
@@ -73,6 +76,7 @@ const createStudentIntoDB = async (studentData: IStudent) => {
 
 //createFacality into Db
 const createFacalityintoDb = async (payload: ITeacher) => {
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -121,12 +125,51 @@ const createFacalityintoDb = async (payload: ITeacher) => {
 };
 
 
-const createAdminIntoDB=(payload:IAdmin)=>{
 
-  console.log(payload)
+export const createAdminIntoDB = async (payload: IAdmin) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
+  try {
+    // 1️⃣ Check if email already exists
+    const existingUser = await adminModel.findOne({ email: payload.email });
+    if (existingUser) {
+      throw new AppError("Email already exists", 400);
+    }
 
-}
+    // 2️⃣ Generate Admin ID
+    const adminId = await generateAdminId();
+
+    // 3️⃣ Create User
+    const newUser: Partial<TUser> = {
+      id: adminId,
+      password: config.DEFAULT_PASSWORD as string, // ideally hash this
+      role: "admin",
+    };
+
+    const userNew = await UserModel.create([newUser], { session });
+
+    if (!userNew.length) {
+      throw new AppError("User creation failed", 500);
+    }
+
+    // 4️⃣ Create Admin Profile linked to user
+    payload.id = userNew[0].id as string;
+    payload.user = userNew[0]._id;
+
+    const adminNew = await adminModel.create([payload], { session });
+
+    // 5️⃣ Commit Transaction
+    await session.commitTransaction();
+    await session.endSession();
+
+    return adminNew[0]; // return created admin
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
+  }
+};
 
 export const UsersServices = {
   createStudentIntoDB,

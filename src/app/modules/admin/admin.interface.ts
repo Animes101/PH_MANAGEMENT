@@ -20,9 +20,7 @@ export interface IAdmin {
   email: string;
   phoneNumber: string;
   address: string;
-
   role: "SUPER_ADMIN" | "ADMIN";
-
   isActive: "active" | "inactive";
   isDelete: boolean;
 }

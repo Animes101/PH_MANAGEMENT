@@ -8,8 +8,8 @@ const user_services_1 = require("./user.services");
 const student_validation_1 = require("../student/student.validation");
 const respons_1 = __importDefault(require("../../utility/respons"));
 const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
-const joi_validation_1 = require("../facality.ts/joi.validation");
-const admin_validation_1 = require("../admin.ts/admin.validation");
+const joi_validation_1 = require("../facality/joi.validation");
+const admin_validation_1 = require("../admin/admin.validation");
 const createStudent = (0, catchAsync_1.default)(async (req, res, next) => {
     const { error, value } = student_validation_1.createStudentSchema.validate(req.body, {
         abortEarly: false,

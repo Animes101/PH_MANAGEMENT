@@ -1,5 +1,5 @@
 import { IAcademicSemister } from "../acadamicSemister/seminter.interface";
-import { ITeacher } from "../facality.ts/facality.interface";
+import { ITeacher } from "../facality/facality.interface";
 import { UserModel } from "./user.model";
 
 
@@ -70,4 +70,27 @@ export const generateFacultyId = async () => {
 
   const incrementedId = (currentIdCount + 1).toString().padStart(4, '0');
   return `F-${incrementedId}`;
+};
+
+
+const findLastAdminId = async () => {
+  const lastAdmin = await UserModel.findOne({ role: 'admin' }, { id: 1 })
+    .sort({ createdAt: -1 })
+    .lean();
+
+  return lastAdmin?.id; // Expected format: "A-0001"
+};
+
+export const generateAdminId = async () => {
+  const lastId = await findLastAdminId();
+
+  let currentIdCount = 0;
+
+  if (lastId) {
+    // Split "A-0001" to get "0001"
+    currentIdCount = Number(lastId.split('-')[1]);
+  }
+
+  const incrementedId = (currentIdCount + 1).toString().padStart(4, '0');
+  return `A-${incrementedId}`;
 };

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateFacultyId = exports.generatedId = void 0;
+exports.generateAdminId = exports.generateFacultyId = exports.generatedId = void 0;
 const user_model_1 = require("./user.model");
 const findLastStudentId = async () => {
     const lastStudent = await user_model_1.UserModel
@@ -47,3 +47,20 @@ const generateFacultyId = async () => {
     return `F-${incrementedId}`;
 };
 exports.generateFacultyId = generateFacultyId;
+const findLastAdminId = async () => {
+    const lastAdmin = await user_model_1.UserModel.findOne({ role: 'admin' }, { id: 1 })
+        .sort({ createdAt: -1 })
+        .lean();
+    return lastAdmin?.id; // Expected format: "A-0001"
+};
+const generateAdminId = async () => {
+    const lastId = await findLastAdminId();
+    let currentIdCount = 0;
+    if (lastId) {
+        // Split "A-0001" to get "0001"
+        currentIdCount = Number(lastId.split('-')[1]);
+    }
+    const incrementedId = (currentIdCount + 1).toString().padStart(4, '0');
+    return `A-${incrementedId}`;
+};
+exports.generateAdminId = generateAdminId;

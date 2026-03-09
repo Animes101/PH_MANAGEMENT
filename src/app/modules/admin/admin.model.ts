@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { IAdmin } from "./admin.interface";
 
 
-const teacherSchema = new Schema<IAdmin>(
+const AdminSchema = new Schema<IAdmin>(
   {
     id: {
       type: String,
@@ -75,4 +75,4 @@ const teacherSchema = new Schema<IAdmin>(
   }
 );
 
-export const TeacherModel = model<IAdmin>("Teacher", teacherSchema);
+export const adminModel = model<IAdmin>("Admin", AdminSchema);

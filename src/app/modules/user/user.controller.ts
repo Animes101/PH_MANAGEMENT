@@ -3,8 +3,8 @@ import { UsersServices } from './user.services';
 import { createStudentSchema } from '../student/student.validation';
 import sendResponse from '../../utility/respons';
 import catchAsync from '../../utility/catchAsync';
-import { createTeacherValidation } from '../facality.ts/joi.validation';
-import { createAdminValidationSchema } from '../admin.ts/admin.validation';
+import { createTeacherValidation } from '../facality/joi.validation';
+import { createAdminValidationSchema } from '../admin/admin.validation';
 
 
 
@@ -75,6 +75,7 @@ const createAdmin = catchAsync(async (req, res, next: NextFunction) => {
   });
 
 });
+
 
 
 
