@@ -13,6 +13,7 @@ const user_model_1 = require("./user.model");
 const user_utils_1 = require("./user.utils");
 const facality_model_1 = require("../facality.ts/facality.model");
 const academinDepertMent_model_1 = require("../acdemonDepermant/academinDepertMent.model");
+//create Student into DB
 const createStudentIntoDB = async (studentData) => {
     const academinSemester = await acadamin_model_1.AcademicSemesterModel.findById(studentData.admisonSemester);
     if (!academinSemester) {
@@ -38,7 +39,6 @@ const createStudentIntoDB = async (studentData) => {
         // set user data
         studentData.id = userNew[0].id;
         studentData.user = userNew[0]._id;
-        // create student
         const result = await student_model_1.StudentModel.create([studentData], { session });
         await session.commitTransaction();
         await session.endSession();
@@ -50,6 +50,7 @@ const createStudentIntoDB = async (studentData) => {
         throw error;
     }
 };
+//createFacality into Db
 const createFacalityintoDb = async (payload) => {
     const session = await mongoose_1.default.startSession();
     session.startTransaction();
@@ -88,7 +89,11 @@ const createFacalityintoDb = async (payload) => {
         throw error; // re-throw for controller to handle
     }
 };
+const createAdminIntoDB = (payload) => {
+    console.log(payload);
+};
 exports.UsersServices = {
     createStudentIntoDB,
     createFacalityintoDb,
+    createAdminIntoDB,
 };

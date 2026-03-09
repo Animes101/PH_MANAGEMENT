@@ -10,9 +10,10 @@ import { generatedId, generateFacultyId } from "./user.utils";
 import { ITeacher } from "../facality.ts/facality.interface";
 import { TeacherModel } from "../facality.ts/facality.model";
 import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.model";
+import { IAdmin } from "../admin.ts/admin.interface";
 
 
-
+//create Student into DB
 const createStudentIntoDB = async (studentData: IStudent) => {
 
   const academinSemester = await AcademicSemesterModel.findById(
@@ -52,7 +53,6 @@ const createStudentIntoDB = async (studentData: IStudent) => {
     studentData.id = userNew[0].id as string;
     studentData.user = userNew[0]._id;
 
-    // create student
     const result = await StudentModel.create([studentData], { session });
 
     await session.commitTransaction();
@@ -70,6 +70,8 @@ const createStudentIntoDB = async (studentData: IStudent) => {
 };
 
 
+
+//createFacality into Db
 const createFacalityintoDb = async (payload: ITeacher) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -118,8 +120,17 @@ const createFacalityintoDb = async (payload: ITeacher) => {
   }
 };
 
+
+const createAdminIntoDB=(payload:IAdmin)=>{
+
+  console.log(payload)
+
+
+}
+
 export const UsersServices = {
   createStudentIntoDB,
   createFacalityintoDb,
+  createAdminIntoDB,
 
 };

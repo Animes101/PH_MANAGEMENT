@@ -9,6 +9,7 @@ const student_validation_1 = require("../student/student.validation");
 const respons_1 = __importDefault(require("../../utility/respons"));
 const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 const joi_validation_1 = require("../facality.ts/joi.validation");
+const admin_validation_1 = require("../admin.ts/admin.validation");
 const createStudent = (0, catchAsync_1.default)(async (req, res, next) => {
     const { error, value } = student_validation_1.createStudentSchema.validate(req.body, {
         abortEarly: false,
@@ -39,7 +40,23 @@ const createFacality = (0, catchAsync_1.default)(async (req, res, next) => {
         data: result,
     });
 });
+//create Admin 
+const createAdmin = (0, catchAsync_1.default)(async (req, res, next) => {
+    const { error, value } = admin_validation_1.createAdminValidationSchema.validate(req.body, {
+        abortEarly: false,
+    });
+    if (error) {
+        return next(error);
+    }
+    const result = await user_services_1.UsersServices.createAdminIntoDB(value);
+    res.status(200).json({
+        success: true,
+        message: "Faculty created successfully",
+        data: result,
+    });
+});
 exports.UsersController = {
     createStudent,
-    createFacality
+    createFacality,
+    createAdmin
 };
