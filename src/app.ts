@@ -7,6 +7,7 @@ import { StudentRoutes } from './app/modules/student/student.router';
 import { academicSemesterRoute } from './app/modules/acadamicSemister/semister.route';
 import { AcademicFacultyRoutes } from './app/modules/academicFaculty/faculty.router';
 import { academinRouterDepartment } from './app/modules/acdemonDepermant/academinRouter';
+import { adminRouter } from './app/modules/admin/admin.route';
 const app: Application = express();
 
 // middlewares
@@ -20,6 +21,7 @@ app.use('/api/v1', StudentRoutes);
 app.use('/api/v1', academicSemesterRoute);
 app.use('/api/v1', AcademicFacultyRoutes);
 app.use('/api/v1', academinRouterDepartment)
+app.use('/api/v1', adminRouter)
 
 app.get('/test', (req,res)=>{
 

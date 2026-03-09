@@ -12,6 +12,7 @@ const student_router_1 = require("./app/modules/student/student.router");
 const semister_route_1 = require("./app/modules/acadamicSemister/semister.route");
 const faculty_router_1 = require("./app/modules/academicFaculty/faculty.router");
 const academinRouter_1 = require("./app/modules/acdemonDepermant/academinRouter");
+const admin_route_1 = require("./app/modules/admin/admin.route");
 const app = (0, express_1.default)();
 // middlewares
 app.use((0, cors_1.default)());
@@ -21,6 +22,7 @@ app.use('/api/v1', student_router_1.StudentRoutes);
 app.use('/api/v1', semister_route_1.academicSemesterRoute);
 app.use('/api/v1', faculty_router_1.AcademicFacultyRoutes);
 app.use('/api/v1', academinRouter_1.academinRouterDepartment);
+app.use('/api/v1', admin_route_1.adminRouter);
 app.get('/test', (req, res) => {
     res.send('testin router');
 });
