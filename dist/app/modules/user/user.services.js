@@ -28,17 +28,26 @@ const createStudentIntoDB = async (studentData) => {
         role: 'student',
     };
     const session = await mongoose_1.default.startSession();
-    //create a User
-    const userNew = await user_model_1.UserModel.create([newUser], { session });
-    // create a student
-    if (userNew) {
-        //setUserId
+    try {
+        session.startTransaction();
+        // create user
+        const userNew = await user_model_1.UserModel.create([newUser], { session });
+        if (!userNew.length) {
+            throw new AppError_1.default("User creation failed", 400);
+        }
+        // set user data
         studentData.id = userNew[0].id;
         studentData.user = userNew[0]._id;
+        // create student
         const result = await student_model_1.StudentModel.create([studentData], { session });
         await session.commitTransaction();
         await session.endSession();
         return result;
+    }
+    catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw error;
     }
 };
 const createFacalityintoDb = async (payload) => {
@@ -51,7 +60,7 @@ const createFacalityintoDb = async (payload) => {
             throw new AppError_1.default('Academic semester not found', 404);
         }
         // 2. Check if email already exists
-        const existingUser = await student_model_1.StudentModel.findOne({ email: payload.email });
+        const existingUser = await facality_model_1.TeacherModel.findOne({ email: payload.email });
         if (existingUser) {
             throw new AppError_1.default("Email already exists", 400);
         }

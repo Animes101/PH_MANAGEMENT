@@ -30,7 +30,6 @@ const academicSemesterSchema = new Schema<IAcademicSemister>(
       type: String,
       enum: ['01', '02', '03', '04'],
       required: true,
-      unique: true,
     },
 
     year: {

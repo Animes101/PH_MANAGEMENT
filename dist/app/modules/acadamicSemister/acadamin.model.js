@@ -27,7 +27,6 @@ const academicSemesterSchema = new mongoose_1.Schema({
         type: String,
         enum: ['01', '02', '03', '04'],
         required: true,
-        unique: true,
     },
     year: {
         type: Number,

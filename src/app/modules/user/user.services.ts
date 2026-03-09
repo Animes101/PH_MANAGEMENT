@@ -15,18 +15,19 @@ import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.mode
 
 const createStudentIntoDB = async (studentData: IStudent) => {
 
-
-  const academinSemester = await AcademicSemesterModel.findById(studentData.admisonSemester);
+  const academinSemester = await AcademicSemesterModel.findById(
+    studentData.admisonSemester
+  );
 
   if (!academinSemester) {
     throw new AppError('Academic semester not found', 404);
   }
+
   const existingUser = await StudentModel.findOne({ email: studentData.email });
 
   if (existingUser) {
     throw new AppError("Email already exists", 400);
   }
-
 
   const newUser: Partial<TUser> = {
     id: await generatedId(academinSemester),
@@ -36,27 +37,37 @@ const createStudentIntoDB = async (studentData: IStudent) => {
 
   const session = await mongoose.startSession();
 
-  //create a User
+  try {
 
-  const userNew = await UserModel.create([newUser], { session });
-  // create a student
+    session.startTransaction();
 
-  if (userNew) {
+    // create user
+    const userNew = await UserModel.create([newUser], { session });
 
-    //setUserId
+    if (!userNew.length) {
+      throw new AppError("User creation failed", 400);
+    }
+
+    // set user data
     studentData.id = userNew[0].id as string;
     studentData.user = userNew[0]._id;
 
+    // create student
     const result = await StudentModel.create([studentData], { session });
 
     await session.commitTransaction();
     await session.endSession();
 
-    return result
+    return result;
 
+  } catch (error) {
+
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
 
   }
-}
+};
 
 
 const createFacalityintoDb = async (payload: ITeacher) => {
@@ -71,7 +82,7 @@ const createFacalityintoDb = async (payload: ITeacher) => {
     }
 
     // 2. Check if email already exists
-    const existingUser = await StudentModel.findOne({ email: payload.email });
+    const existingUser = await TeacherModel.findOne({ email: payload.email });
     if (existingUser) {
       throw new AppError("Email already exists", 400);
     }
