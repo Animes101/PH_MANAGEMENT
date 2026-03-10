@@ -17,11 +17,11 @@ const getAllFacality = async (query) => {
         .modelQuery;
     return result;
 };
-const getSingleFacality = async (_id) => {
-    const result = await facality_model_1.TeacherModel.findOne({ _id });
+const getSingleFaculty = async (_id) => {
+    const result = await facality_model_1.TeacherModel.findById(_id);
     return result;
 };
 exports.facalityServices = {
     getAllFacality,
-    getSingleFacality
+    getSingleFaculty
 };

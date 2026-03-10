@@ -9,7 +9,7 @@ const express_1 = __importDefault(require("express"));
 const facality_controller_1 = require("./facality.controller");
 const router = express_1.default.Router();
 router.get('/get-allAdin', facality_controller_1.facalityController.getAllFacality);
-router.get('/single-admin/:_id', adminController.getSingleAdmin);
+router.get('/single-facality/:_id', facality_controller_1.facalityController.getSingleFacality);
 // router.patch('/deleteAdmin/:_id', adminController.deleteAdmin);
 // router.patch('/update/:_id',  adminController.upadeAdmin);
 exports.facalityRouter = router;

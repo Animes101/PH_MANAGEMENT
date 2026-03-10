@@ -18,7 +18,7 @@ const getAllFacality = (0, catchAsync_1.default)(async (req, res) => {
 });
 const getSingleFacality = (0, catchAsync_1.default)(async (req, res) => {
     const _id = req.params._id;
-    const result = await facality_services_1.facalityServices.getSingleFacality({ _id });
+    const result = await facality_services_1.facalityServices.getSingleFaculty(_id);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,

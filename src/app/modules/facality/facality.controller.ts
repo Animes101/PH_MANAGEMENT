@@ -17,18 +17,18 @@ const getAllFacality=catchAsync(async(req, res)=>{
 })
 
 
-const getSingleFacality=catchAsync(async(req, res)=>{
+const getSingleFacality = catchAsync(async(req, res) => {
 
-    const _id=req.params._id as string
+  const _id = req.params._id as string
 
-    const result= await facalityServices.getSingleFacality({_id})
+  const result = await facalityServices.getSingleFaculty(_id)
 
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: 'aget all falaclty successfully',
-        data: result,
-      });
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'aget all falaclty successfully',
+    data: result,
+  });
 })
 
 export const  facalityController={

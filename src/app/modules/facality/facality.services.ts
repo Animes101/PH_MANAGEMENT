@@ -18,16 +18,15 @@ const getAllFacality=async(query:Record<string, unknown>)=>{
     .modelQuery;
 
   return result;
-  
+
 }
 
-const getSingleFacality=async(_id)=>{
+const getSingleFaculty = async (_id: string) => {
 
+  const result = await TeacherModel.findById(_id);
 
-    const result=await TeacherModel.findOne({_id})
-
-    return result
-}
+  return result;
+};
 
 
 
@@ -36,6 +35,6 @@ const getSingleFacality=async(_id)=>{
 export const facalityServices={
 
     getAllFacality,
-    getSingleFacality
+    getSingleFaculty
     
 }
