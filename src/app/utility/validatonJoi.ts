@@ -4,14 +4,15 @@ import { Schema } from "joi";
 const validationRequest = (schema: Schema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
 
-    
     const { error, value } = schema.validate(req.body, {
       abortEarly: false,
     });
+    
 
     if (error) {
       return next(error);
     }
+
 
     req.body = value;
     

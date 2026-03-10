@@ -8,6 +8,7 @@ import { academicSemesterRoute } from './app/modules/acadamicSemister/semister.r
 import { AcademicFacultyRoutes } from './app/modules/academicFaculty/faculty.router';
 import { academinRouterDepartment } from './app/modules/acdemonDepermant/academinRouter';
 import { adminRouter } from './app/modules/admin/admin.route';
+import { facalityRouter } from './app/modules/facality/facality.router';
 const app: Application = express();
 
 // middlewares
@@ -22,6 +23,7 @@ app.use('/api/v1', academicSemesterRoute);
 app.use('/api/v1', AcademicFacultyRoutes);
 app.use('/api/v1', academinRouterDepartment)
 app.use('/api/v1', adminRouter)
+app.use('/api/v1', facalityRouter)
 
 app.get('/test', (req,res)=>{
 

@@ -48,7 +48,7 @@ const deleteStudent = async (id: string) => {
 
       session.startTransaction();
          // 2️⃣ get user _id from student
-  const userId = student.user;
+     const userId = student.user;
 
   // 3️⃣ soft delete both
   const result1 = await UserModel.findByIdAndUpdate(
