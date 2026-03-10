@@ -5,6 +5,7 @@ import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { adminModel } from "./admin.model"
 import { UserModel } from "../user/user.model";
 import { IAdmin } from "./admin.interface";
+import { ITeacher } from "../facality/facality.interface";
 
 
 const getAllAdminfromBd = async (query: Record<string, unknown>) => {
@@ -13,7 +14,7 @@ const getAllAdminfromBd = async (query: Record<string, unknown>) => {
     adminModel.find(),
     query
   );
-  
+
 
   const admins = await queryBuilder
     .search(['name', 'email'])
@@ -89,8 +90,6 @@ const getSingleAdminFromDb= async(_id:string)=>{
 
     const result= await adminModel.findOne({_id})
 
-
-
     return result;
 
 
@@ -98,7 +97,9 @@ const getSingleAdminFromDb= async(_id:string)=>{
 }
 
 
-const updateAdminfromDb = async (_id: string, payload:IAdmin) => {
+const updateAdminfromDb = async (_id: string, payload:ITeacher) => {
+
+
 
   const result = await adminModel.findByIdAndUpdate(_id, payload, {
     new: true

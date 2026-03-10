@@ -49,11 +49,15 @@ const upadeAdmin=catchAsync(async(req , res)=>{
 
     const _id=req.params._id as string
 
+
+
     const result= await adminServices.updateAdminfromDb(_id, req.body);
+
+
 
     res.status(200).json({
     success: true,
-    message: 'Single admin Get  successfully',
+    message: 'admin Update Succes Fully successfully',
     data: result,
   });
 
