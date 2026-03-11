@@ -15,6 +15,7 @@ exports.createCourseValidationSchema = joi_1.default.object({
     code: joi_1.default.number().required().messages({
         "number.base": "Code must be a number",
     }),
+    isDelete: joi_1.default.boolean().default(false),
     preRequisiteCorse: joi_1.default.array().items(joi_1.default.object({
         corse: joi_1.default.string().required().messages({
             "string.empty": "Course ID is required",

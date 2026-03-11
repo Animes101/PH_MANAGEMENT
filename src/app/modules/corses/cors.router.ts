@@ -9,4 +9,7 @@ const Router= express.Router()
 Router.post('/create-corse', validationRequest(createCourseValidationSchema), corseController.createCorse)
 Router.get('/get-allCorse', corseController.getAllCorse);
 Router.get('/get-singleCorse/:_id' , corseController.getSingleCorseFromDb)
+Router.patch('/delete-Corse/:_id' , corseController.deleteCorse)
+
+
 export const CorseRouter=Router

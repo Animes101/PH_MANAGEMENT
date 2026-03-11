@@ -13,6 +13,8 @@ export const createCourseValidationSchema = Joi.object({
     "number.base": "Code must be a number",
   }),
 
+  isDelete: Joi.boolean().default(false),
+
   preRequisiteCorse: Joi.array().items(
     Joi.object({
       corse: Joi.string().required().messages({

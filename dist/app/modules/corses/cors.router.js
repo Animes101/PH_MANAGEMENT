@@ -12,4 +12,5 @@ const Router = express_1.default.Router();
 Router.post('/create-corse', (0, validatonJoi_1.default)(corse_validation_joi_1.createCourseValidationSchema), cors_contrller_1.corseController.createCorse);
 Router.get('/get-allCorse', cors_contrller_1.corseController.getAllCorse);
 Router.get('/get-singleCorse/:_id', cors_contrller_1.corseController.getSingleCorseFromDb);
+Router.patch('/delete-Corse/:_id', cors_contrller_1.corseController.deleteCorse);
 exports.CorseRouter = Router;

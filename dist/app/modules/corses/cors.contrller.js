@@ -35,8 +35,19 @@ const getSingleCorseFromDb = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const deleteCorse = (0, catchAsync_1.default)(async (req, res) => {
+    const _id = req.params._id;
+    const result = await corse_services_1.corseServices.deleteCorseFromDb(_id);
+    (0, respons_1.default)(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Delete  Corse Successfuly',
+        data: result
+    });
+});
 exports.corseController = {
     createCorse,
     getAllCorse,
-    getSingleCorseFromDb
+    getSingleCorseFromDb,
+    deleteCorse
 };
