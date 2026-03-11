@@ -31,4 +31,28 @@ export const createTeacherValidation = Joi.object({
 
   isDelete: Joi.boolean().optional(),
 
-});
+}); 
+
+
+export const updateTeacherValidaion = Joi.object({
+  name: Joi.string().optional(),
+
+  age: Joi.number().optional(),
+
+  gender: Joi.string()
+    .valid("MALE", "FEMALE", "OTHER")
+    .optional(),
+
+  dateOfBirth: Joi.string().optional(),
+
+  bloodGroup: Joi.string()
+    .valid("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
+    .optional(),
+  email: Joi.string().email().optional(),
+  phoneNumber: Joi.string().optional(),
+  address: Joi.string().optional(),
+  designation: Joi.string().optional(),
+  department: Joi.string().optional(), 
+
+
+}); 

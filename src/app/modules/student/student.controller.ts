@@ -64,7 +64,6 @@ const updateStudent = catchAsync(async (req, res) => {
 });
 
 
-
 export const studentController = {
   getAllStudents,
   getSingleStudent,

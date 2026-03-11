@@ -3,6 +3,8 @@
 
 import express from 'express';
 import { facalityController } from './facality.controller';
+import validationRequest from '../../utility/validatonJoi';
+import { updateTeacherValidaion } from './joi.validation';
 const router= express.Router();
 
 
@@ -10,8 +12,8 @@ const router= express.Router();
 
 router.get('/get-allAdin', facalityController.getAllFacality);
 router.get('/single-facality/:_id', facalityController.getSingleFacality);
-// router.patch('/deleteAdmin/:_id', adminController.deleteAdmin);
-// router.patch('/update/:_id',  adminController.upadeAdmin);
+router.patch('/facalityDelete/:_id', facalityController.deleteFacality);
+router.patch('/updateFacality/:_id', validationRequest(updateTeacherValidaion),  facalityController.updateFacality);
 
 
 

@@ -31,8 +31,46 @@ const getSingleFacality = catchAsync(async(req, res) => {
   });
 })
 
+
+const deleteFacality = catchAsync(async(req, res) => {
+
+  const _id = req.params._id as string
+
+  const result = await facalityServices.deleteFacalityInotBod(_id)
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Delete Facality  successfully',
+    data: result,
+  });
+})
+
+
+
+const updateFacality=catchAsync(async(req, res)=>{
+
+   const _id = req.params._id as string
+
+  const result = await facalityServices.updateFacalityIntoDb(_id, req.body)
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Update Facality successfully',
+    data: result,
+  });
+})
+
+
+
+
 export const  facalityController={
 
     getAllFacality,
-    getSingleFacality
+    getSingleFacality,
+    deleteFacality,
+    updateFacality
+
+
 }

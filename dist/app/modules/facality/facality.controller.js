@@ -26,7 +26,29 @@ const getSingleFacality = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const deleteFacality = (0, catchAsync_1.default)(async (req, res) => {
+    const _id = req.params._id;
+    const result = await facality_services_1.facalityServices.deleteFacalityInotBod(_id);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Delete Facality  successfully',
+        data: result,
+    });
+});
+const updateFacality = (0, catchAsync_1.default)(async (req, res) => {
+    const _id = req.params._id;
+    const result = await facality_services_1.facalityServices.updateFacalityIntoDb(_id, req.body);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Update Facality successfully',
+        data: result,
+    });
+});
 exports.facalityController = {
     getAllFacality,
-    getSingleFacality
+    getSingleFacality,
+    deleteFacality,
+    updateFacality
 };
