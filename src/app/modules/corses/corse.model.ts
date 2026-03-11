@@ -1,4 +1,4 @@
-import { model, Schema, Types } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TCorse, TpreRequiesitesCorse } from "./corse.interface";
 
 
@@ -22,8 +22,8 @@ const CorseSchema=new Schema<TCorse>({
     },
     prefix:{
         type:String,
-        unique:true,
         required:true,
+        
     },
     code:{
         type:Number,
@@ -32,6 +32,7 @@ const CorseSchema=new Schema<TCorse>({
     preRequisiteCorse:[preRequisitesSchema]
 
 })
+
 
 
 export const  CorseModel= model<TCorse>('corse', CorseSchema)

@@ -16,8 +16,43 @@ const createCorse=catchAsync(async(req,res)=>{
     })
 })
 
+const getAllCorse=catchAsync(async(req,res)=>{
+
+
+    const result=await corseServices.getAllCorsefromBd(req.query)
+
+    sendResponse(res,{
+        statusCode: 201,
+    success: true,
+    message: 'create Corse Successfuly',
+    data: result
+
+    })
+})
+
+
+const getSingleCorseFromDb=catchAsync(async(req,res)=>{
+
+    const _id= req.params._id as string
+
+    const result=await corseServices.getSingleCorseInotDb(_id)
+
+    sendResponse(res,{
+        statusCode: 201,
+    success: true,
+    message: 'create Corse Successfuly',
+    data: result
+
+    })
+})
+
+
+
+
 
 export const corseController={
-    createCorse
+    createCorse,
+    getAllCorse,
+    getSingleCorseFromDb
 
 }
