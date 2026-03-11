@@ -55,7 +55,6 @@ const deleteFacalityInotBod = async (_id) => {
     }
 };
 const updateFacalityIntoDb = async (_id, payload) => {
-    console.log(payload);
     const result = await facality_model_1.TeacherModel.findByIdAndUpdate(_id, payload, {
         new: true
     });

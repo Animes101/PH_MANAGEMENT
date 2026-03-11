@@ -87,9 +87,9 @@ const deleteFacalityInotBod = async (_id: string) => {
 };
 const updateFacalityIntoDb=async(_id:string, payload:ITeacher)=>{
 
-  console.log(payload)
 
 
+  
   const result = await TeacherModel.findByIdAndUpdate(_id, payload, {
       new: true
     });
@@ -103,10 +103,8 @@ const updateFacalityIntoDb=async(_id:string, payload:ITeacher)=>{
 
 
 
-
-
 export const facalityServices={
-
+  
     getAllFacality,
     getSingleFaculty,
     deleteFacalityInotBod,

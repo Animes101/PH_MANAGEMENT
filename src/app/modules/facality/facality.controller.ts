@@ -66,7 +66,7 @@ const updateFacality=catchAsync(async(req, res)=>{
 
 
 export const  facalityController={
-
+  
     getAllFacality,
     getSingleFacality,
     deleteFacality,
