@@ -63,6 +63,22 @@ const deleteCorse=catchAsync(async(req,res)=>{
 })
 
 
+const updateCorse=catchAsync(async(req,res)=>{
+
+    const _id= req.params._id as string
+
+    const result=await corseServices.updateCorseFromDb(_id, req.body)
+
+    sendResponse(res,{
+        statusCode: 201,
+    success: true,
+    message: 'Update Corse  Successfuly',
+    data: result
+
+    })
+})
+
+
 
 
 
@@ -70,6 +86,7 @@ export const corseController={
     createCorse,
     getAllCorse,
     getSingleCorseFromDb,
-    deleteCorse
+    deleteCorse,
+    updateCorse
 
 }

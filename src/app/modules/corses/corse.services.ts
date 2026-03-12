@@ -43,9 +43,7 @@ const deleteCorseFromDb= async(_id:string)=>{
     
       if (!corse) {
         throw new AppError("Corse  not found", 404);
-      }
-
-      
+      }   
 
     const result=await CorseModel.findOneAndUpdate({_id}, {isDelete:true}, {new:true} )
 
@@ -54,7 +52,16 @@ const deleteCorseFromDb= async(_id:string)=>{
 
 const updateCorseFromDb=async(__id:string , payload: TCorse)=>{
 
-    console.log('update Data', payload)
+
+    const {preRequisiteCorse, ...remaningData}=payload;
+
+    //update basin Data
+
+    const result= await CorseModel.findByIdAndUpdate(__id, remaningData, {new:true})
+
+
+
+    
 
 
 

@@ -10,6 +10,7 @@ Router.post('/create-corse', validationRequest(createCourseValidationSchema), co
 Router.get('/get-allCorse', corseController.getAllCorse);
 Router.get('/get-singleCorse/:_id' , corseController.getSingleCorseFromDb)
 Router.patch('/delete-Corse/:_id' , corseController.deleteCorse)
+Router.patch('/update-corse/:_id' , corseController.updateCorse)
 
 
 export const CorseRouter=Router

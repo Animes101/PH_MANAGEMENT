@@ -45,9 +45,20 @@ const deleteCorse = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const updateCorse = (0, catchAsync_1.default)(async (req, res) => {
+    const _id = req.params._id;
+    const result = await corse_services_1.corseServices.updateCorseFromDb(_id, req.body);
+    (0, respons_1.default)(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Update Corse  Successfuly',
+        data: result
+    });
+});
 exports.corseController = {
     createCorse,
     getAllCorse,
     getSingleCorseFromDb,
-    deleteCorse
+    deleteCorse,
+    updateCorse
 };

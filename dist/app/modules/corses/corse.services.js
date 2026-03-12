@@ -36,7 +36,9 @@ const deleteCorseFromDb = async (_id) => {
     return result;
 };
 const updateCorseFromDb = async (__id, payload) => {
-    console.log('update Data', payload);
+    const { preRequisiteCorse, ...remaningData } = payload;
+    //update basin Data
+    const result = await corse_model_1.CorseModel.findByIdAndUpdate(__id, remaningData, { new: true });
 };
 exports.corseServices = {
     createCorseIntoDb,

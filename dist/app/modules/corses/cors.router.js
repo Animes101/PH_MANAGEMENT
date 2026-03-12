@@ -13,4 +13,5 @@ Router.post('/create-corse', (0, validatonJoi_1.default)(corse_validation_joi_1.
 Router.get('/get-allCorse', cors_contrller_1.corseController.getAllCorse);
 Router.get('/get-singleCorse/:_id', cors_contrller_1.corseController.getSingleCorseFromDb);
 Router.patch('/delete-Corse/:_id', cors_contrller_1.corseController.deleteCorse);
+Router.patch('/update-corse/:_id', cors_contrller_1.corseController.updateCorse);
 exports.CorseRouter = Router;
