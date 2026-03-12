@@ -50,23 +50,35 @@ const deleteCorseFromDb= async(_id:string)=>{
     return result
 }
 
-const updateCorseFromDb=async(__id:string , payload: TCorse)=>{
+const updateCorseFromDb = async (_id: string, payload: TCorse) => {
 
+  const { preRequisiteCorse, ...remainingData } = payload;
 
-    const {preRequisiteCorse, ...remaningData}=payload;
+  // 1️⃣ update basic data
+  const updatedCourse = await CorseModel.findByIdAndUpdate(
+    _id,
+    remainingData,
+    { new: true }
+  );
 
-    //update basin Data
+  // 2️⃣ delete prerequisite course
+  if (preRequisiteCorse && preRequisiteCorse.length > 0) {
 
-    const result= await CorseModel.findByIdAndUpdate(__id, remaningData, {new:true})
+    const deletePreReq = preRequisiteCorse
+      .filter((el) => el.isDelete === true)
+      .map((el) => el.corse);
 
+    if (deletePreReq.length > 0) {
+      await CorseModel.findByIdAndUpdate(_id, {
+        $pull: {
+          preRequisiteCorse: { corse: { $in: deletePreReq } },
+        },
+      });
+    }
+  }
 
-
-    
-
-
-
-
-}
+  return updatedCourse;
+};
 
 
 

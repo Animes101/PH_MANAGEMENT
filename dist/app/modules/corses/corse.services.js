@@ -35,10 +35,24 @@ const deleteCorseFromDb = async (_id) => {
     const result = await corse_model_1.CorseModel.findOneAndUpdate({ _id }, { isDelete: true }, { new: true });
     return result;
 };
-const updateCorseFromDb = async (__id, payload) => {
-    const { preRequisiteCorse, ...remaningData } = payload;
-    //update basin Data
-    const result = await corse_model_1.CorseModel.findByIdAndUpdate(__id, remaningData, { new: true });
+const updateCorseFromDb = async (_id, payload) => {
+    const { preRequisiteCorse, ...remainingData } = payload;
+    // 1️⃣ update basic data
+    const updatedCourse = await corse_model_1.CorseModel.findByIdAndUpdate(_id, remainingData, { new: true });
+    // 2️⃣ delete prerequisite course
+    if (preRequisiteCorse && preRequisiteCorse.length > 0) {
+        const deletePreReq = preRequisiteCorse
+            .filter((el) => el.isDelete === true)
+            .map((el) => el.corse);
+        if (deletePreReq.length > 0) {
+            await corse_model_1.CorseModel.findByIdAndUpdate(_id, {
+                $pull: {
+                    preRequisiteCorse: { corse: { $in: deletePreReq } },
+                },
+            });
+        }
+    }
+    return updatedCourse;
 };
 exports.corseServices = {
     createCorseIntoDb,
