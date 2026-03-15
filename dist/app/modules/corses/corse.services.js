@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.corseServices = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const corse_model_1 = require("./corse.model");
@@ -36,28 +37,62 @@ const deleteCorseFromDb = async (_id) => {
     return result;
 };
 const updateCorseFromDb = async (_id, payload) => {
-    const { preRequisiteCorse, ...remainingData } = payload;
-    // 1️⃣ update basic data
-    const updatedCourse = await corse_model_1.CorseModel.findByIdAndUpdate(_id, remainingData, { new: true });
-    // 2️⃣ delete prerequisite course
-    if (preRequisiteCorse && preRequisiteCorse.length > 0) {
-        const deletePreReq = preRequisiteCorse
-            .filter((el) => el.isDelete === true)
-            .map((el) => el.corse);
-        if (deletePreReq.length > 0) {
-            await corse_model_1.CorseModel.findByIdAndUpdate(_id, {
-                $pull: {
-                    preRequisiteCorse: { corse: { $in: deletePreReq } },
-                },
-            });
+    const session = await mongoose_1.default.startSession();
+    try {
+        session.startTransaction();
+        const { preRequisiteCorse, ...remainingData } = payload;
+        // 1️⃣ update main course
+        await corse_model_1.CorseModel.findByIdAndUpdate(_id, remainingData, { new: true, session });
+        if (preRequisiteCorse && preRequisiteCorse.length > 0) {
+            // 2️⃣ delete prerequisite
+            const deletePreReq = preRequisiteCorse
+                .filter((el) => el.isDelete)
+                .map((el) => el.corse);
+            if (deletePreReq.length > 0) {
+                await corse_model_1.CorseModel.findByIdAndUpdate(_id, {
+                    $pull: {
+                        preRequisiteCorse: { corse: { $in: deletePreReq } },
+                    },
+                }, { session });
+            }
+            // 3️⃣ get updated course
+            const course = await corse_model_1.CorseModel
+                .findById(_id)
+                .session(session);
+            const existingIds = course?.preRequisiteCorse?.map((item) => item.corse.toString()) || [];
+            // 4️⃣ add new prerequisite
+            const newPreRequestCourse = preRequisiteCorse.filter((item) => !item.isDelete &&
+                !existingIds.includes(item.corse.toString()));
+            if (newPreRequestCourse.length > 0) {
+                await corse_model_1.CorseModel.findByIdAndUpdate(_id, {
+                    $addToSet: {
+                        preRequisiteCorse: { $each: newPreRequestCourse },
+                    },
+                }, { new: true, session });
+            }
         }
+        const result = await corse_model_1.CorseModel
+            .findById(_id)
+            .session(session);
+        await session.commitTransaction();
+        session.endSession();
+        return result;
     }
-    return updatedCourse;
+    catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        throw new AppError_1.default('Corse update Fail', 401);
+    }
+};
+// assing facalitus
+const assignFacalitsIntoDb = async (CorseId, payload) => {
+    console.log(CorseId, payload);
 };
 exports.corseServices = {
     createCorseIntoDb,
     getAllCorsefromBd,
     getSingleCorseInotDb,
     deleteCorseFromDb,
-    updateCorseFromDb
+    updateCorseFromDb,
+    assignFacalitsIntoDb
 };

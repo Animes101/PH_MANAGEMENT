@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { TCorse, TpreRequiesitesCorse } from "./corse.interface";
+import { TassignFacalitis, TCorse, TpreRequiesitesCorse } from "./corse.interface";
 
 
 const preRequisitesSchema=new Schema<TpreRequiesitesCorse>({
@@ -35,4 +35,22 @@ const CorseSchema=new Schema<TCorse>({
 
 
 
-export const  CorseModel= model<TCorse>('corse', CorseSchema)
+export const  CorseModel= model<TCorse>('corse', CorseSchema);
+
+
+const corseFacalitisSchema=new Schema<TassignFacalitis>({
+
+    corse:{
+        type:Schema.Types.ObjectId,
+        unique:true, 
+        ref:'corse'
+    },
+    faculties:{
+        type:[Schema.Types.ObjectId],
+        ref:'teachers'
+    }
+})
+
+
+
+export const  CorseFacultiesModel= model<TassignFacalitis>('CorseFacalitis', corseFacalitisSchema);

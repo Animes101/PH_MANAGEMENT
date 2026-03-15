@@ -1,7 +1,8 @@
+import mongoose from "mongoose";
 import AppError from "../../errors/AppError";
 import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { TCorse } from "./corse.interface"
-import { CorseModel } from "./corse.model"
+import { CorseFacultiesModel, CorseModel } from "./corse.model"
 
 const createCorseIntoDb=async(payload:TCorse)=>{
 
@@ -39,7 +40,7 @@ const getSingleCorseInotDb= async(_id:string)=>{
 const deleteCorseFromDb= async(_id:string)=>{
 
     // 1️⃣ find student by custom id
-      const corse = await CorseModel.findOne({ _id });
+     const corse = await CorseModel.findOne({ _id });
     
       if (!corse) {
         throw new AppError("Corse  not found", 404);
@@ -50,36 +51,99 @@ const deleteCorseFromDb= async(_id:string)=>{
     return result
 }
 
+
+
+
 const updateCorseFromDb = async (_id: string, payload: TCorse) => {
 
-  const { preRequisiteCorse, ...remainingData } = payload;
+  const session = await mongoose.startSession();
 
-  // 1️⃣ update basic data
-  const updatedCourse = await CorseModel.findByIdAndUpdate(
-    _id,
-    remainingData,
-    { new: true }
-  );
+  try {
+    session.startTransaction();
 
-  // 2️⃣ delete prerequisite course
-  if (preRequisiteCorse && preRequisiteCorse.length > 0) {
+    const { preRequisiteCorse, ...remainingData } = payload;
 
-    const deletePreReq = preRequisiteCorse
-      .filter((el) => el.isDelete === true)
-      .map((el) => el.corse);
+    // 1️⃣ update main course
+    await CorseModel.findByIdAndUpdate(
+      _id,
+      remainingData,
+      { new: true, session }
+    );
 
-    if (deletePreReq.length > 0) {
-      await CorseModel.findByIdAndUpdate(_id, {
-        $pull: {
-          preRequisiteCorse: { corse: { $in: deletePreReq } },
-        },
-      });
+    if (preRequisiteCorse && preRequisiteCorse.length > 0) {
+
+      // 2️⃣ delete prerequisite
+      const deletePreReq = preRequisiteCorse
+        .filter((el) => el.isDelete)
+        .map((el) => el.corse);
+
+      if (deletePreReq.length > 0) {
+        await CorseModel.findByIdAndUpdate(
+          _id,
+          {
+            $pull: {
+              preRequisiteCorse: { corse: { $in: deletePreReq } },
+            },
+          },
+          { session }
+        );
+      }
+
+      // 3️⃣ get updated course
+      const course = await CorseModel
+        .findById(_id)
+        .session(session);
+
+      const existingIds =
+        course?.preRequisiteCorse?.map((item) =>
+          item.corse.toString()
+        ) || [];
+
+      // 4️⃣ add new prerequisite
+      const newPreRequestCourse = preRequisiteCorse.filter(
+        (item) =>
+          !item.isDelete &&
+          !existingIds.includes(item.corse.toString())
+      );
+
+      if (newPreRequestCourse.length > 0) {
+        await CorseModel.findByIdAndUpdate(
+          _id,
+          {
+            $addToSet: {
+              preRequisiteCorse: { $each: newPreRequestCourse },
+            },
+          },
+          { new: true, session }
+        );
+      }
     }
-  }
 
-  return updatedCourse;
+    const result = await CorseModel
+      .findById(_id)
+      .session(session);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return result;
+
+  } catch (error) {
+
+    await session.abortTransaction();
+    session.endSession();
+
+    throw  new AppError('Corse update Fail', 401);
+  }
 };
 
+// assing facalitus
+
+const assignFacalitsIntoDb=async(CorseId:string, payload:TCorse)=>{
+
+  console.log(CorseId, payload)
+
+}
 
 
 export const corseServices={
@@ -88,6 +152,7 @@ export const corseServices={
     getAllCorsefromBd,
     getSingleCorseInotDb,
     deleteCorseFromDb,
-    updateCorseFromDb
+    updateCorseFromDb,
+    assignFacalitsIntoDb
     
 }

@@ -55,10 +55,22 @@ const updateCorse = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const assignCorseFacalitis = (0, catchAsync_1.default)(async (req, res) => {
+    const CorseId = req.params.CorseId;
+    const facalitis = req.body;
+    const result = await corse_services_1.corseServices.assignFacalitsIntoDb(CorseId, facalitis);
+    (0, respons_1.default)(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Update Corse  Successfuly',
+        data: result
+    });
+});
 exports.corseController = {
     createCorse,
     getAllCorse,
     getSingleCorseFromDb,
     deleteCorse,
-    updateCorse
+    updateCorse,
+    assignCorseFacalitis
 };

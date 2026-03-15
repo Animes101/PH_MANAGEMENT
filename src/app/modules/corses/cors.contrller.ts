@@ -64,10 +64,24 @@ const deleteCorse=catchAsync(async(req,res)=>{
 
 
 const updateCorse=catchAsync(async(req,res)=>{
-
     const _id= req.params._id as string
 
     const result=await corseServices.updateCorseFromDb(_id, req.body)
+
+    sendResponse(res,{
+        statusCode: 201,
+    success: true,
+    message: 'Update Corse  Successfuly',
+    data: result
+
+    })
+})
+
+
+const assignCorseFacalitis=catchAsync(async(req,res)=>{
+    const CorseId= req.params.CorseId as string
+    const  facalitis= req.body
+    const result=await corseServices.assignFacalitsIntoDb(CorseId, facalitis)
 
     sendResponse(res,{
         statusCode: 201,
@@ -87,6 +101,7 @@ export const corseController={
     getAllCorse,
     getSingleCorseFromDb,
     deleteCorse,
-    updateCorse
+    updateCorse,
+    assignCorseFacalitis
 
 }

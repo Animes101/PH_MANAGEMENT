@@ -13,3 +13,9 @@ export type TCorse={
     credits:number,
     preRequisiteCorse:[TpreRequiesitesCorse]
 }
+
+export type TassignFacalitis={
+
+    corse:Types.ObjectId,
+    faculties:[Types.ObjectId]
+}
