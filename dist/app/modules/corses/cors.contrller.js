@@ -66,11 +66,23 @@ const assignCorseFacalitis = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const deleteFacalitisCorse = (0, catchAsync_1.default)(async (req, res) => {
+    const CorseId = req.params.CorseId;
+    const facalitis = req.body;
+    const result = await corse_services_1.corseServices.deleteFaclitisCorseFromBd(CorseId, facalitis);
+    (0, respons_1.default)(res, {
+        statusCode: 201,
+        success: true,
+        message: 'Remve  Corse Facakutus  Successfuly',
+        data: result
+    });
+});
 exports.corseController = {
     createCorse,
     getAllCorse,
     getSingleCorseFromDb,
     deleteCorse,
     updateCorse,
-    assignCorseFacalitis
+    assignCorseFacalitis,
+    deleteFacalitisCorse
 };

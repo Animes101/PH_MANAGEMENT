@@ -24,13 +24,6 @@ exports.createCourseValidationSchema = joi_1.default.object({
     })),
 });
 exports.assignFacultiesValidation = joi_1.default.object({
-    // corse: Joi.string()
-    //   .required()
-    //   .messages({
-    //     "string.base": "Corse must be a string",
-    //     "string.empty": "Corse is required",
-    //     "any.required": "Corse is required",
-    //   }),
     faculties: joi_1.default.array()
         .items(joi_1.default.string().required().messages({
         "string.base": "Faculty id must be a string",

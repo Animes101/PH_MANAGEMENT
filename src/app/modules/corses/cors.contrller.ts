@@ -93,6 +93,23 @@ const assignCorseFacalitis=catchAsync(async(req,res)=>{
 })
 
 
+const deleteFacalitisCorse=catchAsync(async(req,res)=>{
+    const CorseId= req.params.CorseId as string
+    const  facalitis= req.body
+
+
+    const result=await corseServices.deleteFaclitisCorseFromBd(CorseId, facalitis)
+
+    sendResponse(res,{
+    statusCode: 201,
+    success: true,
+    message: 'Remve  Corse Facakutus  Successfuly',
+    data: result
+
+    })
+})
+
+
 
 
 
@@ -102,6 +119,7 @@ export const corseController={
     getSingleCorseFromDb,
     deleteCorse,
     updateCorse,
-    assignCorseFacalitis
+    assignCorseFacalitis,
+    deleteFacalitisCorse
 
 }

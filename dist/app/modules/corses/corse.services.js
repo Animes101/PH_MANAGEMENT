@@ -84,12 +84,23 @@ const updateCorseFromDb = async (_id, payload) => {
         throw new AppError_1.default('Corse update Fail', 401);
     }
 };
-// assing facalitus
 const assignFacalitsIntoDb = async (CorseId, payload) => {
-    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, {
+    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, // 🔑 query object
+    {
         $addToSet: {
             faculties: {
                 $each: payload.faculties
+            }
+        }
+    }, { upsert: true, new: true });
+    return result;
+};
+const deleteFaclitisCorseFromBd = async (CorseId, payload) => {
+    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, // 🔑 query object
+    {
+        $pull: {
+            faculties: {
+                $in: payload.faculties
             }
         }
     }, { upsert: true, new: true });
@@ -101,5 +112,6 @@ exports.corseServices = {
     getSingleCorseInotDb,
     deleteCorseFromDb,
     updateCorseFromDb,
-    assignFacalitsIntoDb
+    assignFacalitsIntoDb,
+    deleteFaclitisCorseFromBd
 };

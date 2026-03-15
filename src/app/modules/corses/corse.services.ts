@@ -137,14 +137,12 @@ const updateCorseFromDb = async (_id: string, payload: TCorse) => {
   }
 };
 
-// assing facalitus
-
 const assignFacalitsIntoDb = async (
   CorseId: string,
   payload: TassignFacalitis
 ) => {
   const result = await CorseFacultiesModel.findOneAndUpdate(
-    { corse: CorseId },
+    { corse: CorseId },   // 🔑 query object
     {
       $addToSet: {
         faculties: {
@@ -159,6 +157,27 @@ const assignFacalitsIntoDb = async (
 };
 
 
+const deleteFaclitisCorseFromBd = async (
+  CorseId: string,
+  payload: TassignFacalitis
+) => {
+
+
+  const result = await CorseFacultiesModel.findOneAndUpdate(
+    { corse: CorseId },   // 🔑 query object
+    {
+      $pull: {
+        faculties: {
+          $in: payload.faculties
+        }
+      }
+    },
+    { upsert: true, new: true }
+  );
+
+  return result;
+};
+
 export const corseServices={
 
     createCorseIntoDb,
@@ -166,6 +185,7 @@ export const corseServices={
     getSingleCorseInotDb,
     deleteCorseFromDb,
     updateCorseFromDb,
-    assignFacalitsIntoDb
+    assignFacalitsIntoDb,
+    deleteFaclitisCorseFromBd
     
 }
