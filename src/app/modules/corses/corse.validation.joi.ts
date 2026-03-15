@@ -25,3 +25,27 @@ export const createCourseValidationSchema = Joi.object({
     })
   ),
 })
+
+
+
+export const assignFacultiesValidation = Joi.object({
+  // corse: Joi.string()
+  //   .required()
+  //   .messages({
+  //     "string.base": "Corse must be a string",
+  //     "string.empty": "Corse is required",
+  //     "any.required": "Corse is required",
+  //   }),
+
+  faculties: Joi.array()
+    .items(
+      Joi.string().required().messages({
+        "string.base": "Faculty id must be a string",
+      })
+    )
+    .required()
+    .messages({
+      "array.base": "Faculties must be an array",
+      "any.required": "Faculties are required",
+    }),
+});

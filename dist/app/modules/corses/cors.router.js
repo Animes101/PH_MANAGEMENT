@@ -14,5 +14,5 @@ Router.get('/get-allCorse', cors_contrller_1.corseController.getAllCorse);
 Router.get('/get-singleCorse/:_id', cors_contrller_1.corseController.getSingleCorseFromDb);
 Router.patch('/delete-Corse/:_id', cors_contrller_1.corseController.deleteCorse);
 Router.patch('/update-corse/:_id', cors_contrller_1.corseController.updateCorse);
-Router.put('/:CorseId/:assing_facalitis', cors_contrller_1.corseController.assignCorseFacalitis);
+Router.put('/:CorseId/:assing_facalitis', (0, validatonJoi_1.default)(corse_validation_joi_1.assignFacultiesValidation), cors_contrller_1.corseController.assignCorseFacalitis);
 exports.CorseRouter = Router;

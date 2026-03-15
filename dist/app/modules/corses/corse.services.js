@@ -86,7 +86,14 @@ const updateCorseFromDb = async (_id, payload) => {
 };
 // assing facalitus
 const assignFacalitsIntoDb = async (CorseId, payload) => {
-    console.log(CorseId, payload);
+    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, {
+        $addToSet: {
+            faculties: {
+                $each: payload.faculties
+            }
+        }
+    }, { upsert: true, new: true });
+    return result;
 };
 exports.corseServices = {
     createCorseIntoDb,

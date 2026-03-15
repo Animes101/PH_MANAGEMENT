@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCourseValidationSchema = void 0;
+exports.assignFacultiesValidation = exports.createCourseValidationSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.createCourseValidationSchema = joi_1.default.object({
     title: joi_1.default.string().trim().required().messages({
@@ -22,4 +22,22 @@ exports.createCourseValidationSchema = joi_1.default.object({
         }),
         isDelete: joi_1.default.boolean().default(false),
     })),
+});
+exports.assignFacultiesValidation = joi_1.default.object({
+    // corse: Joi.string()
+    //   .required()
+    //   .messages({
+    //     "string.base": "Corse must be a string",
+    //     "string.empty": "Corse is required",
+    //     "any.required": "Corse is required",
+    //   }),
+    faculties: joi_1.default.array()
+        .items(joi_1.default.string().required().messages({
+        "string.base": "Faculty id must be a string",
+    }))
+        .required()
+        .messages({
+        "array.base": "Faculties must be an array",
+        "any.required": "Faculties are required",
+    }),
 });

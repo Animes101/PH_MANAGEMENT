@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import AppError from "../../errors/AppError";
 import QueryBuilder from "../../queryBuilder/queryBuilder";
-import { TCorse } from "./corse.interface"
+import { TassignFacalitis, TCorse } from "./corse.interface"
 import { CorseFacultiesModel, CorseModel } from "./corse.model"
 
 const createCorseIntoDb=async(payload:TCorse)=>{
@@ -139,11 +139,24 @@ const updateCorseFromDb = async (_id: string, payload: TCorse) => {
 
 // assing facalitus
 
-const assignFacalitsIntoDb=async(CorseId:string, payload:TCorse)=>{
+const assignFacalitsIntoDb = async (
+  CorseId: string,
+  payload: TassignFacalitis
+) => {
+  const result = await CorseFacultiesModel.findOneAndUpdate(
+    { corse: CorseId },
+    {
+      $addToSet: {
+        faculties: {
+          $each: payload.faculties
+        }
+      }
+    },
+    { upsert: true, new: true }
+  );
 
-  console.log(CorseId, payload)
-
-}
+  return result;
+};
 
 
 export const corseServices={
