@@ -7,13 +7,9 @@ const Router= express.Router()
 
 
 Router.post('/create-register', validationRequest(createRegistrationValidation), RegisterColtroller.createRegister)
-// Router.get('/get-allCorse', corseController.getAllCorse);
-// Router.get('/get-singleCorse/:_id' , corseController.getSingleCorseFromDb)
-// Router.patch('/delete-Corse/:_id' , corseController.deleteCorse)
-// Router.patch('/update-corse/:_id' , corseController.updateCorse)
-// Router.put('/:CorseId/:assing_facalitis', validationRequest(assignFacultiesValidation), corseController.assignCorseFacalitis)
-// Router.delete('/:CorseId/:deleteCorseFacalitis', validationRequest(assignFacultiesValidation), corseController.deleteFacalitisCorse)
-
-
+Router.get('/get-allRegister', RegisterColtroller.getAllReginster);
+Router.get('/get-getSingleRegistrer/:_id' , RegisterColtroller.getSingleRegister)
+Router.patch('/delete-Register/:_id' , RegisterColtroller.deleteRegister)
+Router.patch('/update-Register/:_id' , RegisterColtroller.upadeRegister)
 
 export const RegisterRouter=Router

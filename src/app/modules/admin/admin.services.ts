@@ -4,7 +4,6 @@ import AppError from "../../errors/AppError";
 import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { adminModel } from "./admin.model"
 import { UserModel } from "../user/user.model";
-import { IAdmin } from "./admin.interface";
 import { ITeacher } from "../facality/facality.interface";
 
 
