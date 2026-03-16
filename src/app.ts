@@ -10,6 +10,7 @@ import { academinRouterDepartment } from './app/modules/acdemonDepermant/academi
 import { adminRouter } from './app/modules/admin/admin.route';
 import { facalityRouter } from './app/modules/facality/facality.router';
 import { CorseRouter } from './app/modules/corses/cors.router';
+import { RegisterRouter } from './app/modules/semesterRegistation/Register.Router';
 const app: Application = express();
 
 // middlewares
@@ -26,6 +27,7 @@ app.use('/api/v1', academinRouterDepartment)
 app.use('/api/v1', adminRouter)
 app.use('/api/v1', facalityRouter)
 app.use('/api/v1', CorseRouter)
+app.use('/api/v1', RegisterRouter)
 
 app.get('/test', (req,res)=>{
 
