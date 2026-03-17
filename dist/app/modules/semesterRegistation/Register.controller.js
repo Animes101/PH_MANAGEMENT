@@ -17,7 +17,8 @@ const createRegister = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 const upadeRegister = (0, catchAsync_1.default)(async (req, res) => {
-    const result = await Register_services_1.RegisterServices.createRegisterIntoBd(req.body);
+    const _id = req.params._id;
+    const result = await Register_services_1.RegisterServices.updateRegisterintoDb(_id, req.body);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,

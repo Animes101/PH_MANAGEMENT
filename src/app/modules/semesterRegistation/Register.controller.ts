@@ -19,7 +19,9 @@ const createRegister=catchAsync(async(req, res)=>{
 
 const upadeRegister=catchAsync(async(req, res)=>{
 
-    const result= await RegisterServices.createRegisterIntoBd(req.body)
+    const _id= req.params._id as string;
+
+    const result= await RegisterServices.updateRegisterintoDb(_id, req.body)
 
     sendResponse(res,{
     statusCode: 200,

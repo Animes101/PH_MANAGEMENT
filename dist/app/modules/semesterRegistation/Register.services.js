@@ -9,6 +9,16 @@ const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"
 const acadamin_model_1 = require("../acadamicSemister/acadamin.model");
 const Register_model_1 = require("./Register.model");
 const createRegisterIntoBd = async (payload) => {
+    //check if ther ay register sementer alredy upcoming or ongoing
+    const isTherAnyUpcomingorOngoing = await Register_model_1.registerModel.findOne({
+        $or: [
+            { status: 'UPCOMING' },
+            { status: 'ONGOING' }
+        ]
+    });
+    if (isTherAnyUpcomingorOngoing) {
+        throw new AppError_1.default(`There is already ${isTherAnyUpcomingorOngoing.status} semester`, 401);
+    }
     const academinExits = await acadamin_model_1.AcademicSemesterModel.findOne({ _id: payload.academinSemister });
     if (!academinExits) {
         throw new AppError_1.default('Academin Depertment not Fund', 401);
@@ -20,8 +30,16 @@ const createRegisterIntoBd = async (payload) => {
     const result = await Register_model_1.registerModel.create(payload);
     return result;
 };
-const updateRegisterintoDb = async (payload) => {
-    console.log(payload);
+const updateRegisterintoDb = async (_id, payload) => {
+    //if the request sementer register is enddend 
+    const requestRegister = await Register_model_1.registerModel.findOne({ _id });
+    if (requestRegister?.status === 'ENDED') {
+        throw new AppError_1.default('this Register Sementer alredy Ended', 401);
+    }
+    const academinExits = await acadamin_model_1.AcademicSemesterModel.findOne({ _id });
+    if (!academinExits) {
+        throw new AppError_1.default('Academin Depertment not Fund', 401);
+    }
 };
 const deleteRegisterIntoDb = async (payload) => {
     console.log(payload);

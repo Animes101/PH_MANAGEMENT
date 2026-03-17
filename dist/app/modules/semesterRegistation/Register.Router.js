@@ -13,5 +13,5 @@ Router.post('/create-register', (0, validatonJoi_1.default)(Registation_validati
 Router.get('/get-allRegister', Register_controller_1.RegisterColtroller.getAllReginster);
 Router.get('/get-getSingleRegistrer/:_id', Register_controller_1.RegisterColtroller.getSingleRegister);
 Router.patch('/delete-Register/:_id', Register_controller_1.RegisterColtroller.deleteRegister);
-Router.patch('/update-Register/:_id', Register_controller_1.RegisterColtroller.upadeRegister);
+Router.patch('/update-Register/:_id', (0, validatonJoi_1.default)(Registation_validation_1.updateValidation), Register_controller_1.RegisterColtroller.upadeRegister);
 exports.RegisterRouter = Router;

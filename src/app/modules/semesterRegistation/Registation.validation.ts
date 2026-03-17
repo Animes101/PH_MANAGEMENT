@@ -48,3 +48,45 @@ export const createRegistrationValidation = Joi.object({
       "any.required": "Max credit is required",
     }),
 });
+
+
+export const updateValidation = Joi.object({
+  academinSemister: Joi.string()
+    .pattern(objectIdPattern)
+    .messages({
+      "string.pattern.base": "Invalid Academic Semester ObjectId",
+      "any.required": "Academic Semester is required",
+    }),
+
+  status: Joi.string()
+    .valid(...registerStatus)
+    .optional(),
+
+  startDate: Joi.date()
+    .messages({
+      "date.base": "Start date must be a valid date",
+      "any.required": "Start date is required",
+    }),
+
+  endDate: Joi.date()
+    .greater(Joi.ref("startDate"))
+    .messages({
+      "date.base": "End date must be a valid date",
+      "date.greater": "End date must be greater than start date",
+      "any.required": "End date is required",
+    }),
+
+  minCredit: Joi.number()
+    .messages({
+      "number.base": "Min credit must be a number",
+      "any.required": "Min credit is required",
+    }),
+
+  maxCredit: Joi.number()
+    .greater(Joi.ref("minCredit"))
+    .messages({
+      "number.base": "Max credit must be a number",
+      "number.greater": "Max credit must be greater than min credit",
+      "any.required": "Max credit is required",
+    }),
+});
