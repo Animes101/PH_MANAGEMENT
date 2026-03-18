@@ -46,31 +46,58 @@ const createRegisterIntoBd = async (payload: Partial<Tregintation>) => {
     return result
 
 }
-const updateRegisterintoDb = async (_id: string, payload: Partial<Tregintation>) => {
+const updateRegisterintoDb = async (
+  _id: string,
+  payload: Partial<Tregintation>
+) => {
+
+  // 1️⃣ find register
+  const requestRegister = await registerModel.findById(_id);
+
+  if (!requestRegister) {
+    throw new AppError('Register not found', 404);
+  }
+
+  // 2️⃣ check if already ended
+  if (requestRegister.status === 'ENDED') {
+    throw new AppError('This Register Semester already ended', 400);
+  }
+
+  // 3️⃣ check academic semester using reference id
+  const academinExits = await AcademicSemesterModel.findById(
+    requestRegister.academinSemister
+  );
+
+  if (!academinExits) {
+    throw new AppError('Academic Semester not found', 404);
+  }
+
+  //UPCOMING => ONGOING => ENDED
+
+  if(requestRegister.status === 'UPCOMING' && payload?.status == 'ENDED'){
+
+    throw new AppError('You Can not Update this status Ended', 402)
 
 
-    //if the request sementer register is enddend 
+  }
 
-    const requestRegister= await registerModel.findOne( {_id})
+  
+  if(requestRegister.status === 'ONGOING' && payload?.status == 'UPCOMING'){
 
-    if(requestRegister?.status === 'ENDED'){
-
-        throw new AppError('this Register Sementer alredy Ended', 401)
-    }
+    throw new AppError('You Can not Update this status UPCOMING', 402)
 
 
-    const academinExits = await AcademicSemesterModel.findOne({ _id })
-
-    if (!academinExits) {
-
-        throw new AppError('Academin Depertment not Fund', 401)
-
-    }
+  }
 
 
+  // 4️⃣ update
+  const result = await registerModel.findByIdAndUpdate(_id, payload, {
+    new: true,
+  });
 
+  return result;
 
-}
+};
 
 
 const deleteRegisterIntoDb = async (payload: Partial<Tregintation>) => {
