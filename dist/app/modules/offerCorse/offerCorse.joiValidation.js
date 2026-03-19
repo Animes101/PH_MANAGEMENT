@@ -17,9 +17,6 @@ exports.createOfferCourseValidation = joi_1.default.object({
     registationSementer: joi_1.default.string()
         .required()
         .custom(objectId),
-    academinSementer: joi_1.default.string()
-        .required()
-        .custom(objectId),
     academinFacaulty: joi_1.default.string()
         .required()
         .custom(objectId),

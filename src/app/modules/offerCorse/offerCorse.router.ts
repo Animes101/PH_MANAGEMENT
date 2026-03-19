@@ -3,7 +3,7 @@ import { OfferCourseController } from "./offerCorse.controller";
 
 const router = express.Router();
 
-router.post("/create", OfferCourseController.createOfferCourse);
+router.post("/createOfferCorse", OfferCourseController.createOfferCourse);
 router.get("/", OfferCourseController.getAllOfferCourses);
 router.get("/:_id", OfferCourseController.getSingleOfferCourse);
 router.patch("/:_id", OfferCourseController.updateOfferCourse);

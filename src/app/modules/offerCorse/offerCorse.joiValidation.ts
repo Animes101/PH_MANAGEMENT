@@ -14,10 +14,6 @@ export const createOfferCourseValidation = Joi.object({
     .required()
     .custom(objectId),
 
-  academinSementer: Joi.string()
-    .required()
-    .custom(objectId),
-
   academinFacaulty: Joi.string()
     .required()
     .custom(objectId),

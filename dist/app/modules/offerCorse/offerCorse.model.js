@@ -8,11 +8,6 @@ const offerCourseSchema = new mongoose_1.Schema({
         ref: "register",
         required: true,
     },
-    academinSementer: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "academicsemesters",
-        required: true,
-    },
     academinFacaulty: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "academicfaculties",

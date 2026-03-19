@@ -5,8 +5,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OfferCourseServices = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
+const faculty_model_1 = require("../academicFaculty/faculty.model");
+const corse_model_1 = require("../corses/corse.model");
+const facality_model_1 = require("../facality/facality.model");
+const Register_model_1 = require("../semesterRegistation/Register.model");
 const offerCorse_model_1 = require("./offerCorse.model");
 const createOfferCourseIntoDB = async (payload) => {
+    //academinSemester Exits
+    const academinSementerRegisterExits = await Register_model_1.registerModel.findOne({ _id: payload.registationSementer });
+    if (!academinSementerRegisterExits) {
+        throw new AppError_1.default('academin Semester Registatin not Found', 401);
+    }
+    const academinFacalityExits = await faculty_model_1.AcademicFacultyModel.findOne({ _id: payload.academinFacaulty });
+    if (!academinFacalityExits) {
+        throw new AppError_1.default('academin Semester  REgister  not Found', 401);
+    }
+    const corseExits = await corse_model_1.CorseModel.findOne({ _id: payload.corse });
+    if (!corseExits) {
+        throw new AppError_1.default('academin Semester corse not Found', 401);
+    }
+    const teacheExits = await facality_model_1.TeacherModel.findOne({ _id: payload.teacher });
+    if (!teacheExits) {
+        throw new AppError_1.default('academin Semester Teacher not Found', 401);
+    }
+    const academinSemester = academinSementerRegisterExits?.academinSemister;
     // 🔴 capacity check
     if (payload.minCapacity > payload.maxCapacity) {
         throw new AppError_1.default("minCapacity cannot be greater than maxCapacity", 401);
@@ -29,7 +51,7 @@ const createOfferCourseIntoDB = async (payload) => {
     if (isConflict) {
         throw new AppError_1.default("This teacher already has a class at this time", 401);
     }
-    const result = await offerCorse_model_1.OfferCourseModel.create(payload);
+    const result = await offerCorse_model_1.OfferCourseModel.create({ ...payload, academinSemester });
     return result;
 };
 const getAllOfferCoursesFromDB = async () => {

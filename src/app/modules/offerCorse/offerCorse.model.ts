@@ -8,10 +8,11 @@ const offerCourseSchema = new Schema<TofferCorse>(
       ref: "register",
       required: true,
     },
-    academinSementer: {
+    academinSemester:{
       type: Schema.Types.ObjectId,
-      ref: "academicsemesters",
+      ref: "register",
       required: true,
+
     },
     academinFacaulty: {
       type: Schema.Types.ObjectId,

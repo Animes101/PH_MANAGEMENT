@@ -1,9 +1,56 @@
 import AppError from "../../errors/AppError";
+import { AcademicFacultyModel } from "../academicFaculty/faculty.model";
+import { CorseModel } from "../corses/corse.model";
+import { TeacherModel } from "../facality/facality.model";
+import { registerModel } from "../semesterRegistation/Register.model";
 import { TofferCorse } from "./offerCorse.interface";
 import { OfferCourseModel } from "./offerCorse.model";
 
 
 const createOfferCourseIntoDB = async (payload: TofferCorse) => {
+
+  //academinSemester Exits
+
+  const academinSementerRegisterExits= await  registerModel.findOne({_id:payload.registationSementer})
+
+  if(!academinSementerRegisterExits){
+
+    throw new AppError('academin Semester Registatin not Found' , 401)
+
+
+  }
+
+
+  const academinFacalityExits= await  AcademicFacultyModel.findOne({_id:payload.academinFacaulty})
+
+  if(!academinFacalityExits){
+
+    throw new AppError('academin Semester  REgister  not Found' , 401)
+
+
+  }
+
+  const corseExits= await  CorseModel.findOne({_id:payload.corse})
+
+  if(!corseExits){
+
+    throw new AppError('academin Semester corse not Found' , 401)
+
+
+  }
+
+
+  const teacheExits= await  TeacherModel.findOne({_id:payload.teacher})
+
+  if(!teacheExits){
+
+    throw new AppError('academin Semester Teacher not Found' , 401)
+
+
+  }
+
+  const academinSemester= academinSementerRegisterExits?.academinSemister;
+
 
   // 🔴 capacity check
   if (payload.minCapacity > payload.maxCapacity) {
@@ -40,7 +87,7 @@ const createOfferCourseIntoDB = async (payload: TofferCorse) => {
     );
   }
 
-  const result = await OfferCourseModel.create(payload);
+  const result = await OfferCourseModel.create({...payload, academinSemester});
   return result;
 };
 
