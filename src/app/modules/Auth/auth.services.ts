@@ -3,6 +3,8 @@
 import { TUser } from "./auth.interface";
 import AppError from "../../errors/AppError";
 import { UserModel } from "../user/user.model";
+import bcrypt from "bcrypt";
+
 
 // const registerUser = async (payload: TUser) => {
 //   const isUserExist = await UserModel.findOne({ email: payload.email });
@@ -15,17 +17,26 @@ import { UserModel } from "../user/user.model";
 //   return user;
 // };
 
+
 const loginUser = async (payload: TUser) => {
-
-    console.log(payload)
-
   const user = await UserModel.findOne({ id: payload.id }).select("+password");
 
   if (!user) {
     throw new AppError("User not found", 404);
+  }else if(user?.isDelete === true){
+
+    throw new AppError('user alredy Dele thi data base', 402)
   }
 
-  const isPasswordMatched = payload.password === user.password;
+
+
+
+
+  // 🔥 bcrypt compare
+  const isPasswordMatched = await bcrypt.compare(
+    payload.password,
+    user.password
+  );
 
   if (!isPasswordMatched) {
     throw new AppError("Invalid credentials", 401);

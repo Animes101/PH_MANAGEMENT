@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 // const registerUser = async (payload: TUser) => {
 //   const isUserExist = await UserModel.findOne({ email: payload.email });
 //   if (isUserExist) {
@@ -15,12 +16,15 @@ const user_model_1 = require("../user/user.model");
 //   return user;
 // };
 const loginUser = async (payload) => {
-    console.log(payload);
     const user = await user_model_1.UserModel.findOne({ id: payload.id }).select("+password");
     if (!user) {
         throw new AppError_1.default("User not found", 404);
     }
-    const isPasswordMatched = payload.password === user.password;
+    else if (user?.isDelete === true) {
+        throw new AppError_1.default('user alredy Dele thi data base', 402);
+    }
+    // 🔥 bcrypt compare
+    const isPasswordMatched = await bcrypt_1.default.compare(payload.password, user.password);
     if (!isPasswordMatched) {
         throw new AppError_1.default("Invalid credentials", 401);
     }
