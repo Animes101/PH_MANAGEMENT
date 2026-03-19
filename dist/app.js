@@ -17,6 +17,7 @@ const facality_router_1 = require("./app/modules/facality/facality.router");
 const cors_router_1 = require("./app/modules/corses/cors.router");
 const Register_Router_1 = require("./app/modules/semesterRegistation/Register.Router");
 const offerCorse_router_1 = require("./app/modules/offerCorse/offerCorse.router");
+const auth_route_1 = require("./app/modules/Auth/auth.route");
 const app = (0, express_1.default)();
 // middlewares
 app.use((0, cors_1.default)());
@@ -31,6 +32,7 @@ app.use('/api/v1', facality_router_1.facalityRouter);
 app.use('/api/v1', cors_router_1.CorseRouter);
 app.use('/api/v1', Register_Router_1.RegisterRouter);
 app.use('/api/v1', offerCorse_router_1.OfferCourseRoutes);
+app.use('/api/v1', auth_route_1.AuthRoutes);
 app.get('/test', (req, res) => {
     res.send('testin router');
 });

@@ -39,14 +39,20 @@ export const createOfferCourseValidation = Joi.object({
     .required(),
 
   startTime: Joi.string()
-    .required()
-    .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/) // HH:MM format
-    .message("startTime must be in HH:MM format"),
+  .required()
+  .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+  .messages({
+    "string.pattern.base": "startTime must be in HH:MM format",
+    "any.required": "startTime is required",
+  }),
 
-  endTime: Joi.string()
-    .required()
-    .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-    .message("endTime must be in HH:MM format"),
+endTime: Joi.string()
+  .required()
+  .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+  .messages({
+    "string.pattern.base": "endTime must be in HH:MM format",
+    "any.required": "endTime is required",
+  }),
 });
 
 

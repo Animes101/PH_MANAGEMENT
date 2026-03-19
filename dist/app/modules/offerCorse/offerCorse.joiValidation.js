@@ -37,12 +37,18 @@ exports.createOfferCourseValidation = joi_1.default.object({
         .required(),
     startTime: joi_1.default.string()
         .required()
-        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/) // HH:MM format
-        .message("startTime must be in HH:MM format"),
+        .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
+        .messages({
+        "string.pattern.base": "startTime must be in HH:MM format",
+        "any.required": "startTime is required",
+    }),
     endTime: joi_1.default.string()
         .required()
         .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-        .message("endTime must be in HH:MM format"),
+        .messages({
+        "string.pattern.base": "endTime must be in HH:MM format",
+        "any.required": "endTime is required",
+    }),
 });
 exports.updateOfferCourseValidation = joi_1.default.object({
     registationSementer: joi_1.default.string().custom(objectId),

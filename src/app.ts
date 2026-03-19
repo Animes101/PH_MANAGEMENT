@@ -12,6 +12,7 @@ import { facalityRouter } from './app/modules/facality/facality.router';
 import { CorseRouter } from './app/modules/corses/cors.router';
 import { RegisterRouter } from './app/modules/semesterRegistation/Register.Router';
 import { OfferCourseRoutes } from './app/modules/offerCorse/offerCorse.router';
+import { AuthRoutes } from './app/modules/Auth/auth.route';
 const app: Application = express();
 
 // middlewares
@@ -30,6 +31,7 @@ app.use('/api/v1', facalityRouter)
 app.use('/api/v1', CorseRouter)
 app.use('/api/v1', RegisterRouter)
 app.use('/api/v1', OfferCourseRoutes)
+app.use('/api/v1', AuthRoutes)
 
 app.get('/test', (req,res)=>{
 
