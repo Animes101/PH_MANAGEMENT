@@ -9,9 +9,10 @@ exports.AuthService = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = __importDefault(require("../../config"));
 const loginUser = async (payload) => {
     const user = await user_model_1.UserModel.isUserExistsById(payload?.id);
-    console.log(user);
     if (!user) {
         throw new AppError_1.default("User not found", 404);
     }
@@ -23,7 +24,16 @@ const loginUser = async (payload) => {
     if (!isPasswordMatched) {
         throw new AppError_1.default("Invalid credentials", 401);
     }
-    return user;
+    const jowPayload = {
+        userId: user.id,
+        userRole: user.role,
+    };
+    //create token json web token
+    const accessToken = jsonwebtoken_1.default.sign(jowPayload, config_1.default.JWT_ACCESS_TOKEN, { expiresIn: '10d' });
+    return {
+        accessToken,
+        needPasswordChange: true,
+    };
 };
 exports.AuthService = {
     loginUser,

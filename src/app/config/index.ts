@@ -5,7 +5,9 @@ const config = {
   port: Number(process.env.PORT) || 3000,
   mongoURI: process.env.DATABASE_URL as string,
   bcrypt_Salt: process.env.bcrypt_Salt,
-  DEFAULT_PASSWORD: process.env.DEFAULT_PASSWORD
+  DEFAULT_PASSWORD: process.env.DEFAULT_PASSWORD,
+  JWT_ACCESS_TOKEN:process.env.JWT_ACCESS_TOKEN,
+  token_txpire:process.env.token_expire
 };
 
 export default config;

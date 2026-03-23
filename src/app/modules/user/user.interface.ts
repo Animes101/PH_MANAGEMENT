@@ -1,3 +1,4 @@
+import { User_Role } from "./user.constance";
 
 
 
@@ -9,3 +10,5 @@ export interface TUser {
   status?: "in-progress" | "blocked";
   isDelete?: boolean;
 }
+
+export type TuserRole=keyof typeof User_Role

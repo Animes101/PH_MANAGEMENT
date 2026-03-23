@@ -1,9 +1,4 @@
 "use strict";
-// import { ErrorRequestHandler } from "express";
-// import { handleJoiError } from "../app/errors/Joi.Error";
-// import { TErrorSources } from "../app/interface/IError";
-// import AppError from "../app/errors/AppError";
-// import { handleCastError } from "../app/errors/handleCastError";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
