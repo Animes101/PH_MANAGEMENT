@@ -9,6 +9,5 @@ const validatonJoi_1 = __importDefault(require("../../utility/validatonJoi"));
 const auth_validaion_1 = require("./auth.validaion");
 const auth_controller_1 = require("./auth.controller");
 const router = express_1.default.Router();
-router.post("/register", (0, validatonJoi_1.default)(auth_validaion_1.registerValidation), auth_controller_1.AuthController.register);
 router.post("/login", (0, validatonJoi_1.default)(auth_validaion_1.loginValidation), auth_controller_1.AuthController.login);
 exports.AuthRoutes = router;

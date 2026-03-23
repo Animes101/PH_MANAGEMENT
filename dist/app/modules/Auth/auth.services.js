@@ -4,19 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
+// import bcrypt from "bcrypt";
+// import jwt from "jsonwebtoken";
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-// const registerUser = async (payload: TUser) => {
-//   const isUserExist = await UserModel.findOne({ email: payload.email });
-//   if (isUserExist) {
-//     throw new AppError("User already exists", 409);
-//   }
-//   const user = await UserModel.create(payload);
-//   return user;
-// };
 const loginUser = async (payload) => {
-    const user = await user_model_1.UserModel.findOne({ id: payload.id }).select("+password");
+    const user = await user_model_1.UserModel.isUserExistsById(payload?.id);
+    console.log(user);
     if (!user) {
         throw new AppError_1.default("User not found", 404);
     }
