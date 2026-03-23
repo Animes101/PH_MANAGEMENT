@@ -35,6 +35,33 @@ const loginUser = async (payload) => {
         needPasswordChange: true,
     };
 };
+const changePassword = async (newPassword, oldPassword, authUser) => {
+    const user = await user_model_1.UserModel.isUserExistsById(authUser.userId);
+    if (!user) {
+        throw new AppError_1.default("User not found", 404);
+    }
+    if (user.isDelete) {
+        throw new AppError_1.default("User is already deleted", 403);
+    }
+    // ✅ old password check
+    const isPasswordMatched = await bcrypt_1.default.compare(oldPassword, user.password);
+    if (!isPasswordMatched) {
+        throw new AppError_1.default("Invalid credentials", 401);
+    }
+    // ✅ new password hash
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt_1.default.hash(newPassword, saltRounds);
+    // ✅ update password
+    const result = await user_model_1.UserModel.findOneAndUpdate({ id: user.id }, {
+        password: hashedPassword,
+        needPassword: false,
+        passwordChangeAt: new Date() // optional
+    }, {
+        new: true,
+    });
+    return result;
+};
 exports.AuthService = {
     loginUser,
+    changePassword
 };

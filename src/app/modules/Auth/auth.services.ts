@@ -50,7 +50,55 @@ const loginUser = async (payload:IUser) => {
   };
 };
 
+
+const changePassword = async (
+  newPassword: string,
+  oldPassword: string,
+  authUser: { userId: string; userRole: string }
+) => {
+
+  const user = await UserModel.isUserExistsById(authUser.userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  if (user.isDelete) {
+    throw new AppError("User is already deleted", 403);
+  }
+
+  // ✅ old password check
+  const isPasswordMatched = await bcrypt.compare(
+    oldPassword,
+    user.password
+  );
+
+  if (!isPasswordMatched) {
+    throw new AppError("Invalid credentials", 401);
+  }
+
+  // ✅ new password hash
+  const saltRounds = 12;
+  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+  // ✅ update password
+  const result = await UserModel.findOneAndUpdate(
+    { id: user.id },
+    {
+      password: hashedPassword,
+      needPassword: false,
+      passwordChangeAt:new Date() // optional
+    },
+    {
+      new: true,
+    }
+  );
+
+  return result;
+};
 export const AuthService = {
 
   loginUser,
+  changePassword
+
 };

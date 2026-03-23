@@ -17,6 +17,9 @@ const UserSchema = new Schema<TUser, authModel>(
     },
     status: { type: String, enum: ["in-progress", "blocked"], default: "in-progress" },
     isDelete: { type: Boolean, default: false },
+    passwordChangeAt:{
+      type:Date,
+    }
   },
   { timestamps: true }
 );

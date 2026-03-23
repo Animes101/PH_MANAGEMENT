@@ -8,6 +8,8 @@ const express_1 = __importDefault(require("express"));
 const validatonJoi_1 = __importDefault(require("../../utility/validatonJoi"));
 const auth_validaion_1 = require("./auth.validaion");
 const auth_controller_1 = require("./auth.controller");
+const auth_1 = __importDefault(require("../../../middlwares/auth"));
 const router = express_1.default.Router();
 router.post("/login", (0, validatonJoi_1.default)(auth_validaion_1.loginValidation), auth_controller_1.AuthController.login);
+router.post("/changePassword", (0, auth_1.default)(), (0, validatonJoi_1.default)(auth_validaion_1.changePassword), auth_controller_1.AuthController.changePaaword);
 exports.AuthRoutes = router;

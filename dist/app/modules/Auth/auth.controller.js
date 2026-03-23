@@ -14,6 +14,17 @@ const login = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const changePaaword = (0, catchAsync_1.default)(async (req, res) => {
+    const { newpassword, oldpassword } = req.body;
+    const user = req.user;
+    const result = await auth_services_1.AuthService.changePassword(newpassword, oldpassword, user);
+    res.status(200).json({
+        success: true,
+        message: "password change  successful",
+        data: result,
+    });
+});
 exports.AuthController = {
     login,
+    changePaaword
 };

@@ -9,6 +9,7 @@ export interface TUser {
   role?: "admin" | "student" | "faculity";
   status?: "in-progress" | "blocked";
   isDelete?: boolean;
+  passwordChangeAt?:Date,
 }
 
 export type TuserRole=keyof typeof User_Role

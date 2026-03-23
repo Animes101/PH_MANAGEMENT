@@ -33,8 +33,6 @@ const auth = (...requiredRoles: TuserRole[]) => {
     // ✅ attach user
     req.user = decoded;
 
-    console.log(decoded)
-
     // ✅ role check (IMPORTANT 🔥)
     if (requiredRoles.length && !requiredRoles.includes(decoded.userRole)) {
       throw new AppError("You are not authorized this role", 403);

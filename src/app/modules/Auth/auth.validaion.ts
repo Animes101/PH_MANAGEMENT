@@ -7,3 +7,10 @@ export const loginValidation = Joi.object({
     password: Joi.string().required(),
   }),
 });
+
+
+export const changePassword = Joi.object({
+
+    oldpassword: Joi.string().required(),
+    newpassword: Joi.string().required(),
+});

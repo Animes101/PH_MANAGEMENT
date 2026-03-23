@@ -23,7 +23,6 @@ const auth = (...requiredRoles) => {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_ACCESS_TOKEN);
         // ✅ attach user
         req.user = decoded;
-        console.log(decoded);
         // ✅ role check (IMPORTANT 🔥)
         if (requiredRoles.length && !requiredRoles.includes(decoded.userRole)) {
             throw new AppError_1.default("You are not authorized this role", 403);
