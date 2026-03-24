@@ -1,11 +1,10 @@
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
+
 import AppError from "../../errors/AppError";
 import { UserModel } from "../user/user.model";
 import bcrypt from "bcrypt";
 import { IUser } from "./auth.interface";
-import  Jwt  from "jsonwebtoken";
 import config from "../../config";
+import { createToken } from "./auth.utils";
 
 
 
@@ -42,10 +41,12 @@ const loginUser = async (payload:IUser) => {
   //create token json web token
 
 
-  const accessToken=Jwt.sign(jowPayload, config.JWT_ACCESS_TOKEN as string, { expiresIn: '10d' });
+  const accessToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '10d')
+  const refressToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN as string , '365d')
 
   return {
     accessToken,
+    refressToken,             
     needPasswordChange: true,
   };
 };
@@ -54,10 +55,14 @@ const loginUser = async (payload:IUser) => {
 const changePassword = async (
   newPassword: string,
   oldPassword: string,
-  authUser: { userId: string; userRole: string }
+  // এখানে iat: number যোগ করা হয়েছে
+  authUser: { userId: string; userRole: string; iat: number } 
 ) => {
 
   const user = await UserModel.isUserExistsById(authUser.userId);
+
+  // এখন TypeScript আর এরর দিবে না
+  const { iat } = authUser;
 
   if (!user) {
     throw new AppError("User not found", 404);
@@ -77,17 +82,25 @@ const changePassword = async (
     throw new AppError("Invalid credentials", 401);
   }
 
+  // পাসওয়ার্ড পরিবর্তনের আগে টোকেন ইস্যু হয়েছে কি না চেক করা
+  if (
+    user.passwordChangeAt && 
+    await UserModel.isJWTIssuBeforePasswordChange(user.passwordChangeAt, iat)
+  ) {
+    throw new AppError('Your access token is invalid', 401);
+  }
+
   // ✅ new password hash
   const saltRounds = 12;
   const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
   // ✅ update password
   const result = await UserModel.findOneAndUpdate(
-    { id: user.id },
+    { id: user.id }, // নিশ্চিত হোন আপনার মডেলে 'id' নাকি '_id' আছে
     {
       password: hashedPassword,
       needPassword: false,
-      passwordChangeAt:new Date() // optional
+      passwordChangeAt: new Date() 
     },
     {
       new: true,
@@ -95,7 +108,11 @@ const changePassword = async (
   );
 
   return result;
-};
+};                                                       
+
+
+
+
 export const AuthService = {
 
   loginUser,

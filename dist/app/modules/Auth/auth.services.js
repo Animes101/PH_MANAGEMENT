@@ -4,13 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const user_model_1 = require("../user/user.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
+const auth_utils_1 = require("./auth.utils");
 const loginUser = async (payload) => {
     const user = await user_model_1.UserModel.isUserExistsById(payload?.id);
     if (!user) {
@@ -29,14 +27,20 @@ const loginUser = async (payload) => {
         userRole: user.role,
     };
     //create token json web token
-    const accessToken = jsonwebtoken_1.default.sign(jowPayload, config_1.default.JWT_ACCESS_TOKEN, { expiresIn: '10d' });
+    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
+    const refressToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '365d');
     return {
         accessToken,
+        refressToken,
         needPasswordChange: true,
     };
 };
-const changePassword = async (newPassword, oldPassword, authUser) => {
+const changePassword = async (newPassword, oldPassword, 
+// এখানে iat: number যোগ করা হয়েছে
+authUser) => {
     const user = await user_model_1.UserModel.isUserExistsById(authUser.userId);
+    // এখন TypeScript আর এরর দিবে না
+    const { iat } = authUser;
     if (!user) {
         throw new AppError_1.default("User not found", 404);
     }
@@ -48,14 +52,20 @@ const changePassword = async (newPassword, oldPassword, authUser) => {
     if (!isPasswordMatched) {
         throw new AppError_1.default("Invalid credentials", 401);
     }
+    // পাসওয়ার্ড পরিবর্তনের আগে টোকেন ইস্যু হয়েছে কি না চেক করা
+    if (user.passwordChangeAt &&
+        await user_model_1.UserModel.isJWTIssuBeforePasswordChange(user.passwordChangeAt, iat)) {
+        throw new AppError_1.default('Your access token is invalid', 401);
+    }
     // ✅ new password hash
     const saltRounds = 12;
     const hashedPassword = await bcrypt_1.default.hash(newPassword, saltRounds);
     // ✅ update password
-    const result = await user_model_1.UserModel.findOneAndUpdate({ id: user.id }, {
+    const result = await user_model_1.UserModel.findOneAndUpdate({ id: user.id }, // নিশ্চিত হোন আপনার মডেলে 'id' নাকি '_id' আছে
+    {
         password: hashedPassword,
         needPassword: false,
-        passwordChangeAt: new Date() // optional
+        passwordChangeAt: new Date()
     }, {
         new: true,
     });

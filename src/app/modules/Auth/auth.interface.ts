@@ -12,4 +12,5 @@ export interface IUser {
 
 export interface authModel extends Model<TUser> {
   isUserExistsById(id: string): Promise<TUser | null>;
+  isJWTIssuBeforePasswordChange(passwordChangeAt:Date, jwtIssuAt:number):boolean
 }

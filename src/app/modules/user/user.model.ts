@@ -36,6 +36,23 @@ UserSchema.statics.isUserExistsById = async function (id: string) {
   return this.findOne({ id }).select('+password');
 };
 
+UserSchema.statics.isJWTIssuBeforePasswordChange = async function (
+  passwordChangedAt: Date | undefined,
+  jwtIssuedAt: number
+) {
+  // If the user never changed password → token is valid
+  if (!passwordChangedAt) return false;
+
+  // Convert to seconds
+  const changedTimestamp = Math.floor(new Date(passwordChangedAt).getTime() / 1000);
+
+  // If password changed after token issued → token invalid
+
+  console.log(changedTimestamp > jwtIssuedAt)
+  return changedTimestamp > jwtIssuedAt;
+};
+
+
 
 
 // Model

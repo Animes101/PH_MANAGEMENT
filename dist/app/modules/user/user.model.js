@@ -33,5 +33,15 @@ UserSchema.pre("save", async function () {
 UserSchema.statics.isUserExistsById = async function (id) {
     return this.findOne({ id }).select('+password');
 };
+UserSchema.statics.isJWTIssuBeforePasswordChange = async function (passwordChangedAt, jwtIssuedAt) {
+    // If the user never changed password → token is valid
+    if (!passwordChangedAt)
+        return false;
+    // Convert to seconds
+    const changedTimestamp = Math.floor(new Date(passwordChangedAt).getTime() / 1000);
+    // If password changed after token issued → token invalid
+    console.log(changedTimestamp > jwtIssuedAt);
+    return changedTimestamp > jwtIssuedAt;
+};
 // Model
 exports.UserModel = (0, mongoose_1.model)("User", UserSchema);
