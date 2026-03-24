@@ -12,4 +12,5 @@ const auth_1 = __importDefault(require("../../../middlwares/auth"));
 const router = express_1.default.Router();
 router.post("/login", (0, validatonJoi_1.default)(auth_validaion_1.loginValidation), auth_controller_1.AuthController.login);
 router.post("/changePassword", (0, auth_1.default)(), (0, validatonJoi_1.default)(auth_validaion_1.changePassword), auth_controller_1.AuthController.changePaaword);
+router.post("/acessToken", (0, validatonJoi_1.default)(auth_validaion_1.AccessTokenValidation), auth_controller_1.AuthController.accessToken);
 exports.AuthRoutes = router;

@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { IUser } from "./auth.interface";
 import config from "../../config";
 import { createToken } from "./auth.utils";
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 
 
@@ -82,7 +83,7 @@ const changePassword = async (
     throw new AppError("Invalid credentials", 401);
   }
 
-  // পাসওয়ার্ড পরিবর্তনের আগে টোকেন ইস্যু হয়েছে কি না চেক করা
+
   if (
     user.passwordChangeAt && 
     await UserModel.isJWTIssuBeforePasswordChange(user.passwordChangeAt, iat)
@@ -96,7 +97,7 @@ const changePassword = async (
 
   // ✅ update password
   const result = await UserModel.findOneAndUpdate(
-    { id: user.id }, // নিশ্চিত হোন আপনার মডেলে 'id' নাকি '_id' আছে
+    { id: user.id }, 
     {
       password: hashedPassword,
       needPassword: false,
@@ -111,11 +112,58 @@ const changePassword = async (
 };                                                       
 
 
+const accessToken=async (token:string)=>{
+
+
+   if (!token) {
+        throw new AppError("Forbidden access: No token provided", 403);
+      }
+  
+      // ✅ Bearer token split
+  
+      if (!token) {
+        throw new AppError("Forbidden access: Invalid token format", 403);
+      }
+  
+      // ✅ verify token
+      const decoded = jwt.verify(
+        token,
+        config.JWT_ACCESS_TOKEN as string
+      ) as JwtPayload;
+
+      const {userId} =decoded;
+
+
+       const user = await UserModel.isUserExistsById(userId);
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }else if(user?.isDelete === true){
+
+    throw new AppError('user alredy Dele thi data base', 402)
+  }
+
+  const jowPayload={
+    userId:user.id,
+    userRole:user.role,
+
+  }
+
+
+  const accessToken= createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '10d')
+
+  return accessToken;
+
+
+
+}
+
 
 
 export const AuthService = {
 
   loginUser,
-  changePassword
+  changePassword,
+  accessToken
 
 };

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePassword = exports.loginValidation = void 0;
+exports.AccessTokenValidation = exports.changePassword = exports.loginValidation = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.loginValidation = joi_1.default.object({
     body: joi_1.default.object({
@@ -14,4 +14,13 @@ exports.loginValidation = joi_1.default.object({
 exports.changePassword = joi_1.default.object({
     oldpassword: joi_1.default.string().required(),
     newpassword: joi_1.default.string().required(),
+});
+exports.AccessTokenValidation = joi_1.default.object({
+    refreshToken: joi_1.default.string()
+        .required()
+        .messages({
+        "string.base": "refreshToken must be a string",
+        "string.empty": "refreshToken is required",
+        "any.required": "refreshToken is required"
+    })
 });

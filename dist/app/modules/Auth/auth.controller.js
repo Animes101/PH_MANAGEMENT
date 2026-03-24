@@ -8,10 +8,15 @@ const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 const auth_services_1 = require("./auth.services");
 const login = (0, catchAsync_1.default)(async (req, res) => {
     const result = await auth_services_1.AuthService.loginUser(req.body.body);
+    const { refressToken, accessToken, needPasswordChange } = result;
+    res.cookie('refressToken', refressToken);
     res.status(200).json({
         success: true,
         message: "Login successful",
-        data: result,
+        data: {
+            accessToken,
+            needPasswordChange,
+        },
     });
 });
 const changePaaword = (0, catchAsync_1.default)(async (req, res) => {
@@ -24,7 +29,17 @@ const changePaaword = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const accessToken = (0, catchAsync_1.default)(async (req, res) => {
+    const { refressToken } = req.cookies;
+    const result = await auth_services_1.AuthService.accessToken(refressToken);
+    res.status(200).json({
+        success: true,
+        message: "accces token create  successful",
+        data: result,
+    });
+});
 exports.AuthController = {
     login,
-    changePaaword
+    changePaaword,
+    accessToken
 };

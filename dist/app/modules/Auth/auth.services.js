@@ -9,6 +9,7 @@ const user_model_1 = require("../user/user.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = require("./auth.utils");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const loginUser = async (payload) => {
     const user = await user_model_1.UserModel.isUserExistsById(payload?.id);
     if (!user) {
@@ -52,7 +53,6 @@ authUser) => {
     if (!isPasswordMatched) {
         throw new AppError_1.default("Invalid credentials", 401);
     }
-    // পাসওয়ার্ড পরিবর্তনের আগে টোকেন ইস্যু হয়েছে কি না চেক করা
     if (user.passwordChangeAt &&
         await user_model_1.UserModel.isJWTIssuBeforePasswordChange(user.passwordChangeAt, iat)) {
         throw new AppError_1.default('Your access token is invalid', 401);
@@ -61,8 +61,7 @@ authUser) => {
     const saltRounds = 12;
     const hashedPassword = await bcrypt_1.default.hash(newPassword, saltRounds);
     // ✅ update password
-    const result = await user_model_1.UserModel.findOneAndUpdate({ id: user.id }, // নিশ্চিত হোন আপনার মডেলে 'id' নাকি '_id' আছে
-    {
+    const result = await user_model_1.UserModel.findOneAndUpdate({ id: user.id }, {
         password: hashedPassword,
         needPassword: false,
         passwordChangeAt: new Date()
@@ -71,7 +70,33 @@ authUser) => {
     });
     return result;
 };
+const accessToken = async (token) => {
+    if (!token) {
+        throw new AppError_1.default("Forbidden access: No token provided", 403);
+    }
+    // ✅ Bearer token split
+    if (!token) {
+        throw new AppError_1.default("Forbidden access: Invalid token format", 403);
+    }
+    // ✅ verify token
+    const decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_ACCESS_TOKEN);
+    const { userId } = decoded;
+    const user = await user_model_1.UserModel.isUserExistsById(userId);
+    if (!user) {
+        throw new AppError_1.default("User not found", 404);
+    }
+    else if (user?.isDelete === true) {
+        throw new AppError_1.default('user alredy Dele thi data base', 402);
+    }
+    const jowPayload = {
+        userId: user.id,
+        userRole: user.role,
+    };
+    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
+    return accessToken;
+};
 exports.AuthService = {
     loginUser,
-    changePassword
+    changePassword,
+    accessToken
 };
