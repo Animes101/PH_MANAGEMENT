@@ -36,6 +36,8 @@ const createStudentIntoDB = async (studentData: IStudent) => {
   const newUser: Partial<TUser> = {
     id: await generatedId(academinSemester),
     password: config.DEFAULT_PASSWORD as string,
+    needPassword:false,
+    email:studentData.email,
     role: 'student',
   };
 
@@ -100,7 +102,9 @@ const createFacalityintoDb = async (payload: ITeacher) => {
     // 3. Create User
     const newUser: Partial<TUser> = {
       id: facultyId,
-      password: config.DEFAULT_PASSWORD as string, // ideally hash this
+      password: config.DEFAULT_PASSWORD as string,
+      needPassword:false,
+    email:payload.email, // ideally hash this
       role: 'faculity',
     };
 
@@ -143,7 +147,9 @@ export const createAdminIntoDB = async (payload: IAdmin) => {
     // 3️⃣ Create User
     const newUser: Partial<TUser> = {
       id: adminId,
-      password: config.DEFAULT_PASSWORD as string, // ideally hash this
+      password: config.DEFAULT_PASSWORD as string, 
+      needPassword:false,
+    email:payload.email,// ideally hash this
       role: "admin",
     };
 

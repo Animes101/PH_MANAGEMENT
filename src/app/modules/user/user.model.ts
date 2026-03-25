@@ -9,6 +9,7 @@ const UserSchema = new Schema<TUser, authModel>(
   {
     id: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
+    email:{ type: String, required: true},
     needPassword: { type: Boolean },
     role: {
       type: String,

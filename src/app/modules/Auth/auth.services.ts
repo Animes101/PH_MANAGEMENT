@@ -6,6 +6,7 @@ import { IUser } from "./auth.interface";
 import config from "../../config";
 import { createToken } from "./auth.utils";
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { sendEmail } from "../../utils/sendEmail";
 
 
 
@@ -114,7 +115,6 @@ const changePassword = async (
 
 const accessToken=async (token:string)=>{
 
-
    if (!token) {
         throw new AppError("Forbidden access: No token provided", 403);
       }
@@ -158,12 +158,44 @@ const accessToken=async (token:string)=>{
 
 }
 
+const forgetPawword=async (id:string)=>{
+
+        const user = await UserModel.isUserExistsById(id);
+
+        if (!user) {
+          throw new AppError("User not found", 404);
+        }else if(user?.isDelete === true){
+
+          throw new AppError('user alredy Delete this data base', 402)
+        }
+
+        const jowPayload={
+            userId:user.id,
+            userRole:user.role,
+
+          }
+
+
+  const resetToken= createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '10d')
+
+
+        const restLink=`http://localhost:5000/api/v1?id=${user.id}&token=${resetToken}`
+
+
+        sendEmail();
+
+        
+
+
+}
+
 
 
 export const AuthService = {
 
   loginUser,
   changePassword,
-  accessToken
+  accessToken,
+  forgetPawword
 
 };

@@ -10,6 +10,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = require("./auth.utils");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const sendEmail_1 = require("../../utils/sendEmail");
 const loginUser = async (payload) => {
     const user = await user_model_1.UserModel.isUserExistsById(payload?.id);
     if (!user) {
@@ -95,8 +96,25 @@ const accessToken = async (token) => {
     const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
     return accessToken;
 };
+const forgetPawword = async (id) => {
+    const user = await user_model_1.UserModel.isUserExistsById(id);
+    if (!user) {
+        throw new AppError_1.default("User not found", 404);
+    }
+    else if (user?.isDelete === true) {
+        throw new AppError_1.default('user alredy Delete this data base', 402);
+    }
+    const jowPayload = {
+        userId: user.id,
+        userRole: user.role,
+    };
+    const resetToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
+    const restLink = `http://localhost:5000/api/v1?id=${user.id}&token=${resetToken}`;
+    (0, sendEmail_1.sendEmail)();
+};
 exports.AuthService = {
     loginUser,
     changePassword,
-    accessToken
+    accessToken,
+    forgetPawword
 };

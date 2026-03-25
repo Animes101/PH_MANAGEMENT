@@ -27,6 +27,8 @@ const createStudentIntoDB = async (studentData) => {
     const newUser = {
         id: await (0, user_utils_1.generatedId)(academinSemester),
         password: config_1.default.DEFAULT_PASSWORD,
+        needPassword: false,
+        email: studentData.email,
         role: 'student',
     };
     const session = await mongoose_1.default.startSession();
@@ -71,7 +73,9 @@ const createFacalityintoDb = async (payload) => {
         // 3. Create User
         const newUser = {
             id: facultyId,
-            password: config_1.default.DEFAULT_PASSWORD, // ideally hash this
+            password: config_1.default.DEFAULT_PASSWORD,
+            needPassword: false,
+            email: payload.email, // ideally hash this
             role: 'faculity',
         };
         const userNew = await user_model_1.UserModel.create([newUser], { session });
@@ -104,7 +108,9 @@ const createAdminIntoDB = async (payload) => {
         // 3️⃣ Create User
         const newUser = {
             id: adminId,
-            password: config_1.default.DEFAULT_PASSWORD, // ideally hash this
+            password: config_1.default.DEFAULT_PASSWORD,
+            needPassword: false,
+            email: payload.email, // ideally hash this
             role: "admin",
         };
         const userNew = await user_model_1.UserModel.create([newUser], { session });

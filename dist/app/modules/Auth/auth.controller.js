@@ -38,8 +38,18 @@ const accessToken = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const forgetpaaword = (0, catchAsync_1.default)(async (req, res) => {
+    const id = req.body.id;
+    const result = await auth_services_1.AuthService.forgetPawword(id);
+    res.status(200).json({
+        success: true,
+        message: "Plese check your email",
+        data: result,
+    });
+});
 exports.AuthController = {
     login,
     changePaaword,
-    accessToken
+    accessToken,
+    forgetpaaword
 };

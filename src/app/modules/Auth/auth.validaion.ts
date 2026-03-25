@@ -24,3 +24,10 @@ export const AccessTokenValidation = Joi.object({
       "any.required": "refreshToken is required"
     })
 });
+
+export const frogetPaaswordValidation = Joi.object({
+
+    id: Joi.string().required(),
+    
+    
+});
