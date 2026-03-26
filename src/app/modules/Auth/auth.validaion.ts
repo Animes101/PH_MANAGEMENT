@@ -27,7 +27,16 @@ export const AccessTokenValidation = Joi.object({
 
 export const frogetPaaswordValidation = Joi.object({
 
+  id: Joi.string().required(),
+  newPassword:Joi.string().required(),
+
+});
+
+
+export const resetPassword = Joi.object({
+
     id: Joi.string().required(),
+     newPassword:Joi.string().required(),
     
     
 });

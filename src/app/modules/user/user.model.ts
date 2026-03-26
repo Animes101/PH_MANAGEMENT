@@ -49,7 +49,6 @@ UserSchema.statics.isJWTIssuBeforePasswordChange = async function (
 
   // If password changed after token issued → token invalid
 
-  console.log(changedTimestamp > jwtIssuedAt)
   return changedTimestamp > jwtIssuedAt;
 };
 

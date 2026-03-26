@@ -30,13 +30,14 @@ const auth = (...requiredRoles: TuserRole[]) => {
       config.JWT_ACCESS_TOKEN as string
     ) as JwtPayload;
 
-    // ✅ attach user
-    req.user = decoded;
 
     // ✅ role check (IMPORTANT 🔥)
     if (requiredRoles.length && !requiredRoles.includes(decoded.userRole)) {
       throw new AppError("You are not authorized this role", 403);
     }
+
+    // ✅ attach user
+    req.user = decoded;
 
     next();
   });

@@ -55,8 +55,18 @@ const createAdmin = (0, catchAsync_1.default)(async (req, res, next) => {
         data: result,
     });
 });
+const ageMe = (0, catchAsync_1.default)(async (req, res) => {
+    const { userId, userRole } = req.user;
+    const result = await user_services_1.UsersServices.getMe(userId, userRole);
+    res.status(200).json({
+        success: true,
+        message: "Find  successfully",
+        data: result,
+    });
+});
 exports.UsersController = {
     createStudent,
     createFacality,
-    createAdmin
+    createAdmin,
+    ageMe
 };

@@ -77,10 +77,30 @@ const createAdmin = catchAsync(async (req, res, next: NextFunction) => {
 });
 
 
+const ageMe = catchAsync(async (req, res,) => {
+
+  const {userId, userRole}=req.user
+
+ 
+
+  const result = await UsersServices.getMe(userId, userRole);
+
+  res.status(200).json({
+    success: true,
+    message: "Find  successfully",
+    data: result,
+  });
+
+});
+
+
+
+
 
 
 export const UsersController = {
   createStudent,
   createFacality,
-  createAdmin
+  createAdmin,
+  ageMe
 };

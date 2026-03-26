@@ -133,8 +133,22 @@ const createAdminIntoDB = async (payload) => {
     }
 };
 exports.createAdminIntoDB = createAdminIntoDB;
+const getMe = async (userId, userRole) => {
+    let result = null;
+    if (userRole === "student") {
+        result = await student_model_1.StudentModel.findOne({ id: userId });
+    }
+    if (userRole === "faculty") {
+        result = await facality_model_1.TeacherModel.findOne({ id: userId });
+    }
+    if (userRole === "admin") {
+        result = await admin_model_1.adminModel.findOne({ id: userId });
+    }
+    return result;
+};
 exports.UsersServices = {
     createStudentIntoDB,
     createFacalityintoDb,
     createAdminIntoDB: exports.createAdminIntoDB,
+    getMe
 };

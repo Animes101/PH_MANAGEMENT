@@ -65,10 +65,28 @@ const forgetpaaword = catchAsync(async (req: Request, res: Response) => {
 
   res.status(200).json({
     success: true,
-    message: "Plese check your email",
+    message: "Please check your email ",
     data: result,
   });
 });
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+
+  const id = req.body.id;
+  const newPassword=req.body.newPassword;
+
+  const tokenUser=req.user;
+
+
+  const result = await AuthService.resetPassword(id, newPassword, tokenUser);
+
+  res.status(200).json({
+    success: true,
+    message: "password reset success fully",
+    data: result,
+  });
+});
+
 
 
 export const AuthController = {
@@ -76,5 +94,6 @@ export const AuthController = {
   login,
   changePaaword,
   accessToken,
-  forgetpaaword
+  forgetpaaword,
+  resetPassword
 };

@@ -43,7 +43,18 @@ const forgetpaaword = (0, catchAsync_1.default)(async (req, res) => {
     const result = await auth_services_1.AuthService.forgetPawword(id);
     res.status(200).json({
         success: true,
-        message: "Plese check your email",
+        message: "Please check your email ",
+        data: result,
+    });
+});
+const resetPassword = (0, catchAsync_1.default)(async (req, res) => {
+    const id = req.body.id;
+    const newPassword = req.body.newPassword;
+    const tokenUser = req.user;
+    const result = await auth_services_1.AuthService.resetPassword(id, newPassword, tokenUser);
+    res.status(200).json({
+        success: true,
+        message: "password reset success fully",
         data: result,
     });
 });
@@ -51,5 +62,6 @@ exports.AuthController = {
     login,
     changePaaword,
     accessToken,
-    forgetpaaword
+    forgetpaaword,
+    resetPassword
 };

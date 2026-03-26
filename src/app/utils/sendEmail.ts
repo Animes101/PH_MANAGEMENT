@@ -2,7 +2,7 @@ import config from "../config";
 import nodemailer from "nodemailer"
 
 
-export const sendEmail = async () => {
+export const sendEmail = async (email:string, rederectLink:string) => {
   const transporter = nodemailer.createTransport({
     host: config.SMTP_HOST,
     port: config.SMTP_PORT,
@@ -28,11 +28,13 @@ export const sendEmail = async () => {
           <b>Hello Animes Barman,</b>
         </p>
         <p style="font-size: 16px; color: #555; line-height: 1.6;">
-          How are you doing today? We are excited to have you with us. 
-          This is a beautifully formatted email sent directly from our Node.js application.
+          Hello Dear , 
+
+          please chage your password 10 seconds visited the link , 
+          thanks your, 
         </p>
         <div style="text-align: center; margin-top: 30px;">
-          <a href="https://yourwebsite.com" style="background-color: #4CAF50; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Visit Dashboard</a>
+          <p>${rederectLink}</p>
         </div>
       </div>
       <footer style="margin-top: 20px; text-align: center; color: #888; font-size: 12px;">
@@ -42,8 +44,10 @@ export const sendEmail = async () => {
   `,
     });
 
-    console.log("Message sent:", info.messageId);
+    const sent= info.messageId;
+    return sent
   } catch (err: any) {
-    console.error("Error while sending mail:", err.message);
+    const error= err.message
+    return error
   }
 };

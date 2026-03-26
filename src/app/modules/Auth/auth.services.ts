@@ -182,12 +182,45 @@ const forgetPawword=async (id:string)=>{
         const restLink=`http://localhost:5000/api/v1?id=${user.id}&token=${resetToken}`
 
 
-        sendEmail();
+       const result= sendEmail(user?.email, restLink);
+
+       return result;
 
         
 
 
 }
+
+
+const resetPassword=async (id:string, newPassword:string, tokenUser :{userId:string,userRole:string})=>{
+
+        const user = await UserModel.isUserExistsById(id);
+
+        if (!user) {
+          throw new AppError("User not found", 404);
+        }else if(user?.isDelete === true){
+
+          throw new AppError('user alredy Delete this data base', 402)
+        }
+
+
+
+        if(user.id !== tokenUser?.userId){
+
+          throw new AppError('you are not Valid User', 403)
+        }
+
+
+         // ✅ new password hash
+            const saltRounds = 12;
+            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+
+            const result= await UserModel.findOneAndUpdate({id:user?.id}, {password:hashedPassword, passwordChangeAt:new Date()}, { new :true})
+            return result
+
+}
+
 
 
 
@@ -196,6 +229,7 @@ export const AuthService = {
   loginUser,
   changePassword,
   accessToken,
-  forgetPawword
+  forgetPawword,
+  resetPassword
 
 };
