@@ -12,13 +12,13 @@ import { TeacherModel } from "../facality/facality.model";
 import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.model";
 import { IAdmin } from "../admin/admin.interface";
 import { adminModel } from "../admin/admin.model";
+import { sendImageToCludeNary } from "../../utils/multer";
 
 
 
 
 //create Student into DB
-const createStudentIntoDB = async (studentData: IStudent) => {
-
+const createStudentIntoDB = async (studentData: IStudent, file: any) => {
   const academinSemester = await AcademicSemesterModel.findById(
     studentData.admisonSemester
   );
@@ -36,25 +36,36 @@ const createStudentIntoDB = async (studentData: IStudent) => {
   const newUser: Partial<TUser> = {
     id: await generatedId(academinSemester),
     password: config.DEFAULT_PASSWORD as string,
-    needPassword:false,
-    email:studentData.email,
+    needPassword: false,
+    email: studentData.email,
     role: 'student',
   };
 
   const session = await mongoose.startSession();
 
   try {
-
     session.startTransaction();
 
-    // create user
     const userNew = await UserModel.create([newUser], { session });
 
     if (!userNew.length) {
       throw new AppError("User creation failed", 400);
     }
 
-    // set user data
+    const imageName = studentData.name;
+
+    // upload to cloudinary (IMPORTANT: add await)
+    const resultimage = await sendImageToCludeNary(file.path, imageName);
+
+    // validation
+    if (!resultimage || !resultimage.secure_url) {
+      throw new AppError("Image upload failed!", 500);
+    }
+
+    const profileImage = resultimage.secure_url;
+
+    // update student data
+    studentData.profileImage = profileImage;
     studentData.id = userNew[0].id as string;
     studentData.user = userNew[0]._id;
 
@@ -64,13 +75,10 @@ const createStudentIntoDB = async (studentData: IStudent) => {
     await session.endSession();
 
     return result;
-
   } catch (error) {
-
     await session.abortTransaction();
     await session.endSession();
     throw error;
-
   }
 };
 

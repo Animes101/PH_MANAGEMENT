@@ -5,10 +5,12 @@ import sendResponse from '../../utility/respons';
 import catchAsync from '../../utility/catchAsync';
 import { createTeacherValidation } from '../facality/joi.validation';
 import { createAdminValidationSchema } from '../admin/admin.validation';
+import { sendImageToCludeNary } from '../../utils/multer';
 
 
 
 const createStudent =catchAsync( async (req: Request, res: Response, next:NextFunction) => {
+
   
     const { error, value } = createStudentSchema.validate(req.body, {
       abortEarly: false,
@@ -21,8 +23,14 @@ const createStudent =catchAsync( async (req: Request, res: Response, next:NextFu
 
     // schema অনুযায়ী value.studentData আসবেই
 
+    const file=req.file;
+
+  
+
+    
+
     const result = await UsersServices.createStudentIntoDB(
-      req.body.studentData
+      req.body.studentData, file
     );
     
     sendResponse(res, {

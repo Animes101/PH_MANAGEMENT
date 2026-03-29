@@ -34,7 +34,7 @@ const StudentSchema = new Schema<IStudent>(
       default: false,
     },
     admisonSemester:{type:Schema.Types.ObjectId, ref:'AcademicSemester'},
-    
+    profileImage: { type: String, required: false },
   },
   { timestamps: true } // auto adds createdAt & updatedAt
 );

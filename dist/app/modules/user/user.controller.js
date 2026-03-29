@@ -18,7 +18,8 @@ const createStudent = (0, catchAsync_1.default)(async (req, res, next) => {
         next(error);
     }
     // schema অনুযায়ী value.studentData আসবেই
-    const result = await user_services_1.UsersServices.createStudentIntoDB(req.body.studentData);
+    const file = req.file;
+    const result = await user_services_1.UsersServices.createStudentIntoDB(req.body.studentData, file);
     (0, respons_1.default)(res, {
         statusCode: 201,
         success: true,

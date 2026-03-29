@@ -24,5 +24,6 @@ export interface IStudent{
   isActive: 'active' | 'inactive';
   isDelete: boolean;
   admisonSemester:Types.ObjectId;
+  profileImage?:string;
   
 }

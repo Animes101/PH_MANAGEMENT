@@ -14,8 +14,9 @@ const user_utils_1 = require("./user.utils");
 const facality_model_1 = require("../facality/facality.model");
 const academinDepertMent_model_1 = require("../acdemonDepermant/academinDepertMent.model");
 const admin_model_1 = require("../admin/admin.model");
+const multer_1 = require("../../utils/multer");
 //create Student into DB
-const createStudentIntoDB = async (studentData) => {
+const createStudentIntoDB = async (studentData, file) => {
     const academinSemester = await acadamin_model_1.AcademicSemesterModel.findById(studentData.admisonSemester);
     if (!academinSemester) {
         throw new AppError_1.default('Academic semester not found', 404);
@@ -34,12 +35,20 @@ const createStudentIntoDB = async (studentData) => {
     const session = await mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        // create user
         const userNew = await user_model_1.UserModel.create([newUser], { session });
         if (!userNew.length) {
             throw new AppError_1.default("User creation failed", 400);
         }
-        // set user data
+        const imageName = studentData.name;
+        // upload to cloudinary (IMPORTANT: add await)
+        const resultimage = await (0, multer_1.sendImageToCludeNary)(file.path, imageName);
+        // validation
+        if (!resultimage || !resultimage.secure_url) {
+            throw new AppError_1.default("Image upload failed!", 500);
+        }
+        const profileImage = resultimage.secure_url;
+        // update student data
+        studentData.profileImage = profileImage;
         studentData.id = userNew[0].id;
         studentData.user = userNew[0]._id;
         const result = await student_model_1.StudentModel.create([studentData], { session });
