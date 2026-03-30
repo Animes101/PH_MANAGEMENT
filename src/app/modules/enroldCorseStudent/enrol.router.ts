@@ -1,12 +1,16 @@
 import express from "express";
 import { EnrolCourseController } from "./enrol.controller";
+import validationRequest from "../../utility/validatonJoi";
+import { enrolCourseStudentJoi } from "./enrol.validation";
+import { User_Role } from "../user/user.constance";
+import auth from "../../../middlwares/auth";
 
 
 
 const router = express.Router();
 
 // 👉 Create
-router.post("/enrolCourse", EnrolCourseController.createEnrolCourse);
+router.post("/enrolCourse", auth(User_Role.admin), validationRequest(enrolCourseStudentJoi), EnrolCourseController.createEnrolCourse);
 
 // // 👉 Get All
 // router.get("/enrolCourse", EnrolCourseController.getAllEnrolCourse);
@@ -20,4 +24,4 @@ router.post("/enrolCourse", EnrolCourseController.createEnrolCourse);
 // // 👉 Delete
 // router.delete("/enrolCourse/:id", EnrolCourseController.deleteEnrolCourse);
 
-export const  EnrollRouter= router;
+export const  EnrollRouter = router;

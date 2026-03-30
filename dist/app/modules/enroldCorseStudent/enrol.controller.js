@@ -1,16 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnrolCourseController = void 0;
-const enrol_validation_1 = require("./enrol.validation");
 const enrol_services_1 = require("./enrol.services");
 exports.EnrolCourseController = {
     // 👉 Create
     createEnrolCourse: async (req, res, next) => {
         try {
-            const { error, value } = enrol_validation_1.enrolCourseStudentJoi.validate(req.body);
-            if (error)
-                return next(error);
-            const result = await enrol_services_1.EnrolCourseService.createEnrol(value);
+            const userId = req.user?.userId;
+            const result = await enrol_services_1.EnrolCourseService.createEnrol(req.body, userId);
             res.status(201).json({
                 success: true,
                 message: "Enrol course created successfully",

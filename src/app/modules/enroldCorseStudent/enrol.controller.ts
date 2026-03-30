@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { enrolCourseStudentJoi } from "./enrol.validation";
 import { EnrolCourseService } from "./enrol.services";
 
 
@@ -8,10 +7,9 @@ export const EnrolCourseController = {
   // 👉 Create
   createEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { error, value } = enrolCourseStudentJoi.validate(req.body);
-      if (error) return next(error);
 
-      const result = await EnrolCourseService.createEnrol(value);
+      const userId=req.user?.userId;
+      const result = await EnrolCourseService.createEnrol(req.body, userId);
 
       res.status(201).json({
         success: true,

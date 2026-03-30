@@ -46,7 +46,7 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
     academicDepartment: { type: Schema.Types.ObjectId, required: true, ref: "AcademicDepartment" },
     offerCorse: { type: Schema.Types.ObjectId, required: true, ref: "OfferCourse" },
     corse: { type: Schema.Types.ObjectId, required: true, ref: "Course" },
-    student: { type: Schema.Types.ObjectId, required: true, ref: "Student" },
+    student: {  type: Schema.Types.ObjectId, required: true, ref: "Student" },
     faculity: { type: Schema.Types.ObjectId, required: true, ref: "Faculty" },
 
     isEnrollerd: { type: Boolean, default: false },
@@ -68,6 +68,7 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
     isComplated: { type: Boolean, default: false },
   },
   { timestamps: true }
+  
 );
 
 export const EnrolCourseStudentModel = model<EnrolCourseStudent>(

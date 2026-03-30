@@ -12,7 +12,7 @@ export type EnrolCourseStudent = {
     semesterRegistration: Types.ObjectId;
     academinSemester: Types.ObjectId;
     academicDepartment: Types.ObjectId;
-    offerCorse: Types.ObjectId;
+    offerCorseId: Types.ObjectId;
     corse: Types.ObjectId;
     student: Types.ObjectId;
     faculity: Types.ObjectId;
