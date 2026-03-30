@@ -14,6 +14,7 @@ import { CorseRouter } from './app/modules/corses/cors.router';
 import { RegisterRouter } from './app/modules/semesterRegistation/Register.Router';
 import { OfferCourseRoutes } from './app/modules/offerCorse/offerCorse.router';
 import { AuthRoutes } from './app/modules/Auth/auth.route';
+import { EnrollRouter } from './app/modules/enroldCorseStudent/enrol.router';
 const app: Application = express();
 
 // middlewares
@@ -34,6 +35,7 @@ app.use('/api/v1', CorseRouter)
 app.use('/api/v1', RegisterRouter)
 app.use('/api/v1', OfferCourseRoutes)
 app.use('/api/v1', AuthRoutes)
+app.use('/api/v1', EnrollRouter)
 
 app.get('/test', (req,res)=>{
 

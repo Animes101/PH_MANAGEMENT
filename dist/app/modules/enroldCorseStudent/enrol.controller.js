@@ -1,0 +1,79 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EnrolCourseController = void 0;
+const enrol_validation_1 = require("./enrol.validation");
+const enrol_services_1 = require("./enrol.services");
+exports.EnrolCourseController = {
+    // 👉 Create
+    createEnrolCourse: async (req, res, next) => {
+        try {
+            const { error, value } = enrol_validation_1.enrolCourseStudentJoi.validate(req.body);
+            if (error)
+                return next(error);
+            const result = await enrol_services_1.EnrolCourseService.createEnrol(value);
+            res.status(201).json({
+                success: true,
+                message: "Enrol course created successfully",
+                data: result,
+            });
+        }
+        catch (err) {
+            next(err);
+        }
+    },
+    // 👉 Get All
+    //   getAllEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
+    //     try {
+    //       const result = await EnrolCourseService.getAllEnrol();
+    //       res.json({
+    //         success: true,
+    //         message: "All enrol courses fetched",
+    //         data: result,
+    //       });
+    //     } catch (err) {
+    //       next(err);
+    //     }
+    //   },
+    //   // 👉 Get Single
+    //   getSingleEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
+    //     try {
+    //       const result = await EnrolCourseService.getSingleEnrol(req.params.id);
+    //       res.json({
+    //         success: true,
+    //         message: "Single enrol course fetched",
+    //         data: result,
+    //       });
+    //     } catch (err) {
+    //       next(err);
+    //     }
+    //   },
+    //   // 👉 Update
+    //   updateEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
+    //     try {
+    //       const result = await EnrolCourseService.updateEnrol(
+    //         req.params.id,
+    //         req.body
+    //       );
+    //       res.json({
+    //         success: true,
+    //         message: "Enrol course updated",
+    //         data: result,
+    //       });
+    //     } catch (err) {
+    //       next(err);
+    //     }
+    //   },
+    //   // 👉 Delete
+    //   deleteEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
+    //     try {
+    //       const result = await EnrolCourseService.deleteEnrol(req.params.id);
+    //       res.json({
+    //         success: true,
+    //         message: "Enrol course deleted",
+    //         data: result,
+    //       });
+    //     } catch (err) {
+    //       next(err);
+    //     }
+    //   },
+};
