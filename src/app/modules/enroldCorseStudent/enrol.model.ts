@@ -5,7 +5,7 @@ export type Tgrade =
   | "B+" | "B" | "B-"
   | "C+" | "C" | "C-"
   | "D+" | "D" | "D-"
-  | "F";
+  | "F" | "N/A";
 
 export type EnrolCorseMark = {
   classTest1: number;
@@ -32,18 +32,17 @@ export type EnrolCourseStudent = {
 // ---------------- SCHEMA -------------------
 
 const CourseMarkSchema = new Schema<EnrolCorseMark>({
-  classTest1: { type: Number, required: true },
-  classTest2: { type: Number, required: true },
-  classTest3: { type: Number, required: true },
-  midTerm: { type: Number, required: true },
-  finalExam: { type: Number, required: true },
+  classTest1: { type: Number, default:0},
+  classTest2: { type: Number, default:0},
+  classTest3: { type: Number, default:0},
+  midTerm: { type: Number,  default:0},
+  finalExam: { type: Number, default:0},
 });
 
 const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
   {
     semesterRegistration: { type: Schema.Types.ObjectId, required: true, ref: "SemesterRegistration" },
     academinSemester: { type: Schema.Types.ObjectId, required: true, ref: "AcademicSemester" },
-    academicDepartment: { type: Schema.Types.ObjectId, required: true, ref: "AcademicDepartment" },
     offerCorse: { type: Schema.Types.ObjectId, required: true, ref: "OfferCourse" },
     corse: { type: Schema.Types.ObjectId, required: true, ref: "Course" },
     student: {  type: Schema.Types.ObjectId, required: true, ref: "Student" },
@@ -51,7 +50,7 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
 
     isEnrollerd: { type: Boolean, default: false },
 
-    corseMark: { type: CourseMarkSchema, required: true },
+    corseMark: { type: CourseMarkSchema, default: () => ({}) },
 
     grade: {
       type: String,
@@ -60,9 +59,9 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
         "B+", "B", "B-",
         "C+", "C", "C-",
         "D+", "D", "D-",
-        "F",
+        "F","N/A"
       ],
-      required: true,
+      default: "N/A",
     },
 
     isComplated: { type: Boolean, default: false },
@@ -70,6 +69,7 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
   { timestamps: true }
   
 );
+
 
 export const EnrolCourseStudentModel = model<EnrolCourseStudent>(
   "EnrolCourseStudent",

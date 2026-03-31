@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export type Tgrade = 'A+' | 'A' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D+' | 'D' | 'D-' | 'F';
+export type Tgrade = 'A+' | 'A' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D+' | 'D' | 'D-' | 'F' | 'N/A';
 export type EnrolCorseMark={
     classTest1:number;
     classTest2:number;
@@ -11,8 +11,7 @@ export type EnrolCorseMark={
 export type EnrolCourseStudent = {
     semesterRegistration: Types.ObjectId;
     academinSemester: Types.ObjectId;
-    academicDepartment: Types.ObjectId;
-    offerCorseId: Types.ObjectId;
+    offerCorse: Types.ObjectId;
     corse: Types.ObjectId;
     student: Types.ObjectId;
     faculity: Types.ObjectId;

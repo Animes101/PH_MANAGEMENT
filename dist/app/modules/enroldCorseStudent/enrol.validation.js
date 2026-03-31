@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.enrolCourseStudentJoi = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.enrolCourseStudentJoi = joi_1.default.object({
-    offerCorseId: joi_1.default.string().required(),
+    offerCorse: joi_1.default.string().required(),
 });
