@@ -7,7 +7,6 @@ exports.EnrolCourseService = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const admin_model_1 = require("../admin/admin.model");
 const offerCorse_model_1 = require("../offerCorse/offerCorse.model");
-const Register_model_1 = require("../semesterRegistation/Register.model");
 const enrol_model_1 = require("./enrol.model");
 const mongoose_1 = __importDefault(require("mongoose"));
 exports.EnrolCourseService = {
@@ -58,34 +57,39 @@ exports.EnrolCourseService = {
                     finalExam: 0,
                 },
             };
-            //check if enroll student max credit exceed
-            const enrolledCourses = await Register_model_1.registerModel.findOne({
-                _id: isOfferCourseExist.registationSementer,
-            }).select('maxCredit').session(session);
-            //total enrolled credit 
-            const totalEnrolledCredit = await enrol_model_1.EnrolCourseStudentModel.aggregate([
-                { $match: {
-                        semesterRegistration: isOfferCourseExist.registationSementer,
-                        student: user_id?._id,
-                    },
-                },
-                {
-                    $lookup: {
-                        from: "registermodels",
-                        localField: "semesterRegistration",
-                        foreignField: "_id",
-                        as: "offerCourseDetails",
-                    },
-                },
-                { $unwind: "$offerCourseDetails" },
-                {
-                    $group: {
-                        _id: null,
-                        totalCredit: { $sum: "$offerCourseDetails.maxCredit" },
-                    },
-                },
-            ]).session(session);
-            console.log(totalEnrolledCredit);
+            // //check if enroll student max credit exceed
+            //   const enrolledCourses = await registerModel.findOne({
+            //     _id: isOfferCourseExist.registationSementer,
+            //   }).select('maxCredit').session(session);
+            //   //total enrolled credit 
+            //   const totalEnrolledCredit = await EnrolCourseStudentModel.aggregate([
+            //     { $match: {
+            //         semesterRegistration: isOfferCourseExist.registationSementer,
+            //         student:user_id?._id,
+            //     },
+            //     },
+            //     {
+            //       $lookup: {
+            //         from: "registermodels",
+            //         localField: "semesterRegistration",
+            //         foreignField: "_id",
+            //         as: "offerCourseDetails",
+            //       },
+            //     },
+            //     { $unwind: "$offerCourseDetails" },
+            //     {
+            //       $group: {
+            //         _id: null,
+            //         totalCredit: { $sum: "$offerCourseDetails.maxCredit" },
+            //       },
+            //     },
+            //   ]).session(session);
+            //   console.log(totalEnrolledCredit)
+            //   console.log(enrolledCourses?.maxCredit)
+            //   const totalCreditAfterEnroll= totalEnrolledCredit.length > 0 ? totalEnrolledCredit[0].totalCredit :  0;
+            //   if(enrolledCourses && totalCreditAfterEnroll > enrolledCourses.maxCredit){
+            //     throw new AppError("Enrolling this course will exceed your maximum credit limit", 400);
+            //   }
             // 6️⃣ Enroll create (transactional)
             const result = await enrol_model_1.EnrolCourseStudentModel.create([enrollStudent], { session });
             if (!result || result.length === 0) {
@@ -104,45 +108,41 @@ exports.EnrolCourseService = {
             session.endSession();
             throw error;
         }
-    }
+    },
+    // 👉 Get All
+    // getAllEnrol: async () => {
+    //   const result = await EnrolCourseStudentModel.find().populate([
+    //     "semesterRegistration",
+    //     "academinSemester",
+    //     "academicDepartment",
+    //     "offerCorse",
+    //     "corse",
+    //     "student",
+    //     "faculity",
+    //   ]);
+    //   return result;
+    // },
+    // // 👉 Get Single
+    // getSingleEnrol: async (id: string) => {
+    //   const result = await EnrolCourseStudentModel.findById(id).populate([
+    //     "semesterRegistration",
+    //     "academinSemester",
+    //     "academicDepartment",
+    //     "offerCorse",
+    //     "corse",
+    //     "student",
+    //     "faculity",
+    //   ]);
+    //   return result;
+    // },
+    // 👉 Update
+    updateEnrol: async (id, payload) => {
+        const result = await enrol_model_1.EnrolCourseStudentModel.findByIdAndUpdate(id, payload, { new: true });
+        return result;
+    },
+    // 👉 Delete
+    // deleteEnrol: async (id: string) => {
+    //   const result = await EnrolCourseStudentModel.findByIdAndDelete(id);
+    //   return result;
+    // },
 };
-// 👉 Get All
-//   getAllEnrol: async () => {
-//     const result = await EnrolCourseStudentModel.find().populate([
-//       "semesterRegistration",
-//       "academinSemester",
-//       "academicDepartment",
-//       "offerCorse",
-//       "corse",
-//       "student",
-//       "faculity",
-//     ]);
-//     return result;
-//   },
-//   // 👉 Get Single
-//   getSingleEnrol: async (id: string) => {
-//     const result = await EnrolCourseStudentModel.findById(id).populate([
-//       "semesterRegistration",
-//       "academinSemester",
-//       "academicDepartment",
-//       "offerCorse",
-//       "corse",
-//       "student",
-//       "faculity",
-//     ]);
-//     return result;
-//   },
-//   // 👉 Update
-//   updateEnrol: async (id: string, payload: Partial<EnrolCourseStudent>) => {
-//     const result = await EnrolCourseStudentModel.findByIdAndUpdate(
-//       id,
-//       payload,
-//       { new: true }
-//     );
-//     return result;
-//   },
-//   // 👉 Delete
-//   deleteEnrol: async (id: string) => {
-//     const result = await EnrolCourseStudentModel.findByIdAndDelete(id);
-//     return result;
-//   },

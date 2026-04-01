@@ -17,8 +17,8 @@ router.post("/enrolCourse", (0, auth_1.default)(user_constance_1.User_Role.admin
 // router.get("/enrolCourse", EnrolCourseController.getAllEnrolCourse);
 // // 👉 Get Single
 // router.get("/enrolCourse/:id", EnrolCourseController.getSingleEnrolCourse);
-// // 👉 Update
-// router.patch("/enrolCourse/:id", EnrolCourseController.updateEnrolCourse);
+// 👉 Update
+router.patch("/enrolCourse/:id", enrol_controller_1.EnrolCourseController.updateEnrolCourse);
 // // 👉 Delete
 // router.delete("/enrolCourse/:id", EnrolCourseController.deleteEnrolCourse);
 exports.EnrollRouter = router;

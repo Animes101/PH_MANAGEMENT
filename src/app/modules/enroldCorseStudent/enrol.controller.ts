@@ -52,22 +52,22 @@ export const EnrolCourseController = {
 //   },
 
 //   // 👉 Update
-//   updateEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const result = await EnrolCourseService.updateEnrol(
-//         req.params.id,
-//         req.body
-//       );
+  updateEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await EnrolCourseService.updateEnrol(
+        req.params.id,
+        req.body
+      );
 
-//       res.json({
-//         success: true,
-//         message: "Enrol course updated",
-//         data: result,
-//       });
-//     } catch (err) {
-//       next(err);
-//     }
-//   },
+      res.json({
+        success: true,
+        message: "Enrol course updated",
+        data: result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 
 //   // 👉 Delete
 //   deleteEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {

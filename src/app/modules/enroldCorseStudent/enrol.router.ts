@@ -18,8 +18,8 @@ router.post("/enrolCourse", auth(User_Role.admin), validationRequest(enrolCourse
 // // 👉 Get Single
 // router.get("/enrolCourse/:id", EnrolCourseController.getSingleEnrolCourse);
 
-// // 👉 Update
-// router.patch("/enrolCourse/:id", EnrolCourseController.updateEnrolCourse);
+// 👉 Update
+router.patch("/enrolCourse/:id", EnrolCourseController.updateEnrolCourse);
 
 // // 👉 Delete
 // router.delete("/enrolCourse/:id", EnrolCourseController.deleteEnrolCourse);

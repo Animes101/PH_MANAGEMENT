@@ -67,41 +67,48 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
       },
     };
 
-    //check if enroll student max credit exceed
-      const enrolledCourses = await registerModel.findOne({
-        _id: isOfferCourseExist.registationSementer,
-      }).select('maxCredit').session(session);
+    // //check if enroll student max credit exceed
+    //   const enrolledCourses = await registerModel.findOne({
+    //     _id: isOfferCourseExist.registationSementer,
+    //   }).select('maxCredit').session(session);
 
 
-      //total enrolled credit 
+    //   //total enrolled credit 
 
 
-      const totalEnrolledCredit = await EnrolCourseStudentModel.aggregate([
-        { $match: {
-            semesterRegistration: isOfferCourseExist.registationSementer,
-            student:user_id?._id,
+    //   const totalEnrolledCredit = await EnrolCourseStudentModel.aggregate([
+    //     { $match: {
+    //         semesterRegistration: isOfferCourseExist.registationSementer,
+    //         student:user_id?._id,
 
-        },
+    //     },
 
-        },
-        {
-          $lookup: {
-            from: "registermodels",
-            localField: "semesterRegistration",
-            foreignField: "_id",
-            as: "offerCourseDetails",
-          },
-        },
-        { $unwind: "$offerCourseDetails" },
-        {
-          $group: {
-            _id: null,
-            totalCredit: { $sum: "$offerCourseDetails.maxCredit" },
-          },
-        },
-      ]).session(session);
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "registermodels",
+    //         localField: "semesterRegistration",
+    //         foreignField: "_id",
+    //         as: "offerCourseDetails",
+    //       },
+    //     },
+    //     { $unwind: "$offerCourseDetails" },
+    //     {
+    //       $group: {
+    //         _id: null,
+    //         totalCredit: { $sum: "$offerCourseDetails.maxCredit" },
+    //       },
+    //     },
+    //   ]).session(session);
 
-      console.log(totalEnrolledCredit)
+    //   console.log(totalEnrolledCredit)
+    //   console.log(enrolledCourses?.maxCredit)
+
+    //   const totalCreditAfterEnroll= totalEnrolledCredit.length > 0 ? totalEnrolledCredit[0].totalCredit :  0;
+
+    //   if(enrolledCourses && totalCreditAfterEnroll > enrolledCourses.maxCredit){
+    //     throw new AppError("Enrolling this course will exceed your maximum credit limit", 400);
+    //   }
 
     // 6️⃣ Enroll create (transactional)
     const result = await EnrolCourseStudentModel.create([enrollStudent], { session });
@@ -128,49 +135,49 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
     session.endSession();
     throw error;
   }
-}
-};
+},
 
   // 👉 Get All
-//   getAllEnrol: async () => {
-//     const result = await EnrolCourseStudentModel.find().populate([
-//       "semesterRegistration",
-//       "academinSemester",
-//       "academicDepartment",
-//       "offerCorse",
-//       "corse",
-//       "student",
-//       "faculity",
-//     ]);
-//     return result;
-//   },
+  // getAllEnrol: async () => {
+  //   const result = await EnrolCourseStudentModel.find().populate([
+  //     "semesterRegistration",
+  //     "academinSemester",
+  //     "academicDepartment",
+  //     "offerCorse",
+  //     "corse",
+  //     "student",
+  //     "faculity",
+  //   ]);
+  //   return result;
+  // },
 
-//   // 👉 Get Single
-//   getSingleEnrol: async (id: string) => {
-//     const result = await EnrolCourseStudentModel.findById(id).populate([
-//       "semesterRegistration",
-//       "academinSemester",
-//       "academicDepartment",
-//       "offerCorse",
-//       "corse",
-//       "student",
-//       "faculity",
-//     ]);
-//     return result;
-//   },
+  // // 👉 Get Single
+  // getSingleEnrol: async (id: string) => {
+  //   const result = await EnrolCourseStudentModel.findById(id).populate([
+  //     "semesterRegistration",
+  //     "academinSemester",
+  //     "academicDepartment",
+  //     "offerCorse",
+  //     "corse",
+  //     "student",
+  //     "faculity",
+  //   ]);
+  //   return result;
+  // },
 
-//   // 👉 Update
-//   updateEnrol: async (id: string, payload: Partial<EnrolCourseStudent>) => {
-//     const result = await EnrolCourseStudentModel.findByIdAndUpdate(
-//       id,
-//       payload,
-//       { new: true }
-//     );
-//     return result;
-//   },
+  // 👉 Update
+  updateEnrol: async (id: string, payload: Partial<EnrolCourseStudent>) => {
+    const result = await EnrolCourseStudentModel.findByIdAndUpdate(
+      id,
+      payload,
+      { new: true }
+    );
+    return result;
+  },
 
-//   // 👉 Delete
-//   deleteEnrol: async (id: string) => {
-//     const result = await EnrolCourseStudentModel.findByIdAndDelete(id);
-//     return result;
-//   },
+  // 👉 Delete
+  // deleteEnrol: async (id: string) => {
+  //   const result = await EnrolCourseStudentModel.findByIdAndDelete(id);
+  //   return result;
+  // },
+};
