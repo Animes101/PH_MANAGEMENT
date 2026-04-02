@@ -32,11 +32,11 @@ export type EnrolCourseStudent = {
 // ---------------- SCHEMA -------------------
 
 const CourseMarkSchema = new Schema<EnrolCorseMark>({
-  classTest1: { type: Number, default:0},
-  classTest2: { type: Number, default:0},
-  classTest3: { type: Number, default:0},
-  midTerm: { type: Number,  default:0},
-  finalExam: { type: Number, default:0},
+  classTest1: { type: Number, default:0, min:0, max:10},
+  classTest2: { type: Number, default:0, min:0, max:10},
+  classTest3: { type: Number, default:0, min:0, max:10},
+  midTerm: { type: Number,  default:0, min:0, max:20},
+  finalExam: { type: Number, default:0, min:0, max:50},
 });
 
 const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(

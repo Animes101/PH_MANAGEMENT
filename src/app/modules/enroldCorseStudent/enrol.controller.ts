@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { EnrolCourseService } from "./enrol.services";
+import catchAsync from "../../utility/catchAsync";
 
 
 export const EnrolCourseController = {
   
   // 👉 Create
-  createEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
-    try {
+  createEnrolCourse: catchAsync(async (req: Request, res: Response) => {
 
       const userId=req.user?.userId;
       const result = await EnrolCourseService.createEnrol(req.body, userId);
@@ -16,10 +16,9 @@ export const EnrolCourseController = {
         message: "Enrol course created successfully",
         data: result,
       });
-    } catch (err) {
-      next(err);
-    }
-  },
+   
+   
+  }),
 
   // 👉 Get All
 //   getAllEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
@@ -52,22 +51,26 @@ export const EnrolCourseController = {
 //   },
 
 //   // 👉 Update
-  updateEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await EnrolCourseService.updateEnrol(
-        req.params.id,
-        req.body
-      );
+  updateEnrolCourse:catchAsync(async (req: Request, res: Response,) => {
 
-      res.json({
+     
+
+      const facalitiId=req.user?.userId;
+
+      const payload=req.body;
+
+  
+
+      const result = await EnrolCourseService.updateEnrol(payload, facalitiId);
+
+      res.status(201).json({
         success: true,
-        message: "Enrol course updated",
+        message: "Enrol course created successfully",
         data: result,
       });
-    } catch (err) {
-      next(err);
-    }
-  },
+   
+   
+  })
 
 //   // 👉 Delete
 //   deleteEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {

@@ -166,13 +166,14 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
   // },
 
   // 👉 Update
-  updateEnrol: async (id: string, payload: Partial<EnrolCourseStudent>) => {
-    const result = await EnrolCourseStudentModel.findByIdAndUpdate(
-      id,
-      payload,
-      { new: true }
-    );
-    return result;
+  updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId:string) => {
+
+    console.log(payload, facalityId)
+
+
+
+    
+  
   },
 
   // 👉 Delete

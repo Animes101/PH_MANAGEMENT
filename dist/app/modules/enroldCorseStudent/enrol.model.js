@@ -4,11 +4,11 @@ exports.EnrolCourseStudentModel = void 0;
 const mongoose_1 = require("mongoose");
 // ---------------- SCHEMA -------------------
 const CourseMarkSchema = new mongoose_1.Schema({
-    classTest1: { type: Number, default: 0 },
-    classTest2: { type: Number, default: 0 },
-    classTest3: { type: Number, default: 0 },
-    midTerm: { type: Number, default: 0 },
-    finalExam: { type: Number, default: 0 },
+    classTest1: { type: Number, default: 0, min: 0, max: 10 },
+    classTest2: { type: Number, default: 0, min: 0, max: 10 },
+    classTest3: { type: Number, default: 0, min: 0, max: 10 },
+    midTerm: { type: Number, default: 0, min: 0, max: 20 },
+    finalExam: { type: Number, default: 0, min: 0, max: 50 },
 });
 const EnrolCourseStudentSchema = new mongoose_1.Schema({
     semesterRegistration: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: "SemesterRegistration" },

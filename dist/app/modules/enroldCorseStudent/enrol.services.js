@@ -136,9 +136,8 @@ exports.EnrolCourseService = {
     //   return result;
     // },
     // 👉 Update
-    updateEnrol: async (id, payload) => {
-        const result = await enrol_model_1.EnrolCourseStudentModel.findByIdAndUpdate(id, payload, { new: true });
-        return result;
+    updateEnrol: async (payload, facalityId) => {
+        console.log(payload, facalityId);
     },
     // 👉 Delete
     // deleteEnrol: async (id: string) => {

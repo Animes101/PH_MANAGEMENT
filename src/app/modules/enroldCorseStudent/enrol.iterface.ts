@@ -8,6 +8,7 @@ export type EnrolCorseMark={
     midTerm:number;
     finalExam:number;
 }
+
 export type EnrolCourseStudent = {
     semesterRegistration: Types.ObjectId;
     academinSemester: Types.ObjectId;

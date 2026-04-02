@@ -1,23 +1,22 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnrolCourseController = void 0;
 const enrol_services_1 = require("./enrol.services");
+const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 exports.EnrolCourseController = {
     // 👉 Create
-    createEnrolCourse: async (req, res, next) => {
-        try {
-            const userId = req.user?.userId;
-            const result = await enrol_services_1.EnrolCourseService.createEnrol(req.body, userId);
-            res.status(201).json({
-                success: true,
-                message: "Enrol course created successfully",
-                data: result,
-            });
-        }
-        catch (err) {
-            next(err);
-        }
-    },
+    createEnrolCourse: (0, catchAsync_1.default)(async (req, res) => {
+        const userId = req.user?.userId;
+        const result = await enrol_services_1.EnrolCourseService.createEnrol(req.body, userId);
+        res.status(201).json({
+            success: true,
+            message: "Enrol course created successfully",
+            data: result,
+        });
+    }),
     // 👉 Get All
     //   getAllEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
     //     try {
@@ -45,19 +44,16 @@ exports.EnrolCourseController = {
     //     }
     //   },
     //   // 👉 Update
-    updateEnrolCourse: async (req, res, next) => {
-        try {
-            const result = await enrol_services_1.EnrolCourseService.updateEnrol(req.params.id, req.body);
-            res.json({
-                success: true,
-                message: "Enrol course updated",
-                data: result,
-            });
-        }
-        catch (err) {
-            next(err);
-        }
-    },
+    updateEnrolCourse: (0, catchAsync_1.default)(async (req, res) => {
+        const facalitiId = req.user?.userId;
+        const payload = req.body;
+        const result = await enrol_services_1.EnrolCourseService.updateEnrol(payload, facalitiId);
+        res.status(201).json({
+            success: true,
+            message: "Enrol course created successfully",
+            data: result,
+        });
+    })
     //   // 👉 Delete
     //   deleteEnrolCourse: async (req: Request, res: Response, next: NextFunction) => {
     //     try {

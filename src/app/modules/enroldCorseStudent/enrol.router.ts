@@ -1,27 +1,21 @@
 import express from "express";
-import { EnrolCourseController } from "./enrol.controller";
 import validationRequest from "../../utility/validatonJoi";
-import { enrolCourseStudentJoi } from "./enrol.validation";
+import { enrolCourseStudentJoi, enrollCorseUpdateJoi } from "./enrol.validation";
 import { User_Role } from "../user/user.constance";
 import auth from "../../../middlwares/auth";
-
-
+import { EnrolCourseController } from "./enrol.controller";
 
 const router = express.Router();
 
 // 👉 Create
-router.post("/enrolCourse", auth(User_Role.admin), validationRequest(enrolCourseStudentJoi), EnrolCourseController.createEnrolCourse);
+router.post(
+  "/enrolCourse",
+  auth(User_Role.admin),
+  validationRequest(enrolCourseStudentJoi),
+  EnrolCourseController.createEnrolCourse
+);
 
-// // 👉 Get All
-// router.get("/enrolCourse", EnrolCourseController.getAllEnrolCourse);
+// 👉 Update (Correct Version)
+router.patch("/enrolCourse/Update", auth(User_Role.faculity), validationRequest(enrollCorseUpdateJoi), EnrolCourseController.updateEnrolCourse);
 
-// // 👉 Get Single
-// router.get("/enrolCourse/:id", EnrolCourseController.getSingleEnrolCourse);
-
-// 👉 Update
-router.patch("/enrolCourse/:id", EnrolCourseController.updateEnrolCourse);
-
-// // 👉 Delete
-// router.delete("/enrolCourse/:id", EnrolCourseController.deleteEnrolCourse);
-
-export const  EnrollRouter = router;
+export const EnrollRouter = router;
