@@ -1,5 +1,6 @@
 import AppError from "../../errors/AppError";
 import { adminModel } from "../admin/admin.model";
+import { TeacherModel } from "../facality/facality.model";
 import { OfferCourseModel } from "../offerCorse/offerCorse.model";
 import { registerModel } from "../semesterRegistation/Register.model";
 import { EnrolCourseStudent } from "./enrol.iterface";
@@ -12,6 +13,7 @@ export const EnrolCourseService = {
   
 
 createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -55,8 +57,8 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
       corse: isOfferCourseExist.corse,
       student: user_id?._id,
       faculity: isOfferCourseExist.academinFacaulty,
+      grade: "N/A",
       isEnrollerd: true,
-      grade: "F",
       isComplated: false,
       corseMark: {
         classTest1: 0,
@@ -166,15 +168,63 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
   // },
 
   // 👉 Update
-  updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId:string) => {
+updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) => {
 
-    console.log(payload, facalityId)
+  const {
+    student,
+    semesterRegistration,
+    academinSemester,
+    offerCorse,
+    corseMark,
+    ...updateData
+  } = payload;
 
+  // ✔ validate semester
+  const isSemesterExits = await registerModel.findById(semesterRegistration);
+  if (!isSemesterExits) throw new AppError("Semester registration not found", 404);
 
+  // ✔ validate offer course
+  const isOfferCourseExits = await OfferCourseModel.findById(offerCorse);
+  if (!isOfferCourseExits) throw new AppError("Offer course not found", 404);
 
-    
+  // ✔ validate student
+  const isStudentExits = await adminModel.findById(student);
+  if (!isStudentExits) throw new AppError("Student not found", 404);
+
+  // ✔ validate faculty
+  const facaltiExits = await TeacherModel.findOne({ id: facalityId });
+  if (!facaltiExits) throw new AppError("Faculty not found", 404);
+
+  // ✔ validate enrol exist
+  const isFacalityiExits = await EnrolCourseStudentModel.findOne({
+    semesterRegistration,
+    academinSemester,
+    offerCorse,
+    student,
+    faculity: facaltiExits?._id,
+  });
+
+  if (!isFacalityiExits) throw new AppError("Forbidden access faculty not found", 404);
+
+  // 🔥 final update object
+  const modifiteData: any = {
+    ...updateData,
+  };
+
+  // 🔥 If corseMark exists then update nested fields
+  if (corseMark && Object.keys(corseMark).length > 0) {
+    for (const [key, value] of Object.entries(corseMark)) {
+      modifiteData[`corseMark.${key}`] = value;
+    }
+  }
   
-  },
+
+  const result= await EnrolCourseStudentModel.findByIdAndUpdate( isFacalityiExits._id, modifiteData, { new: true });
+
+  return result
+
+  
+}
 
   // 👉 Delete
   // deleteEnrol: async (id: string) => {

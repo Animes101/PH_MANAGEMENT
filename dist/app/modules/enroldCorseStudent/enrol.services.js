@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnrolCourseService = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const admin_model_1 = require("../admin/admin.model");
+const facality_model_1 = require("../facality/facality.model");
 const offerCorse_model_1 = require("../offerCorse/offerCorse.model");
+const Register_model_1 = require("../semesterRegistation/Register.model");
 const enrol_model_1 = require("./enrol.model");
 const mongoose_1 = __importDefault(require("mongoose"));
 exports.EnrolCourseService = {
@@ -46,8 +48,8 @@ exports.EnrolCourseService = {
                 corse: isOfferCourseExist.corse,
                 student: user_id?._id,
                 faculity: isOfferCourseExist.academinFacaulty,
+                grade: "N/A",
                 isEnrollerd: true,
-                grade: "F",
                 isComplated: false,
                 corseMark: {
                     classTest1: 0,
@@ -137,8 +139,46 @@ exports.EnrolCourseService = {
     // },
     // 👉 Update
     updateEnrol: async (payload, facalityId) => {
-        console.log(payload, facalityId);
-    },
+        const { student, semesterRegistration, academinSemester, offerCorse, corseMark, ...updateData } = payload;
+        // ✔ validate semester
+        const isSemesterExits = await Register_model_1.registerModel.findById(semesterRegistration);
+        if (!isSemesterExits)
+            throw new AppError_1.default("Semester registration not found", 404);
+        // ✔ validate offer course
+        const isOfferCourseExits = await offerCorse_model_1.OfferCourseModel.findById(offerCorse);
+        if (!isOfferCourseExits)
+            throw new AppError_1.default("Offer course not found", 404);
+        // ✔ validate student
+        const isStudentExits = await admin_model_1.adminModel.findById(student);
+        if (!isStudentExits)
+            throw new AppError_1.default("Student not found", 404);
+        // ✔ validate faculty
+        const facaltiExits = await facality_model_1.TeacherModel.findOne({ id: facalityId });
+        if (!facaltiExits)
+            throw new AppError_1.default("Faculty not found", 404);
+        // ✔ validate enrol exist
+        const isFacalityiExits = await enrol_model_1.EnrolCourseStudentModel.findOne({
+            semesterRegistration,
+            academinSemester,
+            offerCorse,
+            student,
+            faculity: facaltiExits?._id,
+        });
+        if (!isFacalityiExits)
+            throw new AppError_1.default("Forbidden access faculty not found", 404);
+        // 🔥 final update object
+        const modifiteData = {
+            ...updateData,
+        };
+        // 🔥 If corseMark exists then update nested fields
+        if (corseMark && Object.keys(corseMark).length > 0) {
+            for (const [key, value] of Object.entries(corseMark)) {
+                modifiteData[`corseMark.${key}`] = value;
+            }
+        }
+        const result = await enrol_model_1.EnrolCourseStudentModel.findByIdAndUpdate(isFacalityiExits._id, modifiteData, { new: true });
+        return result;
+    }
     // 👉 Delete
     // deleteEnrol: async (id: string) => {
     //   const result = await EnrolCourseStudentModel.findByIdAndDelete(id);

@@ -59,6 +59,7 @@ export const EnrolCourseController = {
 
       const payload=req.body;
 
+    
   
 
       const result = await EnrolCourseService.updateEnrol(payload, facalitiId);
