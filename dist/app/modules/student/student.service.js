@@ -18,7 +18,8 @@ const getAllStudents = async (query) => {
         .pagination()
         .fields()
         .modelQuery;
-    return students;
+    const meta = await queryBuilder.coutTotal();
+    return { meta, data: students };
 };
 const getSingleStudent = async (_id) => {
     const result = await student_model_1.StudentModel.findOne({ _id });

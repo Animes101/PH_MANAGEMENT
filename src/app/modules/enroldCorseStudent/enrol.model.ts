@@ -26,6 +26,7 @@ export type EnrolCourseStudent = {
   isEnrollerd: boolean;
   corseMark: EnrolCorseMark;
   grade: Tgrade;
+  gradePoint:number;
   isComplated: boolean;
 };
 
@@ -63,6 +64,7 @@ const EnrolCourseStudentSchema = new Schema<EnrolCourseStudent>(
       ],
       default: "N/A",
     },
+    gradePoint: { type: Number, default: 0 },
 
     isComplated: { type: Boolean, default: false },
   },

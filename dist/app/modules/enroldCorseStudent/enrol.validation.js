@@ -21,5 +21,6 @@ exports.enrollCorseUpdateJoi = joi_1.default.object({
         finalExam: joi_1.default.number().min(0).max(50),
     }),
     grade: joi_1.default.string().valid('A', 'B', 'C', 'D', 'F', 'N/A'),
+    gradePoint: joi_1.default.number().min(0).max(100),
     isComplated: joi_1.default.boolean(),
 });

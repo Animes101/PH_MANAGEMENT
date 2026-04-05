@@ -19,5 +19,6 @@ export type EnrolCourseStudent = {
     isEnrollerd:boolean;
     corseMark:corseMark;
     grade:Tgrade;
+    gradePoint:number;
     isComplated:boolean;
 }

@@ -11,6 +11,7 @@ const offerCorse_model_1 = require("../offerCorse/offerCorse.model");
 const Register_model_1 = require("../semesterRegistation/Register.model");
 const enrol_model_1 = require("./enrol.model");
 const mongoose_1 = __importDefault(require("mongoose"));
+const enrolClass_utlis_1 = __importDefault(require("./enrolClass.utlis"));
 exports.EnrolCourseService = {
     createEnrol: async (payload, userId) => {
         const session = await mongoose_1.default.startSession();
@@ -170,6 +171,16 @@ exports.EnrolCourseService = {
         const modifiteData = {
             ...updateData,
         };
+        //check final term 
+        if (corseMark?.finalExam) {
+            const totalMarks = isFacalityiExits.corseMark.classTest1 + isFacalityiExits.corseMark.classTest2 + isFacalityiExits.corseMark.classTest3 +
+                isFacalityiExits.corseMark.midTerm + corseMark.finalExam;
+            const greadPongAndGrade = (0, enrolClass_utlis_1.default)(totalMarks);
+            console.log(greadPongAndGrade);
+            modifiteData.gradePoint = greadPongAndGrade.gradePoint;
+            modifiteData.grade = greadPongAndGrade.grade;
+            modifiteData.isComplated = true;
+        }
         // 🔥 If corseMark exists then update nested fields
         if (corseMark && Object.keys(corseMark).length > 0) {
             for (const [key, value] of Object.entries(corseMark)) {

@@ -30,6 +30,7 @@ const EnrolCourseStudentSchema = new mongoose_1.Schema({
         ],
         default: "N/A",
     },
+    gradePoint: { type: Number, default: 0 },
     isComplated: { type: Boolean, default: false },
 }, { timestamps: true });
 exports.EnrolCourseStudentModel = (0, mongoose_1.model)("EnrolCourseStudent", EnrolCourseStudentSchema);
