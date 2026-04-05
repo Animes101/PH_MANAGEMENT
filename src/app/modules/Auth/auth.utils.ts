@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 export const createToken = (
   payload: {
     userId: string;
-    userRole: "admin" | "student" | "faculity" | undefined;
+    userRole: "superAdmin"| "admin" | "student" | "faculity" | undefined;
   },
   secretToken: string,
   expireTime: string // অথবা number

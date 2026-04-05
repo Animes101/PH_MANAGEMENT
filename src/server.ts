@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import config from "./app/config/index.js";
 import { Server } from "node:http";
+import seedSuperAdmin from "./app/DB";
 
 const PORT = config.port;
 const uri: string = config.mongoURI;
@@ -12,6 +13,8 @@ async function bootstrap() {
   try {
     await mongoose.connect(uri);
     console.log("✅ MongoDB Connected");
+
+    await seedSuperAdmin();
 
     // ✅ MUST assign server
     server = app.listen(PORT, () => {

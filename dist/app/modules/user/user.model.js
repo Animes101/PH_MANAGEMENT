@@ -14,7 +14,7 @@ const UserSchema = new mongoose_1.Schema({
     needPassword: { type: Boolean },
     role: {
         type: String,
-        enum: ["admin", "student", "faculity"],
+        enum: ["superAdmin", "admin", "student", "faculity"],
         default: "student",
     },
     status: { type: String, enum: ["in-progress", "blocked"], default: "in-progress" },
