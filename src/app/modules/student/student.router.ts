@@ -13,10 +13,10 @@ const router= express.Router();
 
 
 
-router.get('/getStudent', auth(User_Role.faculity, User_Role.admin), studentController.getAllStudents);
-router.get('/singleStudent/:_id', auth(User_Role.admin, User_Role.faculity), studentController.getSingleStudent);
-router.delete('/deleteStudent/:id', studentController.deleteStudent);
-router.patch('/update/:id', validationRequest(updateStudentSchema), studentController.updateStudent);
+router.get('/getStudent', auth(User_Role.faculity, User_Role.admin, User_Role.superAdmin), studentController.getAllStudents);
+router.get('/singleStudent/:_id', auth(User_Role.admin, User_Role.faculity, User_Role.superAdmin), studentController.getSingleStudent);
+router.delete('/deleteStudent/:id', auth(User_Role.admin, User_Role.superAdmin), studentController.deleteStudent);
+router.patch('/update/:id', auth(User_Role.admin, User_Role.superAdmin), validationRequest(updateStudentSchema), studentController.updateStudent);
 
 
 
