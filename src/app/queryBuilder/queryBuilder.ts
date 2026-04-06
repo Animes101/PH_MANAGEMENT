@@ -15,6 +15,7 @@ class QueryBuilder<T> {
     if (typeof this.query.searchTerm === 'string') {
       const searchTerm = this.query.searchTerm;
 
+      
       this.modelQuery = this.modelQuery.find({
         $or: searchableFields.map((field) => ({
           [field]: { $regex: searchTerm, $options: 'i' },

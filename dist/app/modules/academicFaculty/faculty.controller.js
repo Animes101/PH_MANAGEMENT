@@ -17,7 +17,7 @@ const createAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 const getAllAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
-    const result = await faculty_services_1.academicFacultyServices.getAllAcademicFacultyDb();
+    const result = await faculty_services_1.academicFacultyServices.getAllAcademicFacultyDb(req.query);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -35,8 +35,6 @@ const getSingleAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 const updateAcademicFaculty = (0, catchAsync_1.default)(async (req, res) => {
-    console.log(req.params.id);
-    console.log(req.body);
     const result = await faculty_services_1.academicFacultyServices.updateAcademincFacultyDb(req.params.id, req.body);
     (0, respons_1.default)(res, {
         statusCode: 200,

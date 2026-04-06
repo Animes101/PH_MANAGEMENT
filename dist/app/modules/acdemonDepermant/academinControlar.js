@@ -17,7 +17,7 @@ const createAcademinDepartment = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 const ageAllAcademinDepartment = (0, catchAsync_1.default)(async (req, res) => {
-    const result = await academinDepertMent_services_1.academinServices.getAllAcademinDepartmentDb();
+    const result = await academinDepertMent_services_1.academinServices.getAllAcademinDepartmentDb(req.query);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,

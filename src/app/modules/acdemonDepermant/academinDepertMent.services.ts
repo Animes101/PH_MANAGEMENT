@@ -1,3 +1,4 @@
+import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { AcademinDepartmentInterface } from "./academinDepert.interface"
 import { academinDepertModel } from "./academinDepertMent.model"
 
@@ -11,10 +12,24 @@ const createAcademinDepartmentDb=(payload:AcademinDepartmentInterface)=>{
 }
 
 
-const  getAllAcademinDepartmentDb=()=>{
+const  getAllAcademinDepartmentDb= async (query: Record<string, unknown>)=>{
 
-    const retult= academinDepertModel.find().populate('academinFacality');
-    return retult;
+   const queryBuilder = new QueryBuilder(
+       academinDepertModel.find(),
+       query
+     );
+   
+     const academinDepartments = await queryBuilder
+       .search(['name'])
+       .filter()
+       .sort()
+       .pagination()
+       .fields()
+       .modelQuery
+   
+       const meta= await queryBuilder.coutTotal();
+   
+     return {meta, data:academinDepartments};
 }
 
 const getSingleAcademinDepartmentDb=(id:string)=>{

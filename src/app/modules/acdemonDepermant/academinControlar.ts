@@ -20,7 +20,7 @@ const createAcademinDepartment= catchAsync(async(req , res)=>{
 
 const ageAllAcademinDepartment=catchAsync(async(req , res)=>{
 
-    const result=await academinServices.getAllAcademinDepartmentDb();
+    const result=await academinServices.getAllAcademinDepartmentDb(req.query);
     sendResponse(res, {
         statusCode: 200,
         success: true,
