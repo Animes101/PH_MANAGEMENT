@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateAdminValidationSchema = exports.createAdminValidationSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.createAdminValidationSchema = joi_1.default.object({
-    id: joi_1.default.string().required(),
-    user: joi_1.default.string().required(),
+    // id: Joi.string().required(),
+    // user: Joi.string().required(),
     name: joi_1.default.string().trim().required(),
     age: joi_1.default.number().required(),
     gender: joi_1.default.string()

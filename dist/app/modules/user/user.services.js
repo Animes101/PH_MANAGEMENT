@@ -129,6 +129,7 @@ const createAdminIntoDB = async (payload) => {
         // 4️⃣ Create Admin Profile linked to user
         payload.id = userNew[0].id;
         payload.user = userNew[0]._id;
+        console.log(payload);
         const adminNew = await admin_model_1.adminModel.create([payload], { session });
         // 5️⃣ Commit Transaction
         await session.commitTransaction();

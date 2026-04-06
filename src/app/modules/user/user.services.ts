@@ -171,6 +171,10 @@ export const createAdminIntoDB = async (payload: IAdmin) => {
     payload.id = userNew[0].id as string;
     payload.user = userNew[0]._id;
 
+
+    console.log(payload);
+
+
     const adminNew = await adminModel.create([payload], { session });
 
     // 5️⃣ Commit Transaction

@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IAdmin {
-  id: string;
+  id:string;
   user: Types.ObjectId;
   name: string;
   age: number;

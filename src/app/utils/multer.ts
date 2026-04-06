@@ -7,7 +7,7 @@ import AppError from "../errors/AppError";
                 cloudinary.config({ 
                     cloud_name: 'doi78dfjf', 
                     api_key: '232271254725749', 
-                    api_secret: '3nquADCWo0dmp-Q6Y4x6bbpUHMw' // Click 'View API Keys' above to copy your API secret
+                    api_secret: '3nquADCWo0dmp-Q6Y4x6bbpUHMw'
                 });
 
 
@@ -16,6 +16,8 @@ import AppError from "../errors/AppError";
 
 export const sendImageToCludeNary = async (path: string, name: string) => {
   try {
+
+    
     // 1️⃣ Upload to Cloudinary
     const uploadResult = await cloudinary.uploader.upload(path, {
       public_id: name,

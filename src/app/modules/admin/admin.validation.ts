@@ -2,9 +2,9 @@ import Joi from "joi";
 
 export const createAdminValidationSchema = Joi.object({
 
-  id: Joi.string().required(),
+  // id: Joi.string().required(),
 
-  user: Joi.string().required(),
+  // user: Joi.string().required(),
 
   name: Joi.string().trim().required(),
 
