@@ -11,7 +11,7 @@ const AppError_1 = __importDefault(require("../errors/AppError"));
 cloudinary_1.v2.config({
     cloud_name: 'doi78dfjf',
     api_key: '232271254725749',
-    api_secret: '3nquADCWo0dmp-Q6Y4x6bbpUHMw' // Click 'View API Keys' above to copy your API secret
+    api_secret: '3nquADCWo0dmp-Q6Y4x6bbpUHMw'
 });
 const sendImageToCludeNary = async (path, name) => {
     try {

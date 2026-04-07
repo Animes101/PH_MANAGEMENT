@@ -7,6 +7,7 @@ import { ITeacher } from "./facality.interface";
 
 const getAllFacality=async(query:Record<string, unknown>)=>{
 
+
     
       const queryBuilder = new QueryBuilder(
         TeacherModel.find(),
@@ -21,7 +22,10 @@ const getAllFacality=async(query:Record<string, unknown>)=>{
     .fields()
     .modelQuery;
 
-  return result;
+    const meta= await queryBuilder.coutTotal();
+
+  return {meta, data:result};
+
 
 }
 

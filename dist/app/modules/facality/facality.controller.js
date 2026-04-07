@@ -8,7 +8,7 @@ const catchAsync_1 = __importDefault(require("../../utility/catchAsync"));
 const respons_1 = __importDefault(require("../../utility/respons"));
 const facality_services_1 = require("./facality.services");
 const getAllFacality = (0, catchAsync_1.default)(async (req, res) => {
-    const result = facality_services_1.facalityServices.getAllFacality(req.query);
+    const result = await facality_services_1.facalityServices.getAllFacality(req.query);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -22,7 +22,7 @@ const getSingleFacality = (0, catchAsync_1.default)(async (req, res) => {
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,
-        message: 'aget all falaclty successfully',
+        message: 'Get all falaclty successfully',
         data: result,
     });
 });

@@ -32,7 +32,7 @@ const StudentSchema = new mongoose_1.Schema({
         default: false,
     },
     admisonSemester: { type: mongoose_1.Schema.Types.ObjectId, ref: 'AcademicSemester' },
-    profileImage: { type: String, required: false },
+    profileImage: { type: String, required: false, default: '' },
 }, { timestamps: true } // auto adds createdAt & updatedAt
 );
 // Mongoose Model

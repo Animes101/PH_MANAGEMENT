@@ -14,7 +14,7 @@ import AppError from "../errors/AppError";
 
 
 
-export const sendImageToCludeNary = async (path: string, name: string) => {
+export const sendImageToCludeNary = async (path: string, name: string) : Promise<Record<string, unknown>> => {
   try {
 
     

@@ -9,7 +9,9 @@ const AppError_1 = __importDefault(require("../../errors/AppError"));
 const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const user_model_1 = require("../user/user.model");
 const facality_model_1 = require("./facality.model");
+const node_console_1 = __importDefault(require("node:console"));
 const getAllFacality = async (query) => {
+    node_console_1.default.log(query);
     const queryBuilder = new queryBuilder_1.default(facality_model_1.TeacherModel.find(), query);
     const result = await queryBuilder
         .search(['name', 'email'])
@@ -18,7 +20,8 @@ const getAllFacality = async (query) => {
         .pagination()
         .fields()
         .modelQuery;
-    return result;
+    const meta = await queryBuilder.coutTotal();
+    return { meta, data: result };
 };
 const getSingleFaculty = async (_id) => {
     const result = await facality_model_1.TeacherModel.findById(_id);

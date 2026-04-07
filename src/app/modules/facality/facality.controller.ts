@@ -6,7 +6,8 @@ import { facalityServices } from "./facality.services"
 
 const getAllFacality=catchAsync(async(req, res)=>{
 
-    const result=facalityServices.getAllFacality(req.query);
+    const result= await facalityServices.getAllFacality(req.query);
+ 
 
     sendResponse(res, {
         statusCode: 200,
@@ -26,7 +27,7 @@ const getSingleFacality = catchAsync(async(req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'aget all falaclty successfully',
+    message: 'Get all falaclty successfully',
     data: result,
   });
 })

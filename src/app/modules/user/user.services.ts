@@ -54,17 +54,19 @@ const createStudentIntoDB = async (studentData: IStudent, file: any) => {
 
     const imageName = studentData.name;
 
-    // upload to cloudinary (IMPORTANT: add await)
-    const resultimage = await sendImageToCludeNary(file.path, imageName);
+    // 👉 Fixed: use let, and DO NOT redeclare inside if()
+    let resultimage: any = null;
 
-    // validation
+    if (file) {
+      resultimage = await sendImageToCludeNary(file.path, imageName);
+    }
+
     if (!resultimage || !resultimage.secure_url) {
       throw new AppError("Image upload failed!", 500);
     }
 
     const profileImage = resultimage.secure_url;
 
-    // update student data
     studentData.profileImage = profileImage;
     studentData.id = userNew[0].id as string;
     studentData.user = userNew[0]._id;
@@ -94,7 +96,7 @@ const createFacalityintoDb = async (payload: ITeacher) => {
     // 1. Check if academic semester exists
     const academicSemester = await academinDepertModel.findById(payload.department);
     if (!academicSemester) {
-      throw new AppError('Academic semester not found', 404);
+      throw new AppError('Academic department not found', 404);
     }
 
     // 2. Check if email already exists
@@ -170,11 +172,7 @@ export const createAdminIntoDB = async (payload: IAdmin) => {
     // 4️⃣ Create Admin Profile linked to user
     payload.id = userNew[0].id as string;
     payload.user = userNew[0]._id;
-
-
-    console.log(payload);
-
-
+    
     const adminNew = await adminModel.create([payload], { session });
 
     // 5️⃣ Commit Transaction

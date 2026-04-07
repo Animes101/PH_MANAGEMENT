@@ -40,14 +40,15 @@ const createStudentIntoDB = async (studentData, file) => {
             throw new AppError_1.default("User creation failed", 400);
         }
         const imageName = studentData.name;
-        // upload to cloudinary (IMPORTANT: add await)
-        const resultimage = await (0, multer_1.sendImageToCludeNary)(file.path, imageName);
-        // validation
+        // 👉 Fixed: use let, and DO NOT redeclare inside if()
+        let resultimage = null;
+        if (file) {
+            resultimage = await (0, multer_1.sendImageToCludeNary)(file.path, imageName);
+        }
         if (!resultimage || !resultimage.secure_url) {
             throw new AppError_1.default("Image upload failed!", 500);
         }
         const profileImage = resultimage.secure_url;
-        // update student data
         studentData.profileImage = profileImage;
         studentData.id = userNew[0].id;
         studentData.user = userNew[0]._id;
@@ -70,7 +71,7 @@ const createFacalityintoDb = async (payload) => {
         // 1. Check if academic semester exists
         const academicSemester = await academinDepertMent_model_1.academinDepertModel.findById(payload.department);
         if (!academicSemester) {
-            throw new AppError_1.default('Academic semester not found', 404);
+            throw new AppError_1.default('Academic department not found', 404);
         }
         // 2. Check if email already exists
         const existingUser = await facality_model_1.TeacherModel.findOne({ email: payload.email });
@@ -129,7 +130,6 @@ const createAdminIntoDB = async (payload) => {
         // 4️⃣ Create Admin Profile linked to user
         payload.id = userNew[0].id;
         payload.user = userNew[0]._id;
-        console.log(payload);
         const adminNew = await admin_model_1.adminModel.create([payload], { session });
         // 5️⃣ Commit Transaction
         await session.commitTransaction();
