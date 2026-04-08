@@ -7,6 +7,7 @@ import { EnrolCourseStudent } from "./enrol.iterface";
 import { EnrolCourseStudentModel } from "./enrol.model";
 import mongoose from "mongoose";
 import calculateGradePoint from "./enrolClass.utlis";
+import { StudentModel } from "../student/student.model";
 
 
 export const EnrolCourseService = {
@@ -29,7 +30,7 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
     }
 
     // 2️⃣ Find student _id
-    const user_id = await adminModel
+    const user_id = await StudentModel
       .findOne({ id: userId })
       .select("_id")
       .session(session);

@@ -12,7 +12,7 @@ const auth_1 = __importDefault(require("../../../middlwares/auth"));
 const enrol_controller_1 = require("./enrol.controller");
 const router = express_1.default.Router();
 // 👉 Create
-router.post("/enrolCourse", (0, auth_1.default)(user_constance_1.User_Role.admin), (0, validatonJoi_1.default)(enrol_validation_1.enrolCourseStudentJoi), enrol_controller_1.EnrolCourseController.createEnrolCourse);
+router.post("/enrolCourse", (0, auth_1.default)(user_constance_1.User_Role.student), (0, validatonJoi_1.default)(enrol_validation_1.enrolCourseStudentJoi), enrol_controller_1.EnrolCourseController.createEnrolCourse);
 // 👉 Update (Correct Version)
 router.patch("/enrolCourse/Update", (0, auth_1.default)(user_constance_1.User_Role.faculity), (0, validatonJoi_1.default)(enrol_validation_1.enrollCorseUpdateJoi), enrol_controller_1.EnrolCourseController.updateEnrolCourse);
 exports.EnrollRouter = router;

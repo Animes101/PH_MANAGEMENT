@@ -122,6 +122,43 @@ const getMyOfferCoursesFromDB = async (UserId) => {
     if (!exitsStudent) {
         throw new AppError_1.default("Student not found", 404);
     }
+    //get current semester form  ongooing
+    const currentOngoingSementer = await Register_model_1.registerModel.findOne({ status: 'ONGOING' });
+    if (!currentOngoingSementer) {
+        throw new AppError_1.default("No ongoing registration semester found", 404);
+    }
+    const result = await offerCorse_model_1.OfferCourseModel.aggregate([
+        {
+            $match: {
+                registationSementer: currentOngoingSementer?._id,
+                academinSemester: exitsStudent.admisonSemester,
+            }
+        },
+        {
+            $lookup: {
+                from: "corses",
+                localField: "corse",
+                foreignField: "_id",
+                as: "corseDetails"
+            }
+        },
+        {
+            $unwind: "$corseDetails"
+        },
+        {
+            $lookup: {
+                from: "EnrolCourseStudents",
+                pipeline: [
+                    $match, {
+                        $expr: {
+                            $eq: ["$"]
+                        }
+                    }
+                ]
+            }
+        }
+    ]);
+    return result;
 };
 exports.OfferCourseServices = {
     createOfferCourseIntoDB,

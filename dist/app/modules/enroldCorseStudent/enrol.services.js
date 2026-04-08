@@ -12,6 +12,7 @@ const Register_model_1 = require("../semesterRegistation/Register.model");
 const enrol_model_1 = require("./enrol.model");
 const mongoose_1 = __importDefault(require("mongoose"));
 const enrolClass_utlis_1 = __importDefault(require("./enrolClass.utlis"));
+const student_model_1 = require("../student/student.model");
 exports.EnrolCourseService = {
     createEnrol: async (payload, userId) => {
         const session = await mongoose_1.default.startSession();
@@ -24,7 +25,7 @@ exports.EnrolCourseService = {
                 throw new AppError_1.default("Offer course not found", 404);
             }
             // 2️⃣ Find student _id
-            const user_id = await admin_model_1.adminModel
+            const user_id = await student_model_1.StudentModel
                 .findOne({ id: userId })
                 .select("_id")
                 .session(session);

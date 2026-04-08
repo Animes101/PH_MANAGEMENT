@@ -10,7 +10,7 @@ const router = express.Router();
 // 👉 Create
 router.post(
   "/enrolCourse",
-  auth(User_Role.admin),
+  auth(User_Role.student),
   validationRequest(enrolCourseStudentJoi),
   EnrolCourseController.createEnrolCourse
 );
