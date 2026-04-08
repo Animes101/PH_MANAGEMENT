@@ -26,7 +26,10 @@ const getAllCorsefromBd=async(query:Record<string,unknown>)=>{
         .pagination()
         .fields()
         .modelQuery
-      return corses;
+
+        const meta=await queryBuilder.coutTotal()
+
+      return {metadata:meta, data:corses};
 
 }
 
@@ -156,6 +159,15 @@ const assignFacalitsIntoDb = async (
   return result;
 };
 
+const getCoseFacalitis = async (CorseId: string) => {
+  const result = await CorseFacultiesModel
+    .findOne({ corse: CorseId })
+    .populate("faculties");
+
+  return result;
+};
+
+
 
 const deleteFaclitisCorseFromBd = async (
   CorseId: string,
@@ -186,6 +198,7 @@ export const corseServices={
     deleteCorseFromDb,
     updateCorseFromDb,
     assignFacalitsIntoDb,
-    deleteFaclitisCorseFromBd
+    deleteFaclitisCorseFromBd,
+    getCoseFacalitis
     
 }

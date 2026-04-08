@@ -29,6 +29,11 @@ const CorseSchema=new Schema<TCorse>({
         type:Number,
         required:true,
     },
+    credits:{
+        type:Number,
+        required:true,
+        default:3
+    },
     preRequisiteCorse:[preRequisitesSchema]
 
 })
@@ -38,19 +43,19 @@ const CorseSchema=new Schema<TCorse>({
 export const  CorseModel= model<TCorse>('corse', CorseSchema);
 
 
-const corseFacalitisSchema=new Schema<TassignFacalitis>({
-
-    corse:{
-        type:Schema.Types.ObjectId,
-        unique:true, 
-        ref:'corse'
-    },
-    faculties:{
-        type:[Schema.Types.ObjectId],
-        ref:'teachers'
+const corseFacalitisSchema = new Schema<TassignFacalitis>({
+  corse: {
+    type: Schema.Types.ObjectId,
+    unique: true,
+    ref: 'corse'
+  },
+  faculties: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Teacher'
     }
-})
-
+  ]
+});
 
 
 export const  CorseFacultiesModel= model<TassignFacalitis>('CorseFacalitis', corseFacalitisSchema);

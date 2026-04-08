@@ -24,7 +24,7 @@ const getAllCorse=catchAsync(async(req,res)=>{
     sendResponse(res,{
         statusCode: 201,
     success: true,
-    message: 'create Corse Successfuly',
+    message: 'get all Corse Successfuly',
     data: result
 
     })
@@ -92,6 +92,20 @@ const assignCorseFacalitis=catchAsync(async(req,res)=>{
     })
 })
 
+const getCorseFacalitis=catchAsync(async(req,res)=>{
+
+    const CorseId= req.params.CorseId as string
+
+    const result=await corseServices.getCoseFacalitis(CorseId)
+
+    sendResponse(res,{
+    statusCode: 201,
+    success: true,
+    message: 'get  Corse Facalitis  Successfuly',
+    data: result
+
+    })
+})
 
 const deleteFacalitisCorse=catchAsync(async(req,res)=>{
     const CorseId= req.params.CorseId as string
@@ -120,6 +134,7 @@ export const corseController={
     deleteCorse,
     updateCorse,
     assignCorseFacalitis,
-    deleteFacalitisCorse
+    deleteFacalitisCorse,
+    getCorseFacalitis
 
 }

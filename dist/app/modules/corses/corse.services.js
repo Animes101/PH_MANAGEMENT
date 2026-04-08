@@ -21,7 +21,8 @@ const getAllCorsefromBd = async (query) => {
         .pagination()
         .fields()
         .modelQuery;
-    return corses;
+    const meta = await queryBuilder.coutTotal();
+    return { metadata: meta, data: corses };
 };
 const getSingleCorseInotDb = async (_id) => {
     const result = await corse_model_1.CorseModel.findOne({ _id });
@@ -95,6 +96,12 @@ const assignFacalitsIntoDb = async (CorseId, payload) => {
     }, { upsert: true, new: true });
     return result;
 };
+const getCoseFacalitis = async (CorseId) => {
+    const result = await corse_model_1.CorseFacultiesModel
+        .findOne({ corse: CorseId })
+        .populate("faculties");
+    return result;
+};
 const deleteFaclitisCorseFromBd = async (CorseId, payload) => {
     const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, // 🔑 query object
     {
@@ -113,5 +120,6 @@ exports.corseServices = {
     deleteCorseFromDb,
     updateCorseFromDb,
     assignFacalitsIntoDb,
-    deleteFaclitisCorseFromBd
+    deleteFaclitisCorseFromBd,
+    getCoseFacalitis
 };

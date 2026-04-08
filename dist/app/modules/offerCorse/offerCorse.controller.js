@@ -17,7 +17,7 @@ const createOfferCourse = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 const getAllOfferCourses = (0, catchAsync_1.default)(async (req, res) => {
-    const result = await offerCorse_services_1.OfferCourseServices.getAllOfferCoursesFromDB();
+    const result = await offerCorse_services_1.OfferCourseServices.getAllOfferCoursesFromDB(req.query);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -55,10 +55,21 @@ const deleteOfferCourse = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
+const getMyOfferCourses = (0, catchAsync_1.default)(async (req, res) => {
+    const UserId = req.user.userId;
+    const result = await offerCorse_services_1.OfferCourseServices.getMyOfferCoursesFromDB(UserId);
+    (0, respons_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "My Offer Courses retrieved successfully",
+        data: result,
+    });
+});
 exports.OfferCourseController = {
     createOfferCourse,
     getAllOfferCourses,
     getSingleOfferCourse,
     updateOfferCourse,
     deleteOfferCourse,
+    getMyOfferCourses
 };

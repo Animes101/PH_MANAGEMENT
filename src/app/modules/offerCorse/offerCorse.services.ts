@@ -1,9 +1,11 @@
 import AppError from "../../errors/AppError";
+import QueryBuilder from "../../queryBuilder/queryBuilder";
 import { AcademicFacultyModel } from "../academicFaculty/faculty.model";
 // import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.model";
 import { CorseModel } from "../corses/corse.model";
 import { TeacherModel } from "../facality/facality.model";
 import { registerModel } from "../semesterRegistation/Register.model";
+import { StudentModel } from "../student/student.model";
 import { TofferCorse } from "./offerCorse.interface";
 import { OfferCourseModel } from "./offerCorse.model";
 
@@ -98,13 +100,28 @@ const createOfferCourseIntoDB = async (payload: TofferCorse) => {
   return result;
 };
 
-const getAllOfferCoursesFromDB = async () => {
-  const result = await OfferCourseModel.find()
-    .populate("teacher")
-    .populate("corse")
-    .populate("academinSementer");
+const getAllOfferCoursesFromDB = async (query: Record<string, unknown>) => {
 
-  return result;
+  const queryBuilder= new QueryBuilder(
+    OfferCourseModel.find(),
+    query
+  )
+
+
+  const students = await queryBuilder
+    .search(['_id',])
+    .filter()
+    .sort()
+    .pagination()
+    .fields()
+    .modelQuery
+
+    const meta= await queryBuilder.coutTotal();
+
+  return {meta, data:students};
+
+
+
 };
 
 const getSingleOfferCourseFromDB = async (_id: string) => {
@@ -159,10 +176,24 @@ const deleteOfferCourseFromDB = async (_id: string) => {
   return result;
 };
 
+const getMyOfferCoursesFromDB=async(UserId:string)=>{
+
+  const exitsStudent=await StudentModel.findOne({id:UserId})
+
+  if(!exitsStudent){
+    throw new AppError("Student not found", 404);
+  }
+
+  
+
+
+}
+
 export const OfferCourseServices = {
   createOfferCourseIntoDB,
   getAllOfferCoursesFromDB,
   getSingleOfferCourseFromDB,
   updateOfferCourseIntoDB,
   deleteOfferCourseFromDB,
+  getMyOfferCoursesFromDB
 };

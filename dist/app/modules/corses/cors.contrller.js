@@ -21,7 +21,7 @@ const getAllCorse = (0, catchAsync_1.default)(async (req, res) => {
     (0, respons_1.default)(res, {
         statusCode: 201,
         success: true,
-        message: 'create Corse Successfuly',
+        message: 'get all Corse Successfuly',
         data: result
     });
 });
@@ -66,6 +66,16 @@ const assignCorseFacalitis = (0, catchAsync_1.default)(async (req, res) => {
         data: result
     });
 });
+const getCorseFacalitis = (0, catchAsync_1.default)(async (req, res) => {
+    const CorseId = req.params.CorseId;
+    const result = await corse_services_1.corseServices.getCoseFacalitis(CorseId);
+    (0, respons_1.default)(res, {
+        statusCode: 201,
+        success: true,
+        message: 'get  Corse Facalitis  Successfuly',
+        data: result
+    });
+});
 const deleteFacalitisCorse = (0, catchAsync_1.default)(async (req, res) => {
     const CorseId = req.params.CorseId;
     const facalitis = req.body;
@@ -84,5 +94,6 @@ exports.corseController = {
     deleteCorse,
     updateCorse,
     assignCorseFacalitis,
-    deleteFacalitisCorse
+    deleteFacalitisCorse,
+    getCorseFacalitis
 };

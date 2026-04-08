@@ -26,6 +26,11 @@ const CorseSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
+    credits: {
+        type: Number,
+        required: true,
+        default: 3
+    },
     preRequisiteCorse: [preRequisitesSchema]
 });
 exports.CorseModel = (0, mongoose_1.model)('corse', CorseSchema);
@@ -35,9 +40,11 @@ const corseFacalitisSchema = new mongoose_1.Schema({
         unique: true,
         ref: 'corse'
     },
-    faculties: {
-        type: [mongoose_1.Schema.Types.ObjectId],
-        ref: 'teachers'
-    }
+    faculties: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Teacher'
+        }
+    ]
 });
 exports.CorseFacultiesModel = (0, mongoose_1.model)('CorseFacalitis', corseFacalitisSchema);

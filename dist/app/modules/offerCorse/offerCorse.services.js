@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OfferCourseServices = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
+const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const faculty_model_1 = require("../academicFaculty/faculty.model");
 // import { academinDepertModel } from "../acdemonDepermant/academinDepertMent.model";
 const corse_model_1 = require("../corses/corse.model");
 const facality_model_1 = require("../facality/facality.model");
 const Register_model_1 = require("../semesterRegistation/Register.model");
+const student_model_1 = require("../student/student.model");
 const offerCorse_model_1 = require("./offerCorse.model");
 const createOfferCourseIntoDB = async (payload) => {
     // 🔍 1. Check Registration Semester exists
@@ -71,12 +73,17 @@ const createOfferCourseIntoDB = async (payload) => {
     });
     return result;
 };
-const getAllOfferCoursesFromDB = async () => {
-    const result = await offerCorse_model_1.OfferCourseModel.find()
-        .populate("teacher")
-        .populate("corse")
-        .populate("academinSementer");
-    return result;
+const getAllOfferCoursesFromDB = async (query) => {
+    const queryBuilder = new queryBuilder_1.default(offerCorse_model_1.OfferCourseModel.find(), query);
+    const students = await queryBuilder
+        .search(['_id',])
+        .filter()
+        .sort()
+        .pagination()
+        .fields()
+        .modelQuery;
+    const meta = await queryBuilder.coutTotal();
+    return { meta, data: students };
 };
 const getSingleOfferCourseFromDB = async (_id) => {
     const result = await offerCorse_model_1.OfferCourseModel.findById(_id)
@@ -110,10 +117,17 @@ const deleteOfferCourseFromDB = async (_id) => {
     }
     return result;
 };
+const getMyOfferCoursesFromDB = async (UserId) => {
+    const exitsStudent = await student_model_1.StudentModel.findOne({ id: UserId });
+    if (!exitsStudent) {
+        throw new AppError_1.default("Student not found", 404);
+    }
+};
 exports.OfferCourseServices = {
     createOfferCourseIntoDB,
     getAllOfferCoursesFromDB,
     getSingleOfferCourseFromDB,
     updateOfferCourseIntoDB,
     deleteOfferCourseFromDB,
+    getMyOfferCoursesFromDB
 };

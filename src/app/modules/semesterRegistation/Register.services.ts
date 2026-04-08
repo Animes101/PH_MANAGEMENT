@@ -46,6 +46,8 @@ const createRegisterIntoBd = async (payload: Partial<Tregintation>) => {
     return result
 
 }
+
+
 const updateRegisterintoDb = async (
   _id: string,
   payload: Partial<Tregintation>

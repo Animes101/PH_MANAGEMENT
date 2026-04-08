@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { IAcademicSemister, TMonth } from './seminter.interface';
-import { NextFunction } from 'express';
 
 // month enum array (type-safe)
 const months: TMonth[] = [
