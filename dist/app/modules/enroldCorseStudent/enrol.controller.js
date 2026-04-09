@@ -50,7 +50,7 @@ exports.EnrolCourseController = {
         const result = await enrol_services_1.EnrolCourseService.updateEnrol(payload, facalitiId);
         res.status(201).json({
             success: true,
-            message: "Enrol course created successfully",
+            message: "Enrol course Update  successfully",
             data: result,
         });
     })

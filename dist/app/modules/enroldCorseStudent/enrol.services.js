@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnrolCourseService = void 0;
 const AppError_1 = __importDefault(require("../../errors/AppError"));
-const admin_model_1 = require("../admin/admin.model");
 const facality_model_1 = require("../facality/facality.model");
 const offerCorse_model_1 = require("../offerCorse/offerCorse.model");
 const Register_model_1 = require("../semesterRegistation/Register.model");
@@ -151,7 +150,7 @@ exports.EnrolCourseService = {
         if (!isOfferCourseExits)
             throw new AppError_1.default("Offer course not found", 404);
         // ✔ validate student
-        const isStudentExits = await admin_model_1.adminModel.findById(student);
+        const isStudentExits = await student_model_1.StudentModel.findById(student);
         if (!isStudentExits)
             throw new AppError_1.default("Student not found", 404);
         // ✔ validate faculty
@@ -177,7 +176,6 @@ exports.EnrolCourseService = {
             const totalMarks = isFacalityiExits.corseMark.classTest1 + isFacalityiExits.corseMark.classTest2 + isFacalityiExits.corseMark.classTest3 +
                 isFacalityiExits.corseMark.midTerm + corseMark.finalExam;
             const greadPongAndGrade = (0, enrolClass_utlis_1.default)(totalMarks);
-            console.log(greadPongAndGrade);
             modifiteData.gradePoint = greadPongAndGrade.gradePoint;
             modifiteData.grade = greadPongAndGrade.grade;
             modifiteData.isComplated = true;

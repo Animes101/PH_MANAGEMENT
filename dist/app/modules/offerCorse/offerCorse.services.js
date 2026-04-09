@@ -147,14 +147,85 @@ const getMyOfferCoursesFromDB = async (UserId) => {
         },
         {
             $lookup: {
-                from: "EnrolCourseStudents",
+                from: "enrolcoursestudents",
+                let: {
+                    currentOngoingSementer: currentOngoingSementer?._id,
+                    currentStudent: exitsStudent._id
+                },
                 pipeline: [
-                    $match, {
-                        $expr: {
-                            $eq: ["$"]
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$semesterRegistration", "$$currentOngoingSementer"] },
+                                    { $eq: ["$student", "$$currentStudent"] },
+                                    { $eq: ["$isEnrollerd", true] }
+                                ]
+                            }
                         }
                     }
-                ]
+                ],
+                as: "enrolledCourses"
+            }
+        },
+        {
+            $lookup: {
+                from: "enrolcoursestudents",
+                let: {
+                    currentStudent: exitsStudent?._id
+                },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$student", "$$currentStudent"] },
+                                    { $eq: ["$isComplated", true] }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                as: "complatedCorses"
+            }
+        },
+        {
+            $addFields: {
+                complatedCId: {
+                    $map: {
+                        input: "$complatedCorses",
+                        as: "complated",
+                        in: "$$complated.corse"
+                    }
+                }
+            }
+        },
+        {
+            $addFields: {
+                isPreRequisitesFulFilled: {
+                    $or: [
+                        { $eq: ['$corseDetails.preRequisiteCourses', []] },
+                        {
+                            $setIsSubset: [
+                                '$corseDetails.preRequisiteCorse.corse',
+                                '$complatedCId',
+                            ],
+                        },
+                    ],
+                },
+                isAlredyEnrolled: {
+                    $in: ['$corseDetails._id', { $map: {
+                                input: "$enrolledCourses",
+                                as: "enrolled",
+                                in: "$$enrolled.corse"
+                            } }]
+                }
+            }
+        },
+        {
+            $match: {
+                isAlredyEnrolled: false,
+                // isPreRequisitesFulFilled: true,
             }
         }
     ]);

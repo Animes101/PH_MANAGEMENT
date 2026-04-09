@@ -66,7 +66,7 @@ export const EnrolCourseController = {
 
       res.status(201).json({
         success: true,
-        message: "Enrol course created successfully",
+        message: "Enrol course Update  successfully",
         data: result,
       });
    

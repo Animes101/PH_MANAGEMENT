@@ -190,7 +190,7 @@ updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) =>
   if (!isOfferCourseExits) throw new AppError("Offer course not found", 404);
 
   // ✔ validate student
-  const isStudentExits = await adminModel.findById(student);
+  const isStudentExits = await StudentModel.findById(student);
   if (!isStudentExits) throw new AppError("Student not found", 404);
 
   // ✔ validate faculty
@@ -221,9 +221,6 @@ updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) =>
      isFacalityiExits.corseMark.midTerm + corseMark.finalExam;
 
      const greadPongAndGrade= calculateGradePoint(totalMarks);
-
-     console.log(greadPongAndGrade)
-
 
      modifiteData.gradePoint=greadPongAndGrade.gradePoint;
      modifiteData.grade=greadPongAndGrade.grade;
