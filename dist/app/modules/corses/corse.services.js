@@ -86,8 +86,7 @@ const updateCorseFromDb = async (_id, payload) => {
     }
 };
 const assignFacalitsIntoDb = async (CorseId, payload) => {
-    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, // 🔑 query object
-    {
+    const result = await corse_model_1.CorseFacultiesModel.findOneAndUpdate({ corse: CorseId }, {
         $addToSet: {
             faculties: {
                 $each: payload.faculties

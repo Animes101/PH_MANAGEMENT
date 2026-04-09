@@ -13,7 +13,7 @@ Router.get('/get-allCorse', auth(User_Role.admin, User_Role.superAdmin),  corseC
 Router.get('/get-singleCorse/:_id' , auth(User_Role.admin, User_Role.superAdmin), corseController.getSingleCorseFromDb)
 Router.patch('/delete-Corse/:_id' , auth(User_Role.admin, User_Role.superAdmin), corseController.deleteCorse)
 Router.patch('/update-corse/:_id' , auth(User_Role.admin, User_Role.superAdmin), corseController.updateCorse)
-Router.put('/:CorseId/:assing_facalitis', auth(User_Role.admin, User_Role.superAdmin),  validationRequest(assignFacultiesValidation), corseController.assignCorseFacalitis)
+Router.put('/:CorseId/:assing_facalitis',auth(User_Role.admin, User_Role.superAdmin),  validationRequest(assignFacultiesValidation), corseController.assignCorseFacalitis)
 Router.get('/getCorseFacality/:CorseId', auth(User_Role.admin, User_Role.superAdmin, User_Role.student),  corseController.getCorseFacalitis)
 
 Router.delete('/:CorseId/:deleteCorseFacalitis', auth(User_Role.admin, User_Role.superAdmin),  validationRequest(assignFacultiesValidation), corseController.deleteFacalitisCorse)

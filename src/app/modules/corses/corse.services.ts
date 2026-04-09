@@ -145,7 +145,7 @@ const assignFacalitsIntoDb = async (
   payload: TassignFacalitis
 ) => {
   const result = await CorseFacultiesModel.findOneAndUpdate(
-    { corse: CorseId },   // 🔑 query object
+    { corse: CorseId }, 
     {
       $addToSet: {
         faculties: {

@@ -225,7 +225,7 @@ const getMyOfferCoursesFromDB = async (UserId) => {
         {
             $match: {
                 isAlredyEnrolled: false,
-                // isPreRequisitesFulFilled: true,
+                isPreRequisitesFulFilled: true
             }
         }
     ]);

@@ -172,6 +172,8 @@ createEnrol: async (payload: Partial<EnrolCourseStudent>, userId: string) => {
   // 👉 Update
 updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) => {
 
+
+
   const {
     student,
     semesterRegistration,
@@ -195,6 +197,8 @@ updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) =>
 
   // ✔ validate faculty
   const facaltiExits = await TeacherModel.findOne({ id: facalityId });
+
+
   if (!facaltiExits) throw new AppError("Faculty not found", 404);
 
   // ✔ validate enrol exist
@@ -203,8 +207,8 @@ updateEnrol: async (payload: Partial<EnrolCourseStudent>, facalityId: string) =>
     academinSemester,
     offerCorse,
     student,
-    faculity: facaltiExits?._id,
   });
+
 
   if (!isFacalityiExits) throw new AppError("Forbidden access faculty not found", 404);
 

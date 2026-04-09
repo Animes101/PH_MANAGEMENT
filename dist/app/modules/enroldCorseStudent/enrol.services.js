@@ -163,7 +163,6 @@ exports.EnrolCourseService = {
             academinSemester,
             offerCorse,
             student,
-            faculity: facaltiExits?._id,
         });
         if (!isFacalityiExits)
             throw new AppError_1.default("Forbidden access faculty not found", 404);
