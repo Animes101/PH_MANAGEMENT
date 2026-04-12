@@ -8,7 +8,6 @@ export const errorHandler: ErrorRequestHandler = (
   error,
   req,
   res,
-  next
 ) => {
   // ১. ডিফল্ট ভ্যালু সেট করা
   let statusCode = error.statusCode || 500;

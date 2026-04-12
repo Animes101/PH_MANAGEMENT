@@ -117,7 +117,7 @@ const deleteOfferCourseFromDB = async (_id) => {
     }
     return result;
 };
-const getMyOfferCoursesFromDB = async (UserId) => {
+const getMyOfferCoursesFromDB = async (UserId, query) => {
     const exitsStudent = await student_model_1.StudentModel.findOne({ id: UserId });
     if (!exitsStudent) {
         throw new AppError_1.default("Student not found", 404);
@@ -127,7 +127,10 @@ const getMyOfferCoursesFromDB = async (UserId) => {
     if (!currentOngoingSementer) {
         throw new AppError_1.default("No ongoing registration semester found", 404);
     }
-    const result = await offerCorse_model_1.OfferCourseModel.aggregate([
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const aggregationQuery = [
         {
             $match: {
                 registationSementer: currentOngoingSementer?._id,
@@ -227,9 +230,27 @@ const getMyOfferCoursesFromDB = async (UserId) => {
                 isAlredyEnrolled: false,
                 isPreRequisitesFulFilled: true
             }
+        },
+    ];
+    const paginationQuery = [
+        {
+            $skip: skip
+        },
+        {
+            $limit: limit,
         }
-    ]);
-    return result;
+    ];
+    const result = await offerCorse_model_1.OfferCourseModel.aggregate([...aggregationQuery, ...paginationQuery]);
+    const getTotal = (await offerCorse_model_1.OfferCourseModel.aggregate(aggregationQuery));
+    const total = Math.ceil(getTotal.length);
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
 };
 exports.OfferCourseServices = {
     createOfferCourseIntoDB,

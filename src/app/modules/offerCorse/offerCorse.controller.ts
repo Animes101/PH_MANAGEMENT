@@ -78,7 +78,7 @@ const getMyOfferCourses = catchAsync(async (req: Request, res: Response) => {
 
 
 
-  const result = await OfferCourseServices.getMyOfferCoursesFromDB(UserId);
+  const result = await OfferCourseServices.getMyOfferCoursesFromDB(UserId, req.query);
   sendResponse(res, {
     statusCode: 200,
     success: true,

@@ -57,7 +57,7 @@ const deleteOfferCourse = (0, catchAsync_1.default)(async (req, res) => {
 });
 const getMyOfferCourses = (0, catchAsync_1.default)(async (req, res) => {
     const UserId = req.user.userId;
-    const result = await offerCorse_services_1.OfferCourseServices.getMyOfferCoursesFromDB(UserId);
+    const result = await offerCorse_services_1.OfferCourseServices.getMyOfferCoursesFromDB(UserId, req.query);
     (0, respons_1.default)(res, {
         statusCode: 200,
         success: true,

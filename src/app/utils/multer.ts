@@ -40,7 +40,7 @@ export const sendImageToCludeNary = async (path: string, name: string) : Promise
     // 3️⃣ Error হলে file delete করবো যাতে ফোল্ডার ভরে না যায়
     fs.unlink(path, () => {});
 
-     throw new AppError("Cloudinary Error:", 402);
+     throw new AppError("Cloudinary Error: " + error, 402);
   }
 };
 

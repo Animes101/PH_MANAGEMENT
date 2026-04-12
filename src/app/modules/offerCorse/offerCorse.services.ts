@@ -176,7 +176,8 @@ const deleteOfferCourseFromDB = async (_id: string) => {
   return result;
 };
 
-const getMyOfferCoursesFromDB=async(UserId:string)=>{
+const getMyOfferCoursesFromDB=async(UserId:string, query: Record<string, unknown>)=>{
+
 
   const exitsStudent=await StudentModel.findOne({id:UserId})
 
@@ -193,13 +194,17 @@ const getMyOfferCoursesFromDB=async(UserId:string)=>{
 
   if(!currentOngoingSementer){
     throw new AppError("No ongoing registration semester found", 404);
+
   }
 
 
+       const page= parseInt(query.page as string) || 1;
+      const limit= parseInt(query.limit as string) || 10;
+      const skip=(page-1)*limit;
 
-  const result= await OfferCourseModel.aggregate([
 
-    {
+      const aggregationQuery=[
+        {
       $match:{
 
         registationSementer:currentOngoingSementer?._id,
@@ -304,13 +309,40 @@ const getMyOfferCoursesFromDB=async(UserId:string)=>{
       isPreRequisitesFulFilled:true
 
     }
-   }
-
-  ])
-
+   },
+      ]
 
 
-  return result
+      const paginationQuery=[
+
+          {
+            $skip:skip
+          },
+          {
+            $limit:limit,
+          }
+      ]
+
+  const result= await OfferCourseModel.aggregate([...aggregationQuery, ...paginationQuery])
+
+
+   const getTotal= (await OfferCourseModel.aggregate(aggregationQuery));
+   const total=Math.ceil(getTotal.length);
+
+
+
+
+
+
+
+  return {
+    meta:{
+      page,
+      limit,
+      total
+    },
+    data:result
+  }
 
 
 
