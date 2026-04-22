@@ -19,7 +19,9 @@ import globalErrorHandler from './middlwares/globallErrorHandler';
 const app: Application = express();
 
 // middlewares
-app.use(cors());
+app.use(cors({
+    origin:'http://localhost:5173',credentials:true
+}));
 app.use(express.json());
 app.use(cookieParser())
 
