@@ -2,7 +2,6 @@ import express, {Application } from 'express';
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
 import { UserRoutes } from './app/modules/user/user.route';
-import { errorHandler } from './middlwares/globallErrorHandler';
 import notFound from './middlwares/notFound';
 import { StudentRoutes } from './app/modules/student/student.router';
 import { academicSemesterRoute } from './app/modules/acadamicSemister/semister.route';
@@ -15,6 +14,8 @@ import { RegisterRouter } from './app/modules/semesterRegistation/Register.Route
 import { OfferCourseRoutes } from './app/modules/offerCorse/offerCorse.router';
 import { AuthRoutes } from './app/modules/Auth/auth.route';
 import { EnrollRouter } from './app/modules/enroldCorseStudent/enrol.router';
+import globalErrorHandler from './middlwares/globallErrorHandler';
+// import { errorHandler } from './middlwares/globallErrorHandler';
 const app: Application = express();
 
 // middlewares
@@ -37,16 +38,12 @@ app.use('/api/v1', OfferCourseRoutes)
 app.use('/api/v1', AuthRoutes)
 app.use('/api/v1', EnrollRouter)
 
-app.get('/test', (req,res)=>{
 
-    res.send('testin router')
-})
+// 🔥 GLOBAL ERROR HANDLER (IMPORTANT)
+app.use(globalErrorHandler)
 
 
-//Global Error Handler
-app.use(errorHandler);
-
-//Not Fount Route
+// //Not Fount Route
 app.use(notFound)
 
 export default app;

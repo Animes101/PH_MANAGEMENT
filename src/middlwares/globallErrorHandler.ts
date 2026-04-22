@@ -4,12 +4,11 @@ import { TErrorSources } from "../app/interface/IError";
 import AppError from "../app/errors/AppError";
 import { handleCastError } from "../app/errors/handleCastError";
 
-export const errorHandler: ErrorRequestHandler = (
-  error,
-  req,
-  res,
-) => {
-  // ১. ডিফল্ট ভ্যালু সেট করা
+
+const globalErrorHandler:ErrorRequestHandler = (error, req, res, next) => {
+
+
+    // ১. ডিফল্ট ভ্যালু সেট করা
   let statusCode = error.statusCode || 500;
   let message = error.message || "Something went wrong";
   let errorSources: TErrorSources[] = [
@@ -69,4 +68,7 @@ export const errorHandler: ErrorRequestHandler = (
     errorSources,
     // stack: process.env.NODE_ENV === 'development' ? error.stack : null, // ডিবাগিংয়ের জন্য চাইলে রাখতে পারেন
   });
+
 };
+
+export default globalErrorHandler;

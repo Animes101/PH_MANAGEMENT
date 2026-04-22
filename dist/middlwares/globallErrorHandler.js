@@ -3,11 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorHandler = void 0;
 const Joi_Error_1 = require("../app/errors/Joi.Error");
 const AppError_1 = __importDefault(require("../app/errors/AppError"));
 const handleCastError_1 = require("../app/errors/handleCastError");
-const errorHandler = (error, req, res, next) => {
+const globalErrorHandler = (error, req, res, next) => {
     // ১. ডিফল্ট ভ্যালু সেট করা
     let statusCode = error.statusCode || 500;
     let message = error.message || "Something went wrong";
@@ -65,4 +64,4 @@ const errorHandler = (error, req, res, next) => {
         // stack: process.env.NODE_ENV === 'development' ? error.stack : null, // ডিবাগিংয়ের জন্য চাইলে রাখতে পারেন
     });
 };
-exports.errorHandler = errorHandler;
+exports.default = globalErrorHandler;

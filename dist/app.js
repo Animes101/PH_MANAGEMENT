@@ -7,7 +7,6 @@ const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const user_route_1 = require("./app/modules/user/user.route");
-const globallErrorHandler_1 = require("./middlwares/globallErrorHandler");
 const notFound_1 = __importDefault(require("./middlwares/notFound"));
 const student_router_1 = require("./app/modules/student/student.router");
 const semister_route_1 = require("./app/modules/acadamicSemister/semister.route");
@@ -20,6 +19,8 @@ const Register_Router_1 = require("./app/modules/semesterRegistation/Register.Ro
 const offerCorse_router_1 = require("./app/modules/offerCorse/offerCorse.router");
 const auth_route_1 = require("./app/modules/Auth/auth.route");
 const enrol_router_1 = require("./app/modules/enroldCorseStudent/enrol.router");
+const globallErrorHandler_1 = __importDefault(require("./middlwares/globallErrorHandler"));
+// import { errorHandler } from './middlwares/globallErrorHandler';
 const app = (0, express_1.default)();
 // middlewares
 app.use((0, cors_1.default)());
@@ -37,11 +38,8 @@ app.use('/api/v1', Register_Router_1.RegisterRouter);
 app.use('/api/v1', offerCorse_router_1.OfferCourseRoutes);
 app.use('/api/v1', auth_route_1.AuthRoutes);
 app.use('/api/v1', enrol_router_1.EnrollRouter);
-app.get('/test', (req, res) => {
-    res.send('testin router');
-});
-//Global Error Handler
-app.use(globallErrorHandler_1.errorHandler);
-//Not Fount Route
+// 🔥 GLOBAL ERROR HANDLER (IMPORTANT)
+app.use(globallErrorHandler_1.default);
+// //Not Fount Route
 app.use(notFound_1.default);
 exports.default = app;

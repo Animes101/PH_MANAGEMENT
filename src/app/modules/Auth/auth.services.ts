@@ -223,7 +223,6 @@ const resetPassword=async (id:string, newPassword:string, tokenUser :{userId:str
 
 
 
-
 export const AuthService = {
 
   loginUser,
