@@ -43,8 +43,8 @@ const loginUser = async (payload:IUser) => {
   //create token json web token
 
 
-  const accessToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '10d')
-  const refressToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN as string , '365d')
+  const accessToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '5s')
+  const refressToken=createToken(jowPayload,config.JWT_RERESS_TOKEN as string , '2d')
 
   return {
     accessToken,
@@ -115,21 +115,20 @@ const changePassword = async (
 
 const accessToken=async (token:string)=>{
 
+
+
+
+
    if (!token) {
         throw new AppError("Forbidden access: No token provided", 403);
-      }
-  
-      // ✅ Bearer token split
-  
-      if (!token) {
-        throw new AppError("Forbidden access: Invalid token format", 403);
       }
   
       // ✅ verify token
       const decoded = jwt.verify(
         token,
-        config.JWT_ACCESS_TOKEN as string
+        config.JWT_RERESS_TOKEN as string
       ) as JwtPayload;
+      
 
       const {userId} =decoded;
 
@@ -150,9 +149,10 @@ const accessToken=async (token:string)=>{
   }
 
 
-  const accessToken= createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '10d')
+  const accessToken= createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '5s')
 
   return accessToken;
+
 
 
 

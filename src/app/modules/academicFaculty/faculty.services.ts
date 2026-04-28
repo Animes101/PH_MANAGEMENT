@@ -3,11 +3,21 @@ import { IAcademicFaculty } from "./faculty.interface";
 import { AcademicFacultyModel } from "./faculty.model";
 
 
-const createAcademicFacultyDb=async(payload:IAcademicFaculty)=>{
+const createAcademicFacultyDb = async (payload: IAcademicFaculty) => {
+  // 🔥 আগে check করবে same name আছে কিনা
+  const existingFaculty = await AcademicFacultyModel.findOne({
+    name: payload.name,
+  });
 
-    const result=await AcademicFacultyModel.create(payload);
-    return result;
-}
+  if (existingFaculty) {
+    throw new Error("Academic Faculty already exists");
+  }
+
+  // 🔥 না থাকলে create করবে
+  const result = await AcademicFacultyModel.create(payload);
+
+  return result;
+};
 
 
 const getAllAcademicFacultyDb= async(query:Record<string, unknown>)=>{

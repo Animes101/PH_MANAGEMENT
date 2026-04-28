@@ -38,8 +38,6 @@ const jwt = __importStar(require("jsonwebtoken"));
 const createToken = (payload, secretToken, expireTime // অথবা number
 ) => {
     // এখানে { expiresIn: expireTime } কে 'jwt.SignOptions' হিসেবে ডিফাইন করুন
-    return jwt.sign(payload, secretToken, {
-        expiresIn: expireTime,
-    });
+    return jwt.sign(payload, secretToken, { expiresIn: expireTime });
 };
 exports.createToken = createToken;

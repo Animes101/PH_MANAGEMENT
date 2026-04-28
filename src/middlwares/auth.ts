@@ -4,6 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../app/config";
 import catchAsync from "../app/utility/catchAsync";
 import { TuserRole } from "../app/modules/user/user.interface";
+import { error } from "node:console";
 
 const auth = (...requiredRoles: TuserRole[]) => {
 
@@ -24,11 +25,19 @@ const auth = (...requiredRoles: TuserRole[]) => {
       throw new AppError("Forbidden access: Invalid token format", 403);
     }
 
+    let decoded;
+
     // ✅ verify token
-    const decoded = jwt.verify(
+   try{
+      decoded = jwt.verify(
       token,
       config.JWT_ACCESS_TOKEN as string
     ) as JwtPayload;
+   }catch(error:any){
+
+      throw new AppError(`veryfy token is expire ${error.message}`, 406)
+
+   }
 
 
     // ✅ role check (IMPORTANT 🔥)

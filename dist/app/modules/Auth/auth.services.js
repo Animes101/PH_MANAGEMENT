@@ -29,8 +29,8 @@ const loginUser = async (payload) => {
         userRole: user.role,
     };
     //create token json web token
-    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
-    const refressToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '365d');
+    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '5s');
+    const refressToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_RERESS_TOKEN, '2d');
     return {
         accessToken,
         refressToken,
@@ -75,12 +75,8 @@ const accessToken = async (token) => {
     if (!token) {
         throw new AppError_1.default("Forbidden access: No token provided", 403);
     }
-    // ✅ Bearer token split
-    if (!token) {
-        throw new AppError_1.default("Forbidden access: Invalid token format", 403);
-    }
     // ✅ verify token
-    const decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_ACCESS_TOKEN);
+    const decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_RERESS_TOKEN);
     const { userId } = decoded;
     const user = await user_model_1.UserModel.isUserExistsById(userId);
     if (!user) {
@@ -93,7 +89,7 @@ const accessToken = async (token) => {
         userId: user.id,
         userRole: user.role,
     };
-    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '10d');
+    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '5s');
     return accessToken;
 };
 const forgetPawword = async (id) => {

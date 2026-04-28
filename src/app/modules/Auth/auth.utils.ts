@@ -9,7 +9,5 @@ export const createToken = (
   expireTime: string // অথবা number
 ) => {
   // এখানে { expiresIn: expireTime } কে 'jwt.SignOptions' হিসেবে ডিফাইন করুন
-  return jwt.sign(payload, secretToken, {
-    expiresIn: expireTime,
-  } as jwt.SignOptions); 
+  return jwt.sign(payload, secretToken, {expiresIn: expireTime} as jwt.SignOptions); 
 };

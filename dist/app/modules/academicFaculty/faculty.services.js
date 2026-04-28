@@ -7,6 +7,14 @@ exports.academicFacultyServices = void 0;
 const queryBuilder_1 = __importDefault(require("../../queryBuilder/queryBuilder"));
 const faculty_model_1 = require("./faculty.model");
 const createAcademicFacultyDb = async (payload) => {
+    // 🔥 আগে check করবে same name আছে কিনা
+    const existingFaculty = await faculty_model_1.AcademicFacultyModel.findOne({
+        name: payload.name,
+    });
+    if (existingFaculty) {
+        throw new Error("Academic Faculty already exists");
+    }
+    // 🔥 না থাকলে create করবে
     const result = await faculty_model_1.AcademicFacultyModel.create(payload);
     return result;
 };

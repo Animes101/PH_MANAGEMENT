@@ -19,8 +19,14 @@ const auth = (...requiredRoles) => {
         if (!token) {
             throw new AppError_1.default("Forbidden access: Invalid token format", 403);
         }
+        let decoded;
         // ✅ verify token
-        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_ACCESS_TOKEN);
+        try {
+            decoded = jsonwebtoken_1.default.verify(token, config_1.default.JWT_ACCESS_TOKEN);
+        }
+        catch (error) {
+            throw new AppError_1.default(`veryfy token is expire ${error.message}`, 406);
+        }
         // ✅ role check (IMPORTANT 🔥)
         if (requiredRoles.length && !requiredRoles.includes(decoded.userRole)) {
             throw new AppError_1.default("You are not authorized this role", 403);
