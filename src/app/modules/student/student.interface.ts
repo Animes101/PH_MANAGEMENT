@@ -6,6 +6,7 @@ export type Guardian = {
   phone: string;
 };
 
+
 // TypeScript interface
 export interface IStudent{
   name: string;

@@ -29,7 +29,7 @@ const loginUser = async (payload) => {
         userRole: user.role,
     };
     //create token json web token
-    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '5s');
+    const accessToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_ACCESS_TOKEN, '1d');
     const refressToken = (0, auth_utils_1.createToken)(jowPayload, config_1.default.JWT_RERESS_TOKEN, '2d');
     return {
         accessToken,

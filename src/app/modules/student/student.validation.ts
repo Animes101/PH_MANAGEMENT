@@ -1,13 +1,64 @@
-import Joi from 'joi';
+// import Joi from 'joi';
+
+// const guardianSchema = Joi.object({
+//   fatherName: Joi.string().required(),
+//   motherName: Joi.string().required(),
+//   phone: Joi.string().required(),
+// });
+
+
+// export const createStudentSchema = Joi.object({
+//   studentData: Joi.object({
+//     name: Joi.string().min(3).max(50).required(),
+
+//     age: Joi.number().min(1).max(100).required(),
+
+//     gender: Joi.string()
+//       .valid('MALE', 'FEMALE', 'OTHER')
+//       .required(),
+
+//     dateOfBirth: Joi.string()
+//       .required(),
+
+//     bloodGroup: Joi.string()
+//       .valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
+//       .required(),
+
+//     address: Joi.string().required(),
+
+//     grade: Joi.string()
+//       .valid('A', 'B', 'C', 'D', 'F')
+//       .required(),
+
+//     email: Joi.string().email().required(),
+
+//     phoneNumber: Joi.string()
+//       .required(),
+
+//     guardian: guardianSchema.required(),
+
+//     department: Joi.string().required(),
+//     isDelete: Joi.boolean().required(),
+
+//     isActive: Joi.string()
+//       .valid('active', 'inactive')
+//       .required(),
+//       admisonSemester: Joi.string().required()
+      
+//   }).required(),
+  
+// });
+
+
+import Joi from "joi";
 
 const guardianSchema = Joi.object({
-  fatherName: Joi.string().required(),
-  motherName: Joi.string().required(),
+  fatherName: Joi.string().min(2).max(50).required(),
+  motherName: Joi.string().min(2).max(50).required(),
   phone: Joi.string()
     .pattern(/^[0-9]{11}$/)
     .required(),
 });
-
 
 export const createStudentSchema = Joi.object({
   studentData: Joi.object({
@@ -16,22 +67,18 @@ export const createStudentSchema = Joi.object({
     age: Joi.number().integer().min(1).max(100).required(),
 
     gender: Joi.string()
-      .valid('MALE', 'FEMALE', 'OTHER')
+      .valid("MALE", "FEMALE", "OTHER")
       .required(),
 
-    dateOfBirth: Joi.string()
-      .isoDate()
-      .required(),
+    dateOfBirth: Joi.date().iso().required(),
 
     bloodGroup: Joi.string()
-      .valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
+      .valid("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
       .required(),
 
-    address: Joi.string().required(),
+    address: Joi.string().min(3).required(),
 
-    grade: Joi.string()
-      .valid('A', 'B', 'C', 'D', 'F')
-      .required(),
+    grade: Joi.string().valid("A", "B", "C", "D", "F").required(),
 
     email: Joi.string().email().required(),
 
@@ -42,17 +89,15 @@ export const createStudentSchema = Joi.object({
     guardian: guardianSchema.required(),
 
     department: Joi.string().required(),
-    isDelete: Joi.boolean().required().messages({
-        'boolean.base': 'isDelete must be boolean',
-      }),
+
+    isDelete: Joi.boolean().required(),
 
     isActive: Joi.string()
-      .valid('active', 'inactive')
+      .valid("active", "inactive")
       .required(),
-      admisonSemester: Joi.string().required()
-      
+
+    admisonSemester: Joi.string().required(),
   }).required(),
-  
 });
 
 

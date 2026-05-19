@@ -43,7 +43,7 @@ const loginUser = async (payload:IUser) => {
   //create token json web token
 
 
-  const accessToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '5s')
+  const accessToken=createToken(jowPayload,config.JWT_ACCESS_TOKEN  as string, '1d')
   const refressToken=createToken(jowPayload,config.JWT_RERESS_TOKEN as string , '2d')
 
   return {

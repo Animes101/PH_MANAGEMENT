@@ -330,11 +330,6 @@ const getMyOfferCoursesFromDB=async(UserId:string, query: Record<string, unknown
    const total=Math.ceil(getTotal.length);
 
 
-
-
-
-
-
   return {
     meta:{
       page,

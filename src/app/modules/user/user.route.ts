@@ -11,10 +11,27 @@ import { upload } from '../../utils/multer';
 
 const router= express.Router();
 
-router.post('/user/create-Student', auth(User_Role.admin, User_Role.superAdmin),  upload.single('file') , (req, res , next)=>{
-    req.body= JSON.parse(req.body.data)
+// router.post('/user/create-Student', auth(User_Role.admin, User_Role.superAdmin), validationRequest(createStudentSchema),  upload.single('file') , (req, res , next)=>{
+//     req.body= JSON.parse(req.body.data)
+//     next()
+// },validationRequest(createStudentSchema), UsersController.createStudent)
+router.post(
+  '/user/create-Student',
+  auth(User_Role.admin, User_Role.superAdmin),
+
+  upload.single('file'),
+
+  (req, res, next) => {
+    
+    req.body=JSON.parse(req.body.data);
+
     next()
-},validationRequest(createStudentSchema), UsersController.createStudent)
+  },
+
+  validationRequest(createStudentSchema),
+
+  UsersController.createStudent
+);
 router.post('/user/create-facality', auth(User_Role.admin, User_Role.superAdmin), validationRequest(createTeacherValidation), UsersController.createFacality)
 router.post('/user/create-admin', auth(User_Role.admin, User_Role.superAdmin), validationRequest(createAdminValidationSchema), UsersController.createAdmin)
 router.get('/get-me', auth(User_Role.admin, User_Role.faculity, User_Role.student), UsersController.ageMe)

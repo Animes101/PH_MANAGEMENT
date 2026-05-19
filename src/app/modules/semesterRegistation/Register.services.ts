@@ -6,46 +6,44 @@ import { registerModel } from "./Register.model"
 
 
 const createRegisterIntoBd = async (payload: Partial<Tregintation>) => {
+  // 1️⃣ check academic semester exists
+  const academinExits = await AcademicSemesterModel.findOne({
+    _id: payload.academinSemister,
+  });
 
-    //check if ther ay register sementer alredy upcoming or ongoing
+  if (!academinExits) {
+    throw new AppError("Academic Semester not found", 404);
+  }
 
-    const isTherAnyUpcomingorOngoing = await registerModel.findOne({
-        $or: [
-            { status: 'UPCOMING' },
-            { status: 'ONGOING' }
-        ]
-    });
+  // 2️⃣ check same semester already exists
+  const isRegisterSementer = await registerModel.findOne({
+    academinSemister: payload.academinSemister,
+  });
 
-    if (isTherAnyUpcomingorOngoing) {
-        throw new AppError(
-            `There is already ${isTherAnyUpcomingorOngoing.status} semester`,
-            401
-        );
-    }
+  if (isRegisterSementer) {
+    throw new AppError(
+      "This academic semester already registered",
+      400
+    );
+  }
 
+  // 3️⃣ check ONLY ONE ACTIVE (UPCOMING/ONGOING)
+  const isActiveExists = await registerModel.findOne({
+    status: { $in: ["UPCOMING", "ONGOING"] },
+  });
 
-    const academinExits = await AcademicSemesterModel.findOne({ _id: payload.academinSemister })
+  if (isActiveExists) {
+    throw new AppError(
+      `Already ${isActiveExists.status} semester exists`,
+      400
+    );
+  }
 
-    if (!academinExits) {
+  // 4️⃣ create
+  const result = await registerModel.create(payload);
 
-        throw new AppError('Academin Depertment not Fund', 401)
-
-    }
-
-    const isRegisterSementer = await registerModel.findOne({ academinSemister: payload?.academinSemister })
-
-    if (isRegisterSementer) {
-
-        throw new AppError('academin sementer all redy exits', 401)
-    }
-
-
-
-    const result = await registerModel.create(payload)
-
-    return result
-
-}
+  return result;
+};
 
 
 const updateRegisterintoDb = async (
@@ -103,8 +101,9 @@ const updateRegisterintoDb = async (
 
 
 const deleteRegisterIntoDb = async (payload: Partial<Tregintation>) => {
+  
 
-    console.log(payload)
+    
 }
 
 

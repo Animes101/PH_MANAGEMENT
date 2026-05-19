@@ -60,40 +60,6 @@ exports.EnrolCourseService = {
                     finalExam: 0,
                 },
             };
-            // //check if enroll student max credit exceed
-            //   const enrolledCourses = await registerModel.findOne({
-            //     _id: isOfferCourseExist.registationSementer,
-            //   }).select('maxCredit').session(session);
-            //   //total enrolled credit 
-            //   const totalEnrolledCredit = await EnrolCourseStudentModel.aggregate([
-            //     { $match: {
-            //         semesterRegistration: isOfferCourseExist.registationSementer,
-            //         student:user_id?._id,
-            //     },
-            //     },
-            //     {
-            //       $lookup: {
-            //         from: "registermodels",
-            //         localField: "semesterRegistration",
-            //         foreignField: "_id",
-            //         as: "offerCourseDetails",
-            //       },
-            //     },
-            //     { $unwind: "$offerCourseDetails" },
-            //     {
-            //       $group: {
-            //         _id: null,
-            //         totalCredit: { $sum: "$offerCourseDetails.maxCredit" },
-            //       },
-            //     },
-            //   ]).session(session);
-            //   console.log(totalEnrolledCredit)
-            //   console.log(enrolledCourses?.maxCredit)
-            //   const totalCreditAfterEnroll= totalEnrolledCredit.length > 0 ? totalEnrolledCredit[0].totalCredit :  0;
-            //   if(enrolledCourses && totalCreditAfterEnroll > enrolledCourses.maxCredit){
-            //     throw new AppError("Enrolling this course will exceed your maximum credit limit", 400);
-            //   }
-            // 6️⃣ Enroll create (transactional)
             const result = await enrol_model_1.EnrolCourseStudentModel.create([enrollStudent], { session });
             if (!result || result.length === 0) {
                 throw new AppError_1.default("Failed to enroll course", 500);

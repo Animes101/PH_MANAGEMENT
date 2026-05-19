@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { UsersServices } from './user.services';
-import { createStudentSchema } from '../student/student.validation';
 import sendResponse from '../../utility/respons';
 import catchAsync from '../../utility/catchAsync';
 import { createTeacherValidation } from '../facality/joi.validation';
@@ -10,20 +9,11 @@ import { createAdminValidationSchema } from '../admin/admin.validation';
 
 const createStudent =catchAsync( async (req: Request, res: Response, next:NextFunction) => {
 
-  
-    // const { error, value } = createStudentSchema.validate(req.body, {
-    //   abortEarly: false,
-    // });
-
-    // if (error) {
-    //   next(error)
-    // }
-
 
     // schema অনুযায়ী value.studentData আসবেই
 
     const file=req.file;
-    
+      
 
     const result = await UsersServices.createStudentIntoDB(
       req.body.studentData, file

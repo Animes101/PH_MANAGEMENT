@@ -14,6 +14,10 @@ const auth_1 = __importDefault(require("../../../middlwares/auth"));
 const user_constance_1 = require("./user.constance");
 const multer_1 = require("../../utils/multer");
 const router = express_1.default.Router();
+// router.post('/user/create-Student', auth(User_Role.admin, User_Role.superAdmin), validationRequest(createStudentSchema),  upload.single('file') , (req, res , next)=>{
+//     req.body= JSON.parse(req.body.data)
+//     next()
+// },validationRequest(createStudentSchema), UsersController.createStudent)
 router.post('/user/create-Student', (0, auth_1.default)(user_constance_1.User_Role.admin, user_constance_1.User_Role.superAdmin), multer_1.upload.single('file'), (req, res, next) => {
     req.body = JSON.parse(req.body.data);
     next();
